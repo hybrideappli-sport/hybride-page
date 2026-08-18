@@ -1,0 +1,53 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — .band
+   Bandeau volontairement clair (le seul moment clair de la page) : ne pas
+   repasser en sombre par souci de cohérence, c'est un choix délibéré de la
+   référence. Couleurs #12232B / #4A5C64 / #1D3A47 : littérales dans la
+   référence, jamais promues en token :root — reprise à l'identique, pas de
+   nouvelle teinte inventée. */
+
+.band {
+  background: var(--hy-cream);
+  color: #12232b;
+  /* 28px : littéral dans la référence, distinct de --hy-radius-card (18px). */
+  border-radius: 28px;
+  padding: var(--hy-space-6) var(--hy-space-5);
+  text-align: center;
+}
+
+.band h2 {
+  color: #12232b;
+}
+
+.lead {
+  font-size: 19px;
+  color: #4a5c64;
+  max-width: 54ch;
+  margin: var(--hy-space-3) auto 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hy-space-1);
+  padding: 13px 24px;
+  border: none;
+  border-radius: var(--hy-radius-pill);
+  background: #12232b;
+  color: var(--hy-cream);
+  font-family: var(--hy-font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: var(--hy-space-4);
+  transition: background var(--hy-dur) var(--hy-ease);
+}
+
+.btn:hover {
+  background: #1d3a47;
+}
+
+.btn:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}

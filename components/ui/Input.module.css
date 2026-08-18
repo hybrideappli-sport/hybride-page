@@ -1,0 +1,71 @@
+/* Tokens conçus — absents de la référence, voir docs/design/tokens-formulaire-et-statuts.md */
+
+.field {
+  width: 100%;
+  padding: 12px var(--hy-space-3);
+  border-radius: var(--hy-radius);
+  background: var(--hy-field-bg);
+  border: 1px solid var(--hy-field-border);
+  color: var(--hy-field-text);
+  font-family: var(--hy-font-sans);
+  font-size: 15px;
+  transition:
+    border-color var(--hy-dur) var(--hy-ease),
+    background var(--hy-dur) var(--hy-ease);
+}
+
+.field::placeholder {
+  color: var(--hy-field-placeholder);
+}
+
+.field:hover:not(:disabled) {
+  border-color: var(--hy-field-border-hover);
+}
+
+.field:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+  border-color: var(--hy-field-border-focus);
+}
+
+.field:disabled {
+  background: var(--hy-field-bg-disabled);
+  border-color: var(--hy-field-border-disabled);
+  color: var(--hy-field-text-disabled);
+  cursor: not-allowed;
+}
+
+.error {
+  border-color: var(--hy-danger);
+}
+
+.label {
+  display: block;
+  font-family: var(--hy-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--hy-text-1);
+  margin-bottom: var(--hy-space-1);
+}
+
+.help {
+  font-family: var(--hy-font-sans);
+  font-size: 13px;
+  color: var(--hy-help-text);
+  margin-top: var(--hy-space-1);
+}
+
+.errorMessage {
+  font-family: var(--hy-font-sans);
+  font-size: 13px;
+  color: var(--hy-danger);
+  margin-top: var(--hy-space-1);
+}
+
+.wrapper {
+  display: block;
+}
+
+.wrapper + .wrapper {
+  margin-top: var(--hy-space-3);
+}

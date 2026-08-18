@@ -1,0 +1,41 @@
+.recap {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-2);
+  margin-bottom: var(--hy-space-4);
+}
+
+.actions {
+  display: flex;
+  gap: var(--hy-space-2);
+  margin-bottom: var(--hy-space-5);
+}
+
+.section {
+  margin-bottom: var(--hy-space-5);
+}
+
+.section h2 {
+  font-size: 16px;
+  margin-bottom: var(--hy-space-2);
+}
+
+.participant {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--hy-space-3);
+  padding: var(--hy-space-2) 0;
+  border-bottom: 1px solid var(--hy-line);
+  font-size: 14px;
+}
+
+.participantEmail {
+  color: var(--hy-text-2);
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+}
+
+.empty {
+  color: var(--hy-text-3);
+  font-size: 13px;
+}

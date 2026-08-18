@@ -1,0 +1,67 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — .outing */
+
+.outing {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-3);
+  padding: var(--hy-space-3) 0;
+  border-bottom: 1px solid var(--hy-line);
+}
+
+.date {
+  flex: 0 0 62px;
+  text-align: center;
+}
+
+.day {
+  font-family: var(--hy-font-display);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.month {
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+}
+
+.main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.sub {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-2);
+}
+
+.slots {
+  flex: 0 0 auto;
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-2);
+}
+
+.slots b {
+  color: var(--hy-text-1);
+}
+
+.go {
+  flex: 0 0 auto;
+}

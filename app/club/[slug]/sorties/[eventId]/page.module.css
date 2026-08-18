@@ -1,0 +1,80 @@
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.back {
+  display: inline-block;
+  padding: var(--hy-space-4) 0;
+  color: var(--hy-text-2);
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.back:hover {
+  color: var(--hy-violet);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--hy-space-3);
+}
+
+.title {
+  margin-top: var(--hy-space-4);
+}
+
+.detail {
+  margin-top: var(--hy-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-2);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--hy-line);
+  padding-bottom: var(--hy-space-2);
+}
+
+.label {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  color: var(--hy-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.value {
+  font-weight: 600;
+}
+
+.statusBand {
+  margin-top: var(--hy-space-4);
+  background: var(--hy-surface-1);
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius);
+  padding: var(--hy-space-3);
+  font-size: 14px;
+}
+
+.registerSection {
+  margin-top: var(--hy-space-6);
+}
+
+.registerSection h2 {
+  font-size: 21px;
+}
+
+.registerNote {
+  color: var(--hy-text-2);
+  margin: var(--hy-space-2) 0 var(--hy-space-3);
+}
+
+.submit {
+  margin-top: var(--hy-space-3);
+}

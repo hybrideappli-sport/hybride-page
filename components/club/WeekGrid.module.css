@@ -1,0 +1,42 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — .week, .day */
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--hy-space-2);
+}
+
+@media (max-width: 860px) {
+  .week {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-2);
+  min-height: 176px;
+}
+
+.dow {
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+}
+
+.name {
+  font-family: var(--hy-font-display);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.15;
+  margin-top: auto;
+}
+
+.when {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-2);
+}

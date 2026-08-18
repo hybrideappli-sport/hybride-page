@@ -1,0 +1,35 @@
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.updatedAt {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  color: var(--hy-text-3);
+  margin: var(--hy-space-1) 0 var(--hy-space-5);
+}
+
+.body {
+  color: var(--hy-text-2);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.body h2 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--hy-text-1);
+  margin-top: var(--hy-space-5);
+  margin-bottom: var(--hy-space-2);
+}
+
+.body p {
+  margin: 0 0 var(--hy-space-3);
+}
+
+.body ul {
+  margin: 0 0 var(--hy-space-3);
+  padding-left: var(--hy-space-4);
+}

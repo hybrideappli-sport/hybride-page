@@ -1,0 +1,21 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — .rituals, .ritual */
+
+.rituals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--hy-space-4);
+}
+
+.body {
+  padding: var(--hy-space-4);
+}
+
+.title {
+  margin-top: var(--hy-space-2);
+}
+
+.text {
+  color: var(--hy-text-2);
+  margin: var(--hy-space-2) 0 0;
+  font-size: 15px;
+}

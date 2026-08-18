@@ -1,0 +1,80 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — mise en page générale */
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.eyebrow {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-2);
+}
+
+.lead {
+  font-size: 19px;
+  color: var(--hy-text-2);
+  max-width: 54ch;
+}
+
+.note {
+  font-size: 14px;
+  color: var(--hy-text-3);
+  max-width: 62ch;
+}
+
+.section {
+  padding: var(--hy-space-6) 0;
+}
+
+.sectionHead {
+  margin-bottom: var(--hy-space-4);
+}
+
+/* Hero */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--hy-space-5);
+  align-items: end;
+  padding: var(--hy-space-5) 0 var(--hy-space-6);
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+.heroTitle span {
+  display: block;
+}
+
+/* Mélange sans-serif gras / serif italique inspiré de panamerun.com (validé
+   2026-08-16) : le mot d'accent bascule sur --hy-font-accent, plus grand que le
+   reste du titre plutôt qu'assorti — c'est le contraste d'échelle qui fait l'effet. */
+.heroAccent {
+  display: block;
+  color: var(--hy-violet);
+  font-family: var(--hy-font-accent);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.15em;
+  letter-spacing: 0;
+}
+
+.heroLead {
+  margin-top: var(--hy-space-4);
+}
+
+.heroCta {
+  display: flex;
+  gap: var(--hy-space-2);
+  margin-top: var(--hy-space-4);
+  flex-wrap: wrap;
+}

@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+/* =============================================================================
+ * Design tokens — Hybride Club Toulon, direction visuelle sombre
+ * Source unique : docs/design/direction-visuelle-sombre.html (référence validée,
+ * NE PAS retoucher ce fichier — c'est une spec, pas du code). Noms de variables
+ * conservés à l'identique. Aucune valeur ci-dessous n'a été inventée : toute
+ * couleur/taille/espacement absent de la référence est isolé dans la section
+ * "Tokens conçus" plus bas, avec sa justification.
+ * ========================================================================== */
+
+@theme {
+  /* Fond noir, surfaces légèrement chaudes pour éviter le clinique */
+  --hy-bg: #000000;
+  --hy-surface-1: #131416;
+  --hy-surface-2: #1c1e21;
+  --hy-line: #2a2d30;
+  --hy-line-2: #3d4145;
+
+  /* Texte — blanc chaud, jamais #FFF pur : c'est ce qui garde la chaleur */
+  --hy-text-1: #f5f2ed;
+  --hy-text-2: #a2a9ad;
+  --hy-text-3: #6d7478;
+
+  /* Violet conservé — deux valeurs non interchangeables */
+  --hy-violet: #b79cff;
+  --hy-violet-fill: #6d28d9;
+  --hy-violet-bg: #1a1033;
+  --hy-on-violet: #ffffff;
+
+  /* Crème, pour le bandeau inversé */
+  --hy-cream: #f5f0e6;
+
+  /* Disciplines — teinte claire + fond teinté profond. Renommé le 2026-08-17
+     (course/velo/eau/montagne/collectif) : la liste réelle du club a 5 valeurs,
+     pas 4 — voir components/ui/Tag.tsx. Valeurs inchangées, noms seulement. */
+  --hy-course: #ff8a5b;
+  --hy-course-bg: #34170c;
+  --hy-velo: #3ed9c4;
+  --hy-velo-bg: #06322d;
+  --hy-eau: #6fb2ff;
+  --hy-eau-bg: #0c2445;
+  --hy-collectif: #ebbb43;
+  --hy-collectif-bg: #332609;
+  --hy-montagne: #8bd86c;
+  --hy-montagne-bg: #143010;
+
+  /* Polices — next/font auto-hébergées (app/fonts.ts), fallbacks identiques à
+     la référence. Les variables --font-* sont posées sur <html> par layout.tsx. */
+  --hy-font-display: var(--font-bricolage-grotesque), system-ui, sans-serif;
+  --hy-font-sans: var(--font-instrument-sans), system-ui, -apple-system, sans-serif;
+  --hy-font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Absente de la référence — ajoutée pour le mélange sans-serif gras / serif italique
+     inspiré de panamerun.com (validé le 2026-08-16), voir app/fonts.ts. */
+  --hy-font-accent: var(--font-instrument-serif), Georgia, serif;
+
+  --hy-space-1: 8px;
+  --hy-space-2: 12px;
+  --hy-space-3: 16px;
+  --hy-space-4: 24px;
+  --hy-space-5: 40px;
+  --hy-space-6: 64px;
+  --hy-space-7: 96px;
+
+  --hy-radius: 12px;
+  --hy-radius-card: 18px;
+  --hy-radius-pill: 999px;
+
+  --hy-dur: 180ms;
+  --hy-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---------------------------------------------------------------------
+   * Tokens conçus — absents de la référence, nécessaires au P0 (formulaires
+   * d'inscription/connexion/mot de passe oublié/validation parentale) et aux
+   * états d'inscription. Aucune nouvelle teinte : chaque valeur ci-dessous
+   * référence une couleur déjà définie plus haut. Contrastes vérifiés AA
+   * (détail dans docs/design/tokens-formulaire-et-statuts.md).
+   * ------------------------------------------------------------------- */
+
+  /* Champs de formulaire */
+  --hy-field-bg: var(--hy-surface-2);
+  --hy-field-bg-disabled: var(--hy-surface-1);
+  --hy-field-border: var(--hy-line);
+  --hy-field-border-hover: var(--hy-line-2);
+  --hy-field-border-focus: var(--hy-violet);
+  --hy-field-border-disabled: var(--hy-line);
+  --hy-field-text: var(--hy-text-1);
+  --hy-field-placeholder: var(--hy-text-3);
+  --hy-field-text-disabled: var(--hy-text-3);
+  --hy-help-text: var(--hy-text-3);
+
+  /* Erreur — alias sémantique de la paire "course" (aucune nouvelle teinte) */
+  --hy-danger: var(--hy-course);
+  --hy-danger-bg: var(--hy-course-bg);
+
+  /* Focus visible — même traitement que .btn:focus-visible dans la référence,
+     factorisé pour être réutilisé par tous les éléments interactifs */
+  --hy-focus-ring-color: var(--hy-violet);
+  --hy-focus-ring-width: 3px;
+  --hy-focus-ring-offset: 3px;
+
+  /* États d'inscription — 4 états, chacun une paire déjà existante + un
+     signifiant non-couleur porté par le composant (icône ou texte barré) */
+  --hy-status-confirmed: var(--hy-violet);
+  --hy-status-confirmed-bg: var(--hy-violet-bg);
+  --hy-status-waitlist: var(--hy-text-1);
+  --hy-status-waitlist-bg: var(--hy-surface-2);
+  --hy-status-cancelled: var(--hy-text-3);
+  --hy-status-cancelled-bg: var(--hy-surface-1);
+  /* "En attente parentale" reprend le duo encre/crème du bandeau (#12232B sur
+     --hy-cream) — littéral, comme dans la référence elle-même (jamais tokenisé
+     là-bas non plus, une seule reprise ici, dans RegistrationStatusBadge). */
+}
+
+/* =============================================================================
+ * Base — reset global, pas de style de composant ici (voir components/ui/)
+ * ========================================================================= */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--hy-bg);
+    color: var(--hy-text-1);
+    font-family: var(--hy-font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--hy-font-display);
+    margin: 0;
+    letter-spacing: -0.03em;
+  }
+
+  /* Tailles portées depuis la référence — absentes jusqu'ici (écart trouvé le
+     2026-08-16, pas dans la référence elle-même) : les h1 des héros rendaient à la
+     taille par défaut du navigateur plutôt qu'à l'échelle "display" prévue. */
+  h1 {
+    font-size: clamp(48px, 8vw, 104px);
+    font-weight: 800;
+    line-height: 0.9;
+  }
+  h2 {
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 600;
+    line-height: 1.05;
+  }
+  h3 {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

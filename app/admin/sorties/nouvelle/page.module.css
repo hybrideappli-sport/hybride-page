@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+}
+
+.fieldset {
+  border: 1px solid var(--hy-field-border);
+  border-radius: var(--hy-radius);
+  padding: var(--hy-space-3);
+  margin: 0 0 var(--hy-space-3);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-2);
+  font-size: 15px;
+  color: var(--hy-field-text);
+  padding: 6px 0;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--hy-text-1);
+  margin-bottom: var(--hy-space-1);
+}
+
+.submit {
+  margin-top: var(--hy-space-3);
+}
+
+.formError {
+  color: var(--hy-danger);
+  font-size: 14px;
+  margin-top: var(--hy-space-2);
+}

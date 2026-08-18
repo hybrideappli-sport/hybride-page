@@ -1,0 +1,25 @@
+/* Traitement partagé de .day et .ritual dans la référence : fond surface-1,
+   bordure --hy-line, radius-card. Le padding et le survol varient selon l'usage
+   (.day est paddé et se soulève au survol, .ritual ne l'est pas) — exposés en props. */
+
+.card {
+  background: var(--hy-surface-1);
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius-card);
+  overflow: hidden;
+}
+
+.padded {
+  padding: var(--hy-space-3);
+}
+
+.hoverLift {
+  transition:
+    transform var(--hy-dur) var(--hy-ease),
+    border-color var(--hy-dur) var(--hy-ease);
+}
+
+.hoverLift:hover {
+  transform: translateY(-3px);
+  border-color: var(--hy-line-2);
+}

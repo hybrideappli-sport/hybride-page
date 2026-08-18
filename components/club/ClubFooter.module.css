@@ -1,0 +1,12 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — footer */
+
+.footer {
+  border-top: 1px solid var(--hy-line);
+  padding: var(--hy-space-5) 0 var(--hy-space-6);
+  font-size: 14px;
+  color: var(--hy-text-2);
+}
+
+.footer a {
+  color: var(--hy-text-2);
+}

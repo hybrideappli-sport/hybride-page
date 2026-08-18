@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hybride — page d'accueil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --hy-bg:        #000000;
+  --hy-surface-1: #131416;
+  --hy-surface-2: #1C1E21;
+  --hy-line:      #2A2D30;
+  --hy-line-2:    #3D4145;
+
+  --hy-text-1: #F5F2ED;
+  --hy-text-2: #A2A9AD;
+  --hy-text-3: #6D7478;
+
+  --hy-violet:      #B79CFF;
+  --hy-violet-fill: #6D28D9;
+  --hy-on-violet:   #FFFFFF;
+  --hy-cream:       #F5F0E6;
+
+  /* Cinq disciplines. Les formats (trail, piste, bivouac, longe-côte, volley)
+     ne sont pas colorés : étiquettes secondaires, purement descriptives. */
+  --hy-course:    #FF8A5B;  --hy-course-bg:    #34170C;
+  --hy-velo:      #3ED9C4;  --hy-velo-bg:      #06322D;
+  --hy-eau:       #6FB2FF;  --hy-eau-bg:       #0C2445;
+  --hy-montagne:  #8BD86C;  --hy-montagne-bg:  #143010;
+  --hy-collectif: #EBBB43;  --hy-collectif-bg: #332609;
+
+  --hy-font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --hy-font-sans:    "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --hy-font-mono:    "Geist Mono", ui-monospace, monospace;
+
+  --hy-space-1:  8px;  --hy-space-2: 12px; --hy-space-3: 16px;
+  --hy-space-4: 24px;  --hy-space-5: 40px; --hy-space-6: 64px; --hy-space-7: 96px;
+
+  --hy-radius: 12px; --hy-radius-card: 20px; --hy-radius-pill: 999px;
+  --hy-dur: 220ms; --hy-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0; background: var(--hy-bg); color: var(--hy-text-1);
+  font-family: var(--hy-font-sans); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 var(--hy-space-4); }
+
+.eyebrow {
+  font-family: var(--hy-font-mono); font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--hy-text-3); margin: 0 0 var(--hy-space-2);
+}
+
+h1, h2 { font-family: var(--hy-font-display); margin: 0; letter-spacing: -0.035em; }
+h1 { font-size: clamp(56px, 10vw, 132px); font-weight: 800; line-height: 0.84; }
+
+nav { display: flex; align-items: baseline; padding: var(--hy-space-4) 0 var(--hy-space-6); }
+nav .brand { font-family: var(--hy-font-display); font-weight: 800; font-size: 21px; letter-spacing: -0.02em; }
+nav .place { font-family: var(--hy-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hy-text-3); margin-left: var(--hy-space-2); }
+
+.hero h1 span { display: block; }
+.hero h1 .accent { color: var(--hy-violet); }
+.hero .lead { font-size: 20px; color: var(--hy-text-2); max-width: 46ch; margin: var(--hy-space-4) 0 var(--hy-space-6); }
+
+/* Deux panneaux plein cadre. Aucun fond de carte, aucune bordure :
+   la photo va bord à bord et le texte se pose dessus. */
+.doors { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hy-space-2); }
+
+.door {
+  position: relative; display: block; overflow: hidden;
+  border-radius: var(--hy-radius-card);
+  aspect-ratio: 4/5;
+  text-decoration: none; color: var(--hy-text-1);
+  isolation: isolate;
+}
+.door .photo {
+  position: absolute; inset: 0;
+  background: var(--hy-surface-2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--hy-font-mono); font-size: 12px; color: var(--hy-text-3);
+  transition: transform 420ms var(--hy-ease);
+  z-index: 0;
+}
+.door:hover .photo { transform: scale(1.04); }
+
+/* Dégradé de lisibilité : indispensable dès qu'on pose du texte sur une photo */
+.door::after {
+  content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 38%, rgba(0,0,0,0.05) 70%);
+}
+.door .body {
+  position: relative; z-index: 2;
+  height: 100%; padding: var(--hy-space-4);
+  display: flex; flex-direction: column; justify-content: flex-end; gap: var(--hy-space-2);
+}
+.door .kicker { font-family: var(--hy-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hy-violet); }
+.door h2 { font-size: clamp(28px, 3.4vw, 42px); font-weight: 600; line-height: 1.02; }
+.door p { color: #D6DADC; margin: 0; font-size: 15px; max-width: 34ch; }
+.door .go { margin-top: var(--hy-space-2); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+.door:hover .go { gap: 14px; transition: gap var(--hy-dur) var(--hy-ease); }
+.door:focus-visible { outline: 3px solid var(--hy-violet); outline-offset: 4px; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  font-family: var(--hy-font-mono); font-size: 11px; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: var(--hy-radius-pill);
+}
+.t-course    { background: var(--hy-course-bg);    color: var(--hy-course); }
+.t-velo      { background: var(--hy-velo-bg);      color: var(--hy-velo); }
+.t-eau       { background: var(--hy-eau-bg);       color: var(--hy-eau); }
+.t-montagne  { background: var(--hy-montagne-bg);  color: var(--hy-montagne); }
+.t-collectif { background: var(--hy-collectif-bg); color: var(--hy-collectif); }
+.t-format    { background: rgba(255,255,255,0.07); color: var(--hy-text-2); }
+
+section { padding: var(--hy-space-6) 0; }
+.disciplines .lead { font-size: 18px; color: var(--hy-text-2); max-width: 56ch; }
+
+.soon {
+  display: flex; align-items: baseline; gap: var(--hy-space-2); flex-wrap: wrap;
+  padding: var(--hy-space-4) 0; border-top: 1px solid var(--hy-line);
+  color: var(--hy-text-2); font-size: 15px;
+}
+.soon strong { font-family: var(--hy-font-display); font-weight: 600; color: var(--hy-text-1); }
+
+footer { border-top: 1px solid var(--hy-line); padding: var(--hy-space-5) 0 var(--hy-space-7); }
+.entities { display: grid; grid-template-columns: 1fr 1fr; gap: var(--hy-space-5); font-size: 14px; color: var(--hy-text-2); }
+.entities strong { color: var(--hy-text-1); display: block; margin-bottom: 6px; font-family: var(--hy-font-display); }
+.entities a { color: var(--hy-text-2); }
+
+@media (max-width: 820px) {
+  .doors, .entities { grid-template-columns: 1fr; }
+  .door { aspect-ratio: 3/4; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <span class="brand">Hybride</span>
+    <span class="place">Toulon · Var</span>
+  </nav>
+
+  <div class="hero">
+    <h1>
+      <span>Fais</span>
+      <span class="accent">plusieurs sports.</span>
+    </h1>
+    <p class="lead">Un club multisport dans le Var, et une application d'entraînement pour ceux qui ne s'en tiennent pas à une seule discipline.</p>
+  </div>
+
+  <div class="doors">
+
+    <a class="door" href="/club/toulon">
+      <div class="photo">photo plein cadre — groupe au départ · portrait 4:5</div>
+      <div class="body">
+        <span class="kicker">Le club · Toulon</span>
+        <h2>S'entraîner<br>ensemble</h2>
+        <p>Des sorties chaque semaine autour de Toulon et de La Seyne. Toutes les allures, places limitées.</p>
+        <span class="go">Voir le club →</span>
+      </div>
+    </a>
+
+    <a class="door" href="/app">
+      <div class="photo">photo plein cadre — l'app en main · portrait 4:5</div>
+      <div class="body">
+        <span class="kicker">L'application</span>
+        <h2>Structurer<br>sa semaine</h2>
+        <p>Un plan qui s'adapte à ton emploi du temps réel et tient compte de toutes tes disciplines.</p>
+        <span class="go">Découvrir l'app →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <section class="disciplines">
+    <p class="eyebrow">Les disciplines du club</p>
+    <p class="lead">Cinq familles, et une sortie peut en combiner plusieurs — un swim and run compte à la fois pour l'eau et la course à pied. C'est tout le sens du mot hybride.</p>
+    <div class="tags" style="margin-top: var(--hy-space-4)">
+      <span class="tag t-course">Course à pied</span>
+      <span class="tag t-format">trail</span>
+      <span class="tag t-format">piste</span>
+      <span class="tag t-velo">Vélo</span>
+      <span class="tag t-eau">Eau</span>
+      <span class="tag t-format">longe-côte</span>
+      <span class="tag t-montagne">Montagne</span>
+      <span class="tag t-format">trek</span>
+      <span class="tag t-format">bivouac</span>
+      <span class="tag t-collectif">Collectif</span>
+      <span class="tag t-format">volley</span>
+    </div>
+  </section>
+
+  <div class="soon">
+    <strong>Toulon pour commencer.</strong>
+    <span>D'autres points ouvriront ailleurs en France. Envie d'en monter un chez toi ? Écris-nous.</span>
+  </div>
+
+  <footer>
+    <div class="entities">
+      <div>
+        <strong>Hybride Club Toulon</strong>
+        Association loi 1901, La Seyne-sur-Mer.<br>
+        Mentions légales · Confidentialité · JOAFE · contact@hybride-club.fr
+      </div>
+      <div>
+        <strong>Hybride — l'application</strong>
+        Service d'entraînement par abonnement.<br>
+        Mentions légales · Confidentialité · CGV
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — .btn, .btn-line, .mini */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hy-space-1);
+  padding: 13px 24px;
+  border: none;
+  border-radius: var(--hy-radius-pill);
+  background: var(--hy-violet-fill);
+  color: var(--hy-on-violet);
+  font-family: var(--hy-font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform var(--hy-dur) var(--hy-ease),
+    background var(--hy-dur) var(--hy-ease);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  /* Littéral dans la référence, jamais promu en token :root — reprise à l'identique. */
+  background: #7c3aed;
+}
+
+.btn:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+.line {
+  background: transparent;
+  color: var(--hy-text-1);
+  border: 1.5px solid var(--hy-line-2);
+}
+
+.line:hover {
+  background: var(--hy-surface-1);
+}
+
+.mini {
+  padding: 9px 18px;
+  font-size: 14px;
+}

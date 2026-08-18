@@ -1,0 +1,40 @@
+/* Tokens conçus — 4 états d'inscription, voir docs/design/tokens-formulaire-et-statuts.md */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  border-radius: var(--hy-radius-pill);
+}
+
+.badge svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+.confirmed {
+  background: var(--hy-status-confirmed-bg);
+  color: var(--hy-status-confirmed);
+}
+
+.waitlist {
+  background: var(--hy-status-waitlist-bg);
+  color: var(--hy-status-waitlist);
+}
+
+.pendingParental {
+  /* Littéral #12232B, comme dans la référence — voir docs/design/tokens-formulaire-et-statuts.md §2 */
+  background: var(--hy-cream);
+  color: #12232b;
+}
+
+.cancelled {
+  background: var(--hy-status-cancelled-bg);
+  color: var(--hy-status-cancelled);
+  text-decoration: line-through;
+}

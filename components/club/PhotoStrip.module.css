@@ -1,0 +1,13 @@
+/* Porté depuis docs/design/direction-visuelle-sombre.html — .strip */
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--hy-space-2);
+}
+
+@media (max-width: 860px) {
+  .strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

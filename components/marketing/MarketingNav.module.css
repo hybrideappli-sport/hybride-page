@@ -1,0 +1,23 @@
+.nav {
+  display: flex;
+  align-items: baseline;
+  padding: var(--hy-space-4) 0 var(--hy-space-6);
+}
+
+.brand {
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  color: var(--hy-text-1);
+  text-decoration: none;
+}
+
+.place {
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin-left: var(--hy-space-2);
+}

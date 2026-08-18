@@ -1,0 +1,40 @@
+/* Porté depuis docs/design/direction-visuelle-accueil.html — .tag, .t-course..t-collectif, .t-format */
+
+.tag {
+  align-self: flex-start;
+  display: inline-block;
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: var(--hy-radius-pill);
+}
+
+.course {
+  background: var(--hy-course-bg);
+  color: var(--hy-course);
+}
+.velo {
+  background: var(--hy-velo-bg);
+  color: var(--hy-velo);
+}
+.eau {
+  background: var(--hy-eau-bg);
+  color: var(--hy-eau);
+}
+.montagne {
+  background: var(--hy-montagne-bg);
+  color: var(--hy-montagne);
+}
+.collectif {
+  background: var(--hy-collectif-bg);
+  color: var(--hy-collectif);
+}
+
+/* Format : étiquette secondaire descriptive (trail, piste, longe-côte, bivouac,
+   volley…) — jamais colorée, jamais filtrable. Une seule variante neutre. */
+.format {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--hy-text-2);
+}

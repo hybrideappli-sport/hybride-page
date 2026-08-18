@@ -1,0 +1,25 @@
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4) var(--hy-space-6);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--hy-space-4) 0;
+}
+
+.brand {
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--hy-text-1);
+  text-decoration: none;
+}
+
+.signOut {
+  color: var(--hy-text-2);
+  font-size: 14px;
+}
