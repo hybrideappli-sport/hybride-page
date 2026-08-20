@@ -36,7 +36,17 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             <span>pour ceux qui</span>
             <span className={styles.heroAccent}>font tout.</span>
           </h1>
-          <p className={`${styles.lead} ${styles.heroLead}`}>{CLUB.tagline}</p>
+          <div className={styles.heroDisciplines}>
+            {ALL_DISCIPLINES.map((code) => (
+              <Tag key={code} variant={code}>
+                {disciplineLabel[code]}
+              </Tag>
+            ))}
+          </div>
+          <p className={`${styles.lead} ${styles.heroLead}`}>
+            Les rituels du lundi et du mercredi sont fixes ; le reste s&rsquo;organise sortie par sortie, à retrouver dans les prochaines
+            sorties.
+          </p>
           <div className={styles.heroCta}>
             <Button href="#sorties">Voir les prochaines sorties</Button>
             <Button href="#le-club" variant="line">
@@ -53,24 +63,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           alt="Le groupe du club Hybride Toulon au départ d'une sortie"
         />
       </div>
-
-      <section id="la-semaine" className={styles.section}>
-        <div className={styles.sectionHead}>
-          <p className={styles.eyebrow}>La signature</p>
-          <h2>On ne fait pas que courir.</h2>
-          <p className={styles.lead} style={{ marginTop: "var(--hy-space-2)" }}>
-            Cinq familles de sport, une seule communauté. Les rituels du lundi et du mercredi ci-dessous sont fixes ; tout le reste
-            s&rsquo;organise sortie par sortie, à retrouver dans les prochaines sorties.
-          </p>
-        </div>
-        <div className={styles.disciplinesRow}>
-          {ALL_DISCIPLINES.map((code) => (
-            <Tag key={code} variant={code}>
-              {disciplineLabel[code]}
-            </Tag>
-          ))}
-        </div>
-      </section>
 
       <section id="le-club" className={styles.section}>
         <div className={styles.sectionHead}>

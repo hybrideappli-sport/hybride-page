@@ -16,7 +16,6 @@ export const CLUB = {
    * un champ distinct — rien ne garantit qu'un futur siège social reste dans la ville d'activité.
    */
   legalCity: "Toulon",
-  tagline: "Course à pied, vélo, eau, montagne, collectif — sorties hebdomadaires ouvertes à tous.",
   /** Redirection OVH vers une boîte réelle pas encore créée côté association — PRD §8. */
   contactEmail: "contact@hybride-club.fr",
   helloAssoUrl: "https://www.helloasso.com/associations/hybride-club-toulon",

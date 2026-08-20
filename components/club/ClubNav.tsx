@@ -28,9 +28,6 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
           <a className={styles.link} href="#le-club">
             Le club
           </a>
-          <a className={styles.link} href="#la-semaine">
-            La semaine
-          </a>
           <a className={styles.link} href="#sorties">
             Inscription
           </a>
@@ -63,9 +60,6 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
       <div id="club-nav-menu" className={open ? styles.menuOpen : styles.menu}>
         <a className={styles.menuLink} href="#le-club" onClick={close}>
           Le club
-        </a>
-        <a className={styles.menuLink} href="#la-semaine" onClick={close}>
-          La semaine
         </a>
         <a className={styles.menuLink} href="#sorties" onClick={close}>
           Inscription

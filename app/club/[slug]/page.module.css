@@ -31,12 +31,6 @@
   padding: var(--hy-space-6) 0;
 }
 
-.disciplinesRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--hy-space-2);
-}
-
 .socialRow {
   display: flex;
   align-items: center;
@@ -99,6 +93,16 @@
   font-weight: 400;
   font-size: 1.15em;
   letter-spacing: 0;
+}
+
+/* Fusion avec l'ancienne section "La signature" (2026-08-21) : même information
+   (liste des disciplines) redite deux fois — texte dans le hero, pastilles juste
+   en dessous — coûtait un écran entier de plus sur mobile pour rien de nouveau. */
+.heroDisciplines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hy-space-2);
+  margin-top: var(--hy-space-4);
 }
 
 .heroLead {
