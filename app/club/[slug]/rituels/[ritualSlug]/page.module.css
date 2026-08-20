@@ -82,6 +82,17 @@
   margin-top: var(--hy-space-2);
 }
 
+.inlineLink {
+  color: var(--hy-violet);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.inlineLink:hover {
+  color: var(--hy-violet);
+  text-decoration-thickness: 2px;
+}
+
 .galleryPhoto {
   max-width: 420px;
 }

@@ -42,7 +42,13 @@ export interface RitualFrontmatter {
   photoAlt: string;
 }
 
-export type RitualBlock = { type: "heading"; text: string } | { type: "paragraph"; text: string } | { type: "image"; src: string; alt: string };
+/** Segment de paragraphe : texte brut, ou lien `[texte](url)`. */
+export type RitualInline = string | { text: string; href: string };
+
+export type RitualBlock =
+  | { type: "heading"; text: string }
+  | { type: "paragraph"; parts: RitualInline[] }
+  | { type: "image"; src: string; alt: string };
 
 export interface RitualContent {
   frontmatter: RitualFrontmatter;
@@ -70,7 +76,22 @@ function parseFrontmatter(raw: string): { data: Record<string, string>; body: st
   return { data, body };
 }
 
-/** Paragraphes séparés par une ligne vide — une ligne "## Titre" devient un sous-titre, une ligne "![alt](fichier.jpg)" devient une photo. */
+const LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+/** Coupe un paragraphe en segments texte / lien à chaque occurrence de `[texte](url)`. */
+function parseInline(text: string): RitualInline[] {
+  const parts: RitualInline[] = [];
+  let lastIndex = 0;
+  for (const match of text.matchAll(LINK_PATTERN)) {
+    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+    parts.push({ text: match[1], href: match[2] });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  return parts;
+}
+
+/** Paragraphes séparés par une ligne vide — une ligne "## Titre" devient un sous-titre, une ligne "![alt](fichier.jpg)" devient une photo, "[texte](url)" dans un paragraphe devient un lien. */
 function parseBody(body: string): RitualBlock[] {
   const blocks: RitualBlock[] = [];
   for (const rawBlock of body.trim().split(/\r?\n\s*\r?\n/)) {
@@ -85,7 +106,7 @@ function parseBody(body: string): RitualBlock[] {
       blocks.push({ type: "image", alt: imageMatch[1], src: imageMatch[2] });
       continue;
     }
-    blocks.push({ type: "paragraph", text: line });
+    blocks.push({ type: "paragraph", parts: parseInline(line) });
   }
   return blocks;
 }

@@ -12,7 +12,7 @@ Ce dossier contient le texte des pages "La piste du lundi" et "Le Run chill du m
 Chaque fichier a deux parties :
 
 - **En haut, entre les deux lignes `---`** : des informations courtes, une par ligne (jour, horaire, niveau, point de rendez-vous...). Ne touche pas au nom avant les deux-points (`title:`, `day:`, etc.), seulement à ce qui suit.
-- **En dessous** : le texte libre de la page. Chaque paragraphe est séparé du suivant par une ligne vide. Pour ajouter un sous-titre, écris-le en commençant par `## ` (par exemple `## L'ambiance`).
+- **En dessous** : le texte libre de la page. Chaque paragraphe est séparé du suivant par une ligne vide — y compris un sous-titre : il doit toujours être suivi d'une ligne vide avant le texte qui vient après, sinon les deux se collent sur la page. Pour ajouter un sous-titre, écris-le en commençant par `## ` (par exemple `## L'ambiance`).
 
 ## Ajouter une photo
 
@@ -40,6 +40,10 @@ Le texte entre crochets est ce qu'un lecteur d'écran lira à la place de l'imag
 ## La photo d'en-tête et la vignette de liste
 
 Le champ `photo:` en haut du fichier (dans les `---`) sert à deux endroits : la miniature affichée sur `/club/toulon` et la photo en haut de la page du rituel. Mets-y le nom du fichier envoyé dans le dossier de photos, par exemple `photo: piste-hero.jpg`. `photoAlt:` est sa description pour un lecteur d'écran.
+
+## Ajouter un lien dans un texte
+
+Dans un paragraphe, écris `[texte du lien](adresse)` — par exemple `[le planning](/club/toulon/planning)`. Ça devient un lien cliquable sur la page, avec "texte du lien" affiché et souligné.
 
 ## Le champ `capacity:`
 

@@ -96,7 +96,15 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
           }
           return (
             <p key={i} className={styles.paragraph}>
-              {block.text}
+              {block.parts.map((part, j) =>
+                typeof part === "string" ? (
+                  part
+                ) : (
+                  <Link key={j} href={part.href} className={styles.inlineLink}>
+                    {part.text}
+                  </Link>
+                ),
+              )}
             </p>
           );
         })}
