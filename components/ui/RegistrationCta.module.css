@@ -1,0 +1,17 @@
+.cta {
+  min-height: 32px;
+}
+
+.countdown {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-2);
+  white-space: nowrap;
+}
+
+.pending {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-3);
+  white-space: nowrap;
+}

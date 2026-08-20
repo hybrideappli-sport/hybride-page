@@ -1,8 +1,18 @@
 /**
- * Constantes de configuration qui ne vivent pas en base — contenu figé au P0,
- * pas une donnée multi-tenant (contrairement à `club.clubs.hello_asso_url`,
- * le lien d'adhésion, réel et déjà en base).
+ * Constantes de configuration qui ne vivent pas en base — contenu figé pour
+ * cette saison (ADR-010, 2026-08-19 : schéma `club` dormant, Supabase retiré
+ * du site). Seul point club exposé au P0 : Toulon, pas de sélecteur multi-club.
  */
+
+export const CLUB = {
+  slug: "toulon",
+  name: "Hybride Club Toulon",
+  /** Ville où le club est actif — distincte de la commune de domiciliation légale de l'association (mentions légales). */
+  city: "Toulon",
+  tagline: "Course à pied, vélo, eau, montagne, collectif — sorties hebdomadaires ouvertes à tous.",
+  contactEmail: "contact@hybride-club.fr",
+  helloAssoUrl: "https://www.helloasso.com/associations/hybride-club-toulon",
+};
 
 /**
  * URL de la boutique merch HelloAsso de l'association — PAS ENCORE CONNUE.

@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import { RegistrationCta } from "./RegistrationCta";
 import { Tag, type Discipline } from "./Tag";
 import styles from "./OutingRow.module.css";
 
@@ -7,16 +7,18 @@ interface OutingRowProps {
   month: string;
   title: string;
   subtitle: string;
-  href: string;
-  /** Un événement porte une ou plusieurs disciplines (club.event_disciplines). */
+  /** Un événement porte une ou plusieurs disciplines (club.event_disciplines / colonnes du tableur). */
   disciplines?: { code: Discipline; label: string }[];
-  /** Places restantes / capacité. Omis (avec `full`) quand l'événement est complet. */
-  slotsLeft?: number;
-  slotsTotal?: number;
-  full?: boolean;
+  /** Ex. "1h30" — remplace le compteur de places restantes, retiré avec l'inscription en compte (ADR-010 §6). */
+  duration?: string;
+  /** Ex. "62 km · 850 m D+" — optionnel, pertinent seulement pour certaines disciplines. */
+  details?: string;
+  /** Ouverture différée + lien Luma (ADR-010 §3) — voir RegistrationCta pour les 3 états. */
+  opensAtIso: string;
+  lumaUrl: string | null;
 }
 
-export function OutingRow({ day, month, title, subtitle, href, disciplines = [], slotsLeft, slotsTotal, full = false }: OutingRowProps) {
+export function OutingRow({ day, month, title, subtitle, disciplines = [], duration, details, opensAtIso, lumaUrl }: OutingRowProps) {
   return (
     <div className={styles.outing}>
       <div className={styles.date}>
@@ -36,17 +38,14 @@ export function OutingRow({ day, month, title, subtitle, href, disciplines = [],
         <div className={styles.title}>{title}</div>
         <div className={styles.sub}>{subtitle}</div>
       </div>
-      <div className={styles.slots}>
-        {full ? "complet" : (
-          <>
-            <b>{slotsLeft}</b>/{slotsTotal}
-          </>
-        )}
-      </div>
-      <div className={styles.go}>
-        <Button href={href} size="mini" variant={full ? "line" : "fill"}>
-          {full ? "Liste d'attente" : "S'inscrire"}
-        </Button>
+      {duration ? (
+        <div className={styles.duration}>
+          {duration}
+          {details ? <span className={styles.details}> · {details}</span> : null}
+        </div>
+      ) : null}
+      <div className={styles.cta}>
+        <RegistrationCta opensAtIso={opensAtIso} lumaUrl={lumaUrl} />
       </div>
     </div>
   );

@@ -10,8 +10,8 @@ import { EventsAgenda } from "@/components/club/EventsAgenda";
 import { PhotoStrip } from "@/components/club/PhotoStrip";
 import { RitualsGrid } from "@/components/club/RitualsGrid";
 import { WeekGrid } from "@/components/club/WeekGrid";
-import { getPublishedClub, getUpcomingEvents } from "@/lib/queries/club";
-import { createClient } from "@/lib/supabase/server";
+import { getAgendaEvents } from "@/lib/agenda/source";
+import { CLUB } from "@/lib/config";
 import styles from "./page.module.css";
 
 /**
@@ -49,28 +49,23 @@ const RITUALS = [
 
 export default async function ClubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug !== CLUB.slug) notFound();
 
-  const supabase = await createClient();
-  const club = await getPublishedClub(supabase, slug);
-  if (!club) notFound();
-
-  const events = await getUpcomingEvents(supabase, slug);
+  const events = await getAgendaEvents();
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={club.slug} helloAssoUrl={club.hello_asso_url} />
+      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
 
       <div className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>{club.city} · depuis 2026</p>
+          <p className={styles.eyebrow}>{CLUB.city} · depuis 2026</p>
           <h1 className={styles.heroTitle}>
             <span>Un club</span>
             <span>pour ceux qui</span>
             <span className={styles.heroAccent}>font tout.</span>
           </h1>
-          <p className={`${styles.lead} ${styles.heroLead}`}>
-            {club.tagline ?? "Course à pied, vélo, eau, montagne, collectif. Sorties gratuites, ouvertes à toutes les allures."}
-          </p>
+          <p className={`${styles.lead} ${styles.heroLead}`}>{CLUB.tagline}</p>
           <div className={styles.heroCta}>
             <Button href="#sorties">Voir les prochaines sorties</Button>
             <Button href="#le-club" variant="line">
@@ -108,10 +103,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <p className={styles.eyebrow}>Places limitées</p>
           <h2>Prochaines sorties</h2>
         </div>
-        {events.length === 0 ? <p className={styles.note}>Aucune sortie programmée pour le moment.</p> : <EventsAgenda events={events} clubSlug={club.slug} />}
-        <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
-          Créer un compte prend trente secondes et sert à gérer ta place. Les mineurs ont besoin d&rsquo;une autorisation parentale, demandée par e-mail à l&rsquo;inscription.
-        </p>
+        {events.length === 0 ? <p className={styles.note}>Aucune sortie programmée pour le moment.</p> : <EventsAgenda events={events} />}
       </section>
 
       <section id="nous-trouver" className={styles.section}>
@@ -134,7 +126,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         />
       </section>
 
-      <ClubFooter clubSlug={club.slug} clubName={club.name} city={club.city} contactEmail={club.contact_email ?? null} />
+      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} city={CLUB.city} contactEmail={CLUB.contactEmail} />
     </div>
   );
 }

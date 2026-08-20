@@ -51,17 +51,18 @@
   color: var(--hy-text-2);
 }
 
-.slots {
+.duration {
   flex: 0 0 auto;
   font-family: var(--hy-font-mono);
   font-size: 13px;
+  color: var(--hy-text-1);
+  text-align: right;
+}
+
+.details {
   color: var(--hy-text-2);
 }
 
-.slots b {
-  color: var(--hy-text-1);
-}
-
-.go {
+.cta {
   flex: 0 0 auto;
 }

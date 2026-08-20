@@ -4,20 +4,20 @@ import { useState } from "react";
 
 import { OutingRow } from "@/components/ui/OutingRow";
 import { disciplineLabel, type Discipline } from "@/components/ui/Tag";
+import type { AgendaEvent } from "@/lib/agenda/source";
 import { formatEventDay, formatEventMonth } from "@/lib/format";
-import type { UpcomingEvent } from "@/lib/queries/club";
 import styles from "./EventsAgenda.module.css";
 
 const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
 
 /**
- * US-02 AC4 / US-04 AC1. Un événement porte une ou plusieurs disciplines
- * (club.event_disciplines) : le filtre agit sur la LISTE d'événements (chaque
- * événement au plus une fois), jamais en itérant discipline par discipline —
- * c'est ce qui évite qu'un swim and run apparaisse deux fois quand "Eau" et
- * "Course à pied" sont cochés ensemble.
+ * Un événement porte une ou plusieurs disciplines (colonnes Course/Vélo/Eau/
+ * Montagne/Collectif du tableur, ADR-010 §2) : le filtre agit sur la LISTE
+ * d'événements (chaque événement au plus une fois), jamais en itérant
+ * discipline par discipline — c'est ce qui évite qu'un swim and run apparaisse
+ * deux fois quand "Eau" et "Course à pied" sont cochés ensemble.
  */
-export function EventsAgenda({ events, clubSlug }: { events: UpcomingEvent[]; clubSlug: string }) {
+export function EventsAgenda({ events }: { events: AgendaEvent[] }) {
   const [selected, setSelected] = useState<Set<Discipline>>(new Set());
 
   function toggle(code: Discipline) {
@@ -29,7 +29,7 @@ export function EventsAgenda({ events, clubSlug }: { events: UpcomingEvent[]; cl
     });
   }
 
-  const filtered = selected.size === 0 ? events : events.filter((e) => e.discipline_codes.some((c) => selected.has(c as Discipline)));
+  const filtered = selected.size === 0 ? events : events.filter((e) => e.disciplines.some((d) => selected.has(d.code)));
 
   return (
     <div>
@@ -53,15 +53,15 @@ export function EventsAgenda({ events, clubSlug }: { events: UpcomingEvent[]; cl
         filtered.map((event) => (
           <OutingRow
             key={event.id}
-            day={formatEventDay(event.starts_at)}
-            month={formatEventMonth(event.starts_at)}
-            title={event.title ?? event.discipline_labels.join(" + ")}
-            subtitle={`${new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).format(new Date(event.starts_at))} · ${event.location}`}
-            disciplines={event.discipline_codes.map((code, i) => ({ code: code as Discipline, label: event.discipline_labels[i] ?? code }))}
-            slotsLeft={event.places_left}
-            slotsTotal={event.capacity}
-            full={event.places_left <= 0}
-            href={`/club/${clubSlug}/sorties/${event.id}`}
+            day={formatEventDay(event.startsAtIso)}
+            month={formatEventMonth(event.startsAtIso)}
+            title={event.title ?? event.disciplines.map((d) => d.label).join(" + ")}
+            subtitle={`${new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" }).format(new Date(event.startsAtIso))} · ${event.location}`}
+            disciplines={event.disciplines}
+            duration={event.duration}
+            details={event.details ?? undefined}
+            opensAtIso={event.opensAtIso}
+            lumaUrl={event.lumaUrl}
           />
         ))
       )}

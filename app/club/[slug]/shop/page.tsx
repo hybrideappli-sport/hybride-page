@@ -5,9 +5,7 @@ import { Card } from "@/components/ui/Card";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
-import { HELLOASSO_SHOP_URL } from "@/lib/config";
-import { getPublishedClub } from "@/lib/queries/club";
-import { createClient } from "@/lib/supabase/server";
+import { CLUB, HELLOASSO_SHOP_URL } from "@/lib/config";
 import styles from "./page.module.css";
 
 /**
@@ -27,14 +25,11 @@ const PRODUCTS = [
 
 export default async function ClubShopPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-
-  const supabase = await createClient();
-  const club = await getPublishedClub(supabase, slug);
-  if (!club) notFound();
+  if (slug !== CLUB.slug) notFound();
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={club.slug} helloAssoUrl={club.hello_asso_url} />
+      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
 
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Boutique</p>
@@ -64,7 +59,7 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
 
       <p className={styles.outboundNote}>↗ Les liens « boutique » ouvrent HelloAsso.com dans un nouvel onglet, en dehors de ce site.</p>
 
-      <ClubFooter clubSlug={club.slug} clubName={club.name} city={club.city} contactEmail={club.contact_email ?? null} />
+      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} city={CLUB.city} contactEmail={CLUB.contactEmail} />
     </div>
   );
 }
