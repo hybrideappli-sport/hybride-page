@@ -6,6 +6,10 @@ import { useEffect, useRef, useState } from "react";
 
 import styles from "./PhotoSlot.module.css";
 
+/** 1×1 PNG uni `--hy-surface-1` (#131416) — placeholder de chargement `next/image`, même couleur que le fond du slot vide, pour qu'aucun flash clair n'apparaisse le temps que la vraie photo se charge. */
+const DARK_BLUR_DATA_URL =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR42mMQFhEDAAB7AD53NhtaAAAAAElFTkSuQmCC";
+
 const ratioClass = {
   "4/5": styles.ratio4x5,
   "16/10": styles.ratio16x10,
@@ -83,7 +87,14 @@ export function PhotoSlot({ ratio, radius = "default", bordered = false, caption
 
   return (
     <div ref={ref} className={classes}>
-      <Image src={src ?? "/placeholder-photo.svg"} alt={alt} fill className={styles.image} sizes="(max-width: 860px) 100vw, 50vw" />
+      <Image
+        src={src ?? "/placeholder-photo.svg"}
+        alt={alt}
+        fill
+        className={styles.image}
+        sizes="(max-width: 860px) 100vw, 50vw"
+        {...(src ? { placeholder: "blur" as const, blurDataURL: DARK_BLUR_DATA_URL } : {})}
+      />
       {!src && caption ? <span className={styles.caption}>{caption}</span> : null}
       {children}
     </div>

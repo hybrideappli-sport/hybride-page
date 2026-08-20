@@ -73,7 +73,14 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             </Button>
           </div>
         </div>
-        <PhotoSlot ratio="4/5" radius="card" bordered caption="photo — groupe au départ, format portrait 4:5" />
+        <PhotoSlot
+          ratio="4/5"
+          radius="card"
+          bordered
+          caption="photo — groupe au départ, format portrait 4:5"
+          src="/photos/hero-club.jpg"
+          alt="Le groupe du club Hybride Toulon au départ d'une sortie"
+        />
       </div>
 
       <section id="la-semaine" className={styles.section}>
