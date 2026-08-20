@@ -58,7 +58,14 @@ export default async function ClubPrivacyPage({ params }: { params: Promise<{ sl
         <h2>Vos droits</h2>
         <p>Une question sur vos données, où qu&rsquo;elles soient traitées : {CLUB.contactEmail}.</p>
       </LegalPage>
-      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} legalCity={CLUB.legalCity} contactEmail={CLUB.contactEmail} />
+      <ClubFooter
+        clubSlug={CLUB.slug}
+        clubName={CLUB.name}
+        legalCity={CLUB.legalCity}
+        contactEmail={CLUB.contactEmail}
+        stravaUrl={CLUB.stravaUrl}
+        instagramUrl={CLUB.instagramUrl}
+      />
     </div>
   );
 }

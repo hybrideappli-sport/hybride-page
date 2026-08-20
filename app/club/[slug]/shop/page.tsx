@@ -59,7 +59,14 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
 
       <p className={styles.outboundNote}>↗ Les liens « boutique » ouvrent HelloAsso.com dans un nouvel onglet, en dehors de ce site.</p>
 
-      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} legalCity={CLUB.legalCity} contactEmail={CLUB.contactEmail} />
+      <ClubFooter
+        clubSlug={CLUB.slug}
+        clubName={CLUB.name}
+        legalCity={CLUB.legalCity}
+        contactEmail={CLUB.contactEmail}
+        stravaUrl={CLUB.stravaUrl}
+        instagramUrl={CLUB.instagramUrl}
+      />
     </div>
   );
 }

@@ -116,6 +116,23 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       <section id="nous-trouver" className={styles.section}>
         <p className={styles.eyebrow}>Le club en images</p>
         <PhotoStrip captions={["photo 1", "photo 2", "photo 3", "photo 4"]} />
+        {CLUB.stravaUrl || CLUB.instagramUrl ? (
+          <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
+            Retrouve-nous aussi sur{" "}
+            {CLUB.stravaUrl ? (
+              <a href={CLUB.stravaUrl} target="_blank" rel="noopener noreferrer">
+                Strava
+              </a>
+            ) : null}
+            {CLUB.stravaUrl && CLUB.instagramUrl ? " et " : null}
+            {CLUB.instagramUrl ? (
+              <a href={CLUB.instagramUrl} target="_blank" rel="noopener noreferrer">
+                Instagram
+              </a>
+            ) : null}
+            .
+          </p>
+        ) : null}
       </section>
 
       <section className={styles.section}>
@@ -131,9 +148,19 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           ctaLabel="Voir les prochaines sorties"
           ctaHref="#sorties"
         />
+        <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
+          On a aussi un groupe WhatsApp : le lien est communiqué au moment de l&rsquo;inscription à une sortie sur Luma.
+        </p>
       </section>
 
-      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} legalCity={CLUB.legalCity} contactEmail={CLUB.contactEmail} />
+      <ClubFooter
+        clubSlug={CLUB.slug}
+        clubName={CLUB.name}
+        legalCity={CLUB.legalCity}
+        contactEmail={CLUB.contactEmail}
+        stravaUrl={CLUB.stravaUrl}
+        instagramUrl={CLUB.instagramUrl}
+      />
     </div>
   );
 }

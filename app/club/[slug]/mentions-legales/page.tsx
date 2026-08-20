@@ -34,7 +34,14 @@ export default async function ClubMentionsLegalesPage({ params }: { params: Prom
           <a href={`/club/${CLUB.slug}/politique-de-confidentialite`}>politique de confidentialité</a>.
         </p>
       </LegalPage>
-      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} legalCity={CLUB.legalCity} contactEmail={CLUB.contactEmail} />
+      <ClubFooter
+        clubSlug={CLUB.slug}
+        clubName={CLUB.name}
+        legalCity={CLUB.legalCity}
+        contactEmail={CLUB.contactEmail}
+        stravaUrl={CLUB.stravaUrl}
+        instagramUrl={CLUB.instagramUrl}
+      />
     </div>
   );
 }

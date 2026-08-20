@@ -21,6 +21,8 @@ export const CLUB = {
   /** Redirection OVH vers une boîte réelle pas encore créée côté association — PRD §8. */
   contactEmail: "contact@hybride-club.fr",
   helloAssoUrl: "https://www.helloasso.com/associations/hybride-club-toulon",
+  stravaUrl: "https://www.strava.com/clubs/2132843",
+  instagramUrl: "https://www.instagram.com/hybrideclubtoulon/",
 };
 
 /**
