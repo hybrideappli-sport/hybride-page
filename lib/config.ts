@@ -12,11 +12,10 @@ export const CLUB = {
   /**
    * Commune de domiciliation légale de l'association (siège social) — pour les mentions légales et
    * la politique de confidentialité uniquement, jamais pour l'affichage marketing (`city` ci-dessus).
-   * À confirmer contre les statuts / le récépissé de déclaration en préfecture avant mise en ligne
-   * (PRD §8) — ne jamais déduire cette valeur de `city` : rien ne garantit que le siège social soit
-   * dans la ville où le club est actif.
+   * Confirmée par l'utilisateur le 2026-08-20 (PRD §8) : identique à `city` cette fois-ci, mais reste
+   * un champ distinct — rien ne garantit qu'un futur siège social reste dans la ville d'activité.
    */
-  legalCity: "La Seyne-sur-Mer",
+  legalCity: "Toulon",
   tagline: "Course à pied, vélo, eau, montagne, collectif — sorties hebdomadaires ouvertes à tous.",
   /** Redirection OVH vers une boîte réelle pas encore créée côté association — PRD §8. */
   contactEmail: "contact@hybride-club.fr",

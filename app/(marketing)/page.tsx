@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Door } from "@/components/marketing/Door";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { Tag } from "@/components/ui/Tag";
+import { CLUB } from "@/lib/config";
 import styles from "./page.module.css";
 
 /**
@@ -41,7 +42,7 @@ export default function MarketingHomePage() {
               ensemble
             </>
           }
-          description="Des sorties chaque semaine autour de Toulon et de La Seyne. Toutes les allures, places limitées."
+          description="Des sorties chaque semaine à Toulon et ses alentours. Toutes les allures, places limitées."
           goLabel="Voir le club →"
           photoCaption="photo plein cadre — groupe au départ · portrait 4:5"
           photoSrc="/photos/porte-club.jpg"
@@ -97,8 +98,8 @@ export default function MarketingHomePage() {
       <footer className={styles.footer}>
         <div className={styles.entities}>
           <div>
-            <strong>Hybride Club Toulon</strong>
-            Association loi 1901, La Seyne-sur-Mer.
+            <strong>{CLUB.name}</strong>
+            Association loi 1901, {CLUB.legalCity}.
             <br />
             <Link href="/club/toulon/mentions-legales">Mentions légales</Link> ·{" "}
             <Link href="/club/toulon/politique-de-confidentialite">Confidentialité</Link> · Déclaration au JOAFE ·{" "}

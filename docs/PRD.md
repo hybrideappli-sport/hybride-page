@@ -161,7 +161,8 @@ Les questions structurantes du cadrage sont tranchées (voir `00-brief-site-hybr
 
 **Dépendances ouvertes de la saison courante (ADR-010, 2026-08-19)** — distinctes des deux ci-dessus, qui concernent le flux en ligne dormant :
 
-- [ ] Mentions légales du club (`app/club/[slug]/mentions-legales`) : numéro RNA, nom du représentant légal et commune du siège social tel que déclaré en préfecture (`lib/config.ts` → `CLUB.legalCity`) — à sourcer dans les statuts et le récépissé de déclaration. **Ne pas déduire `legalCity` de "Toulon"**, qui désigne la ville d'activité du club, pas nécessairement la commune de domiciliation légale.
+- [x] Commune du siège social (`lib/config.ts` → `CLUB.legalCity`) — confirmée le 2026-08-20 : "Toulon". Coïncide avec `city` cette saison, reste un champ distinct.
+- [ ] Mentions légales du club (`app/club/[slug]/mentions-legales`) : numéro RNA et nom du représentant légal — à sourcer dans les statuts et le récépissé de déclaration.
 - [ ] `contact@hybride-club.fr` (adresse de contact légal affichée sur les pages mentions légales et confidentialité du club) : la redirection OVH vers une boîte réelle n'est pas encore créée côté association. Une adresse de contact légal qui ne reçoit rien est un problème à résoudre avant toute communication publique de l'URL du site — pas seulement une tâche différable.
 - [ ] `/mentions-legales` racine (entité commerciale éditrice de l'app, distincte du club) : page publique, tous les champs sont encore des placeholders entre crochets (`[Raison sociale]`, `[SIRET à compléter]`, etc. — voir `app/mentions-legales/page.tsx`). Hors périmètre de la bascule ADR-010, mais bloquant pour cette même raison : **à remplir avant toute communication de l'URL du site**, comme le point ci-dessus.
 
