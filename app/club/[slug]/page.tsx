@@ -2,48 +2,47 @@ import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/Button";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
-import { disciplineLabel, type Discipline } from "@/components/ui/Tag";
+import { disciplineLabel, Tag, type Discipline } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
 import { EventsAgenda } from "@/components/club/EventsAgenda";
 import { PhotoStrip } from "@/components/club/PhotoStrip";
 import { RitualsGrid } from "@/components/club/RitualsGrid";
-import { WeekGrid } from "@/components/club/WeekGrid";
 import { getAgendaEvents } from "@/lib/agenda/source";
 import { CLUB } from "@/lib/config";
 import styles from "./page.module.css";
 
-/**
- * "Semaine hybride" et "rituels récurrents" : contenu éditorial, volontairement
- * pas en base (US-02 : "on présente les rituels, pas les dates"). "Prochaines
- * sorties" en revanche vient de club.list_upcoming_events (données réelles,
- * lot L4). 5 disciplines, alignées sur club.disciplines (course/velo/eau/
- * montagne/collectif) — liste corrigée le 2026-08-17 : la précédente (4
- * activités calquées sur un schéma qui avait, à tort, écarté "rando"/montagne)
- * ne faisait pas foi, voir Tag.tsx.
- */
-const WEEK = [
-  { dow: "Lundi", discipline: "eau" as Discipline, disciplineLabel: disciplineLabel.eau, name: "Nage à la plage des Sablettes", when: "19:00 · 1h" },
-  { dow: "Mardi", discipline: "course" as Discipline, disciplineLabel: disciplineLabel.course, name: "Fractionné piste", when: "18:45 · 8 × 400 m" },
-  { dow: "Jeudi", discipline: "collectif" as Discipline, disciplineLabel: disciplineLabel.collectif, name: "Volley au parc", when: "19:00 · Parc de la Navale" },
-  { dow: "Samedi", discipline: "velo" as Discipline, disciplineLabel: disciplineLabel.velo, name: "Sortie route", when: "08:30 · 60 à 90 km" },
-];
+const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
 
+/**
+ * "Rituels récurrents" : contenu éditorial, volontairement pas en base (US-02 :
+ * "on présente les rituels, pas les dates"). Deux vrais rendez-vous à jour, lieu
+ * et horaire fixes chaque semaine — communiqués en session le 2026-08-20. Tout
+ * le reste (vélo, trail, volley…) existe mais s'organise au coup par coup, sans
+ * créneau fixe : ce n'est pas un rituel, ça vit dans le tableur et apparaît
+ * dans "Prochaines sorties" quand c'est programmé — pas ici. Une grille "Une
+ * semaine hybride" à 4 jours fixes a existé ici avant cette date : supprimée,
+ * elle promettait un planning qui n'existait pas (risque réel : quelqu'un se
+ * déplace un jour où il n'y a personne). L'idée qu'elle portait — le club est
+ * multisport — reste affichée juste en dessous, sans promettre de créneau.
+ */
 const RITUALS = [
   {
-    discipline: "velo" as Discipline,
-    disciplineLabel: `${disciplineLabel.velo} · samedi`,
-    title: "La route du samedi",
-    description: "Départ groupé, deux allures, on ne laisse personne derrière. Entre 60 et 90 km selon la forme du jour, et un arrêt café obligatoire.",
-    photoCaption: "photo — sortie route",
+    discipline: "course" as Discipline,
+    disciplineLabel: `${disciplineLabel.course} · lundi`,
+    title: "La piste du lundi",
+    description:
+      "Rendez-vous à la piste Léo Lagrange, à Toulon, tous les lundis à 18h30. Séance d'athlétisme encadrée par Esteban, athlète et ancien coach d'athlétisme. Tous niveaux acceptés.",
+    photoCaption: "photo — piste Léo Lagrange",
   },
   {
     discipline: "course" as Discipline,
-    disciplineLabel: `${disciplineLabel.course} · mardi`,
-    title: "Le fractionné du mardi",
-    description: "Le seul créneau où on regarde le chrono. Séance construite, échauffement collectif, et personne ne repart sans avoir parlé à quelqu'un.",
-    photoCaption: "photo — piste le soir",
+    disciplineLabel: `${disciplineLabel.course} · mercredi`,
+    title: "Le Run chill du mercredi",
+    description:
+      "Trois groupes d'allure : 5 min/km, 6 min 20/km et 6 min 50/km. Tout le monde est le bienvenu, dans la limite des places. Bonne ambiance et after assuré. Rendez-vous à 19h ou 19h30 selon les semaines — l'agenda ci-dessous fait foi pour l'heure exacte.",
+    photoCaption: "photo — Run chill Mourillon",
   },
 ];
 
@@ -86,12 +85,19 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       <section id="la-semaine" className={styles.section}>
         <div className={styles.sectionHead}>
           <p className={styles.eyebrow}>La signature</p>
-          <h2>Une semaine hybride</h2>
+          <h2>On ne fait pas que courir.</h2>
           <p className={styles.lead} style={{ marginTop: "var(--hy-space-2)" }}>
-            Chaque discipline a sa couleur, chaque jour son rituel. C&rsquo;est la promesse du club en un coup d&rsquo;œil.
+            Cinq disciplines, une seule communauté. Les rituels du lundi et du mercredi ci-dessous sont fixes ; le reste — vélo, trail, volley
+            — s&rsquo;organise sortie par sortie, à retrouver dans les prochaines sorties.
           </p>
         </div>
-        <WeekGrid entries={WEEK} />
+        <div className={styles.disciplinesRow}>
+          {ALL_DISCIPLINES.map((code) => (
+            <Tag key={code} variant={code}>
+              {disciplineLabel[code]}
+            </Tag>
+          ))}
+        </div>
       </section>
 
       <section id="le-club" className={styles.section}>

@@ -31,6 +31,12 @@
   padding: var(--hy-space-6) 0;
 }
 
+.disciplinesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hy-space-2);
+}
+
 .sectionHead {
   margin-bottom: var(--hy-space-4);
 }
