@@ -37,6 +37,12 @@
   gap: var(--hy-space-2);
 }
 
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-1);
+}
+
 .sectionHead {
   margin-bottom: var(--hy-space-4);
 }

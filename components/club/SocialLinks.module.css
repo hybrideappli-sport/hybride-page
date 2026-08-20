@@ -1,0 +1,8 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-1);
+  /* Compense le padding interne de SocialLink (44px) pour aligner l'icône, pas la zone
+     cliquable, sur le texte environnant. */
+  margin: 0 0 0 -10px;
+}

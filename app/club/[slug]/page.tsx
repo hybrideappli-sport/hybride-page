@@ -9,6 +9,7 @@ import { CtaBand } from "@/components/club/CtaBand";
 import { EventsAgenda } from "@/components/club/EventsAgenda";
 import { PhotoStrip } from "@/components/club/PhotoStrip";
 import { RitualsGrid } from "@/components/club/RitualsGrid";
+import { SocialLinks } from "@/components/club/SocialLinks";
 import { getAgendaEvents } from "@/lib/agenda/source";
 import { CLUB } from "@/lib/config";
 import styles from "./page.module.css";
@@ -123,21 +124,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <p className={styles.eyebrow}>Le club en images</p>
         <PhotoStrip captions={["photo 1", "photo 2", "photo 3", "photo 4"]} />
         {CLUB.stravaUrl || CLUB.instagramUrl ? (
-          <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
-            Retrouve-nous aussi sur{" "}
-            {CLUB.stravaUrl ? (
-              <a href={CLUB.stravaUrl} target="_blank" rel="noopener noreferrer">
-                Strava
-              </a>
-            ) : null}
-            {CLUB.stravaUrl && CLUB.instagramUrl ? " et " : null}
-            {CLUB.instagramUrl ? (
-              <a href={CLUB.instagramUrl} target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-            ) : null}
-            .
-          </p>
+          <div className={styles.socialRow} style={{ marginTop: "var(--hy-space-4)" }}>
+            <span className={styles.note}>Suis-nous :</span>
+            <SocialLinks stravaUrl={CLUB.stravaUrl} instagramUrl={CLUB.instagramUrl} />
+          </div>
         ) : null}
       </section>
 

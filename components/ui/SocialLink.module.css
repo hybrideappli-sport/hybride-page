@@ -1,0 +1,19 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--hy-radius-pill);
+  color: var(--hy-text-2);
+  transition: color var(--hy-dur) var(--hy-ease);
+}
+
+.link:hover {
+  color: var(--hy-violet);
+}
+
+.link:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}

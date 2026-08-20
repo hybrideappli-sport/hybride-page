@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { SocialLinks } from "@/components/club/SocialLinks";
 import styles from "./ClubFooter.module.css";
 
 /**
@@ -29,21 +30,7 @@ export function ClubFooter({
       <p>
         <strong>{clubName}</strong> — association loi 1901, {legalCity}.
       </p>
-      {stravaUrl || instagramUrl ? (
-        <p>
-          {stravaUrl ? (
-            <a href={stravaUrl} target="_blank" rel="noopener noreferrer">
-              Strava
-            </a>
-          ) : null}
-          {stravaUrl && instagramUrl ? " · " : null}
-          {instagramUrl ? (
-            <a href={instagramUrl} target="_blank" rel="noopener noreferrer">
-              Instagram
-            </a>
-          ) : null}
-        </p>
-      ) : null}
+      <SocialLinks stravaUrl={stravaUrl} instagramUrl={instagramUrl} />
       <p>
         <Link href={`/club/${clubSlug}/mentions-legales`}>Mentions légales</Link> ·{" "}
         <Link href={`/club/${clubSlug}/politique-de-confidentialite`}>Politique de confidentialité</Link> · Déclaration au JOAFE
