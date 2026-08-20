@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { disciplineLabel, Tag, type Discipline } from "@/components/ui/Tag";
-import { AboutBand } from "@/components/club/AboutBand";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
@@ -63,10 +62,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           alt="Le groupe du club Hybride Toulon au départ d'une sortie"
         />
       </div>
-
-      <section id="qui-on-est" className={styles.section}>
-        <AboutBand />
-      </section>
 
       <section id="le-club" className={styles.section}>
         <div className={styles.sectionHead}>
