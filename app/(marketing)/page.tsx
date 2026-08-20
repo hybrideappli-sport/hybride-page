@@ -22,18 +22,10 @@ export default function MarketingHomePage() {
 
       <div className={styles.hero}>
         <h1 className={styles.heroTitle}>
-          <span>Fais</span>
-          <span className={styles.heroAccent}>plusieurs sports.</span>
+          <span>Deux façons</span>
+          <span className={styles.heroAccent}>de s&rsquo;entraîner.</span>
         </h1>
-        <p className={styles.lead}>
-          Un club multisport dans le Var, et une application d&rsquo;entraînement pour ceux qui ne s&rsquo;en tiennent pas à une seule
-          discipline.
-        </p>
       </div>
-
-      <p className={styles.doorsIntro}>
-        Hybride, c&rsquo;est deux choses distinctes : un club de sport à Toulon, et une application d&rsquo;entraînement.
-      </p>
 
       <div className={styles.doors}>
         <Door
