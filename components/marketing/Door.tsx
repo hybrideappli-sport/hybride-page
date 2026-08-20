@@ -12,6 +12,8 @@ interface DoorProps {
   description: string;
   goLabel: string;
   photoCaption: string;
+  photoSrc?: string;
+  photoAlt?: string;
 }
 
 /**
@@ -21,9 +23,9 @@ interface DoorProps {
  * du texte. `PhotoSlot` porte l'image (ratio figé, next/image, animations) ;
  * ce composant n'ajoute que le calque de superposition.
  */
-export function Door({ href, kicker, title, description, goLabel, photoCaption }: DoorProps) {
+export function Door({ href, kicker, title, description, goLabel, photoCaption, photoSrc, photoAlt }: DoorProps) {
   const content = (
-    <PhotoSlot ratio="4/5" radius="card" caption={photoCaption}>
+    <PhotoSlot ratio="4/5" radius="card" caption={photoCaption} src={photoSrc} alt={photoAlt ?? ""}>
       <div className={styles.scrim} />
       <div className={styles.body}>
         <span className={styles.kicker}>{kicker}</span>

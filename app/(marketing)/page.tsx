@@ -44,6 +44,8 @@ export default function MarketingHomePage() {
           description="Des sorties chaque semaine autour de Toulon et de La Seyne. Toutes les allures, places limitées."
           goLabel="Voir le club →"
           photoCaption="photo plein cadre — groupe au départ · portrait 4:5"
+          photoSrc="/photos/porte-club.jpg"
+          photoAlt="Groupe de coureurs du club Hybride Toulon portant le drapeau du club le long du bord de mer"
         />
         <Door
           kicker="L'application"

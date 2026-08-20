@@ -122,7 +122,30 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
       <section id="nous-trouver" className={styles.section}>
         <p className={styles.eyebrow}>Le club en images</p>
-        <PhotoStrip captions={["photo 1", "photo 2", "photo 3", "photo 4"]} />
+        <PhotoStrip
+          photos={[
+            {
+              caption: "photo 1",
+              src: "/photos/bande-1.jpg",
+              alt: "Un membre du club Hybride Toulon avec son vélo sur un circuit, au coucher du soleil",
+            },
+            {
+              caption: "photo 2",
+              src: "/photos/bande-2.jpg",
+              alt: "Le groupe du club partageant des pizzas sur la plage au coucher du soleil",
+            },
+            {
+              caption: "photo 3",
+              src: "/photos/bande-3.jpg",
+              alt: "Une partie de beach-volley entre membres du club au coucher du soleil",
+            },
+            {
+              caption: "photo 4",
+              src: "/photos/bande-4.jpg",
+              alt: "Le groupe du club réuni autour d'un verre après une sortie",
+            },
+          ]}
+        />
         {CLUB.stravaUrl || CLUB.instagramUrl ? (
           <div className={styles.socialRow} style={{ marginTop: "var(--hy-space-4)" }}>
             <span className={styles.note}>Suis-nous :</span>

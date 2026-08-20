@@ -1,11 +1,17 @@
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import styles from "./PhotoStrip.module.css";
 
-export function PhotoStrip({ captions }: { captions: [string, string, string, string] }) {
+export interface PhotoStripItem {
+  caption: string;
+  src?: string;
+  alt?: string;
+}
+
+export function PhotoStrip({ photos }: { photos: [PhotoStripItem, PhotoStripItem, PhotoStripItem, PhotoStripItem] }) {
   return (
     <div className={styles.strip}>
-      {captions.map((caption) => (
-        <PhotoSlot key={caption} ratio="1/1" bordered caption={caption} />
+      {photos.map((photo) => (
+        <PhotoSlot key={photo.caption} ratio="1/1" bordered caption={photo.caption} src={photo.src} alt={photo.alt ?? ""} />
       ))}
     </div>
   );
