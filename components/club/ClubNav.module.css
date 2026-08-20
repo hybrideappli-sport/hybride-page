@@ -1,10 +1,13 @@
 /* Porté depuis docs/design/direction-visuelle-sombre.html — nav */
 
 .nav {
+  padding: var(--hy-space-4) 0;
+}
+
+.bar {
   display: flex;
   align-items: center;
   gap: var(--hy-space-4);
-  padding: var(--hy-space-4) 0;
 }
 
 .brand {
@@ -17,12 +20,115 @@
   text-decoration: none;
 }
 
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-4);
+}
+
 .link {
   color: var(--hy-text-2);
   text-decoration: none;
   font-size: 15px;
+  white-space: nowrap;
 }
 
 .link:hover {
   color: var(--hy-violet);
+}
+
+/* Bouton burger : masqué par défaut (desktop), activé en dessous de 860px. */
+.burger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  background: transparent;
+  border: none;
+  border-radius: var(--hy-radius-pill);
+  cursor: pointer;
+}
+
+.burger:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+.burgerBar,
+.burgerBarOpenTop,
+.burgerBarOpenMid,
+.burgerBarOpenBottom {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--hy-text-1);
+  border-radius: 1px;
+  transition:
+    transform var(--hy-dur) var(--hy-ease),
+    opacity var(--hy-dur) var(--hy-ease);
+}
+
+.burgerBar:nth-child(1) {
+  top: 16px;
+}
+.burgerBar:nth-child(2) {
+  top: 21px;
+}
+.burgerBar:nth-child(3) {
+  top: 26px;
+}
+
+/* Burger -> croix : les barres haut/bas pivotent au centre, celle du milieu s'efface. */
+.burgerBarOpenTop {
+  top: 21px;
+  transform: rotate(45deg);
+}
+.burgerBarOpenMid {
+  top: 21px;
+  opacity: 0;
+}
+.burgerBarOpenBottom {
+  top: 21px;
+  transform: rotate(-45deg);
+}
+
+.menu,
+.menuOpen {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hy-space-3);
+  padding-top: var(--hy-space-4);
+  margin-top: var(--hy-space-3);
+  border-top: 1px solid var(--hy-line);
+}
+
+.menuLink {
+  color: var(--hy-text-2);
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.menuLink:hover {
+  color: var(--hy-violet);
+}
+
+.menuCta {
+  margin-top: var(--hy-space-1);
+}
+
+@media (max-width: 860px) {
+  .links {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+  }
+
+  .menuOpen {
+    display: flex;
+  }
 }
