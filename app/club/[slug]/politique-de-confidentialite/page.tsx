@@ -23,8 +23,9 @@ export default async function ClubPrivacyPage({ params }: { params: Promise<{ sl
         <h2>Ce que ce site collecte lui-même</h2>
         <p>
           Rien. Ce site ne propose ni compte, ni formulaire, ni inscription en ligne : c&rsquo;est une vitrine et un agenda en lecture seule.
-          L&rsquo;inscription aux sorties se fait sur Luma, l&rsquo;adhésion et les achats sur HelloAsso — voir ci-dessous. Aucune donnée
-          d&rsquo;identité, de contact ou de paiement ne transite par ce site avant d&rsquo;arriver chez l&rsquo;un de ces deux prestataires.
+          L&rsquo;inscription aux sorties se fait sur Luma, l&rsquo;adhésion, les dons et les achats sur HelloAsso — voir ci-dessous. Aucune
+          donnée d&rsquo;identité, de contact ou de paiement ne transite par ce site avant d&rsquo;arriver chez l&rsquo;un de ces deux
+          prestataires.
         </p>
 
         <h2>Destinataires externes</h2>
@@ -36,7 +37,7 @@ export default async function ClubPrivacyPage({ params }: { params: Promise<{ sl
             hébergement hors Union européenne.
           </li>
           <li>
-            <strong>HelloAsso</strong> (adhésion à l&rsquo;association et boutique merch) — même principe : lien sortant uniquement, vos
+            <strong>HelloAsso</strong> (adhésion à l&rsquo;association, don et boutique merch) — même principe : lien sortant uniquement, vos
             données (paiement, coordonnées) sont collectées et traitées directement par HelloAsso, pour le compte de l&rsquo;association, selon
             sa propre politique de confidentialité.
           </li>

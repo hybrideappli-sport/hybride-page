@@ -1,0 +1,104 @@
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.hero {
+  padding: var(--hy-space-5) 0 var(--hy-space-4);
+  max-width: 62ch;
+}
+
+.eyebrow {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-2);
+}
+
+.title {
+  margin: 0;
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-3);
+  max-width: 62ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+  padding-bottom: var(--hy-space-6);
+}
+
+.join {
+  padding: var(--hy-space-5) 0 var(--hy-space-6);
+  border-top: 1px solid var(--hy-line);
+}
+
+.joinTitle {
+  margin: 0 0 var(--hy-space-4);
+}
+
+.joinList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-4);
+  max-width: 62ch;
+}
+
+.joinItem {
+  padding-bottom: var(--hy-space-3);
+  border-bottom: 1px solid var(--hy-line);
+}
+
+.joinItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.joinLabel {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin: 0 0 6px;
+}
+
+.joinText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+  margin: 0;
+}
+
+.joinText a {
+  color: var(--hy-text-2);
+}
+
+.joinText a:hover {
+  color: var(--hy-violet);
+}
+
+/* Lien sortant : soulignement + "↗" dans le texte plutôt qu'une icône de marque
+   (Strava/Instagram n'ont pas d'icône neutre dans lucide, cf. SocialLink.tsx —
+   ici, texte nommé en toutes lettres, décision explicite du 2026-08-21). */
+.outLink {
+  color: var(--hy-text-1);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+
+.outLink:hover {
+  color: var(--hy-violet);
+}
+
+.outboundNote {
+  font-size: 13px;
+  color: var(--hy-text-3);
+  margin-top: var(--hy-space-4);
+}

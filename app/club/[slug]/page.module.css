@@ -21,30 +21,8 @@
   max-width: 54ch;
 }
 
-.note {
-  font-size: 14px;
-  color: var(--hy-text-3);
-  max-width: 62ch;
-}
-
-.about {
-  display: flex;
-  flex-direction: column;
-  gap: var(--hy-space-3);
-  max-width: 62ch;
-  font-size: 17px;
-  line-height: 1.6;
-  color: var(--hy-text-2);
-}
-
 .section {
   padding: var(--hy-space-6) 0;
-}
-
-.socialRow {
-  display: flex;
-  align-items: center;
-  gap: var(--hy-space-1);
 }
 
 .sectionHead {

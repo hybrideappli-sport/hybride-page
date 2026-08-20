@@ -25,7 +25,7 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
           Hybride
         </Link>
         <div className={styles.links}>
-          <Link className={styles.link} href={`/club/${clubSlug}`}>
+          <Link className={styles.link} href={`/club/${clubSlug}/le-club`}>
             Le club
           </Link>
           <Link className={styles.link} href={`/club/${clubSlug}/planning`}>
@@ -55,7 +55,7 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
       </div>
 
       <div id="club-nav-menu" className={open ? styles.menuOpen : styles.menu}>
-        <Link className={styles.menuLink} href={`/club/${clubSlug}`} onClick={close}>
+        <Link className={styles.menuLink} href={`/club/${clubSlug}/le-club`} onClick={close}>
           Le club
         </Link>
         <Link className={styles.menuLink} href={`/club/${clubSlug}/planning`} onClick={close}>

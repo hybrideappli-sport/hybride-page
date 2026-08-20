@@ -8,7 +8,6 @@ import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
 import { PhotoStrip } from "@/components/club/PhotoStrip";
 import { RitualRow } from "@/components/club/RitualRow";
-import { SocialLinks } from "@/components/club/SocialLinks";
 import { CLUB } from "@/lib/config";
 import { getAllRituals } from "@/lib/rituals/content";
 import styles from "./page.module.css";
@@ -56,26 +55,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         />
       </div>
 
-      <section className={styles.section}>
-        <p className={styles.eyebrow}>Le club</p>
-        <div className={styles.about}>
-          <p>Un club multisport, à Toulon.</p>
-          <p>
-            Course à pied, trail, rando, sorties vélo, bivouac, tournois de volley. On ne s&rsquo;enferme pas dans une discipline : on
-            fait ce dont on a envie, quand on en a envie.
-          </p>
-          <p>
-            Deux rendez-vous sont fixes — la piste du lundi et le run du mercredi. Tout le reste sort du groupe : quelqu&rsquo;un
-            propose une sortie, trois personnes disent oui, et c&rsquo;est parti. Il se passe quelque chose presque tous les jours.
-          </p>
-          <p>Ce qu&rsquo;on cherche ici, c&rsquo;est simple : bien s&rsquo;entourer.</p>
-          <p>
-            Et c&rsquo;est gratuit. Toutes les sorties, sans exception. Ce n&rsquo;est pas une offre de lancement, c&rsquo;est comme ça
-            qu&rsquo;on veut que le club fonctionne.
-          </p>
-        </div>
-      </section>
-
       <section id="le-club" className={styles.section}>
         <div className={styles.sectionHead}>
           <p className={styles.eyebrow}>Nos rendez-vous</p>
@@ -121,12 +100,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             },
           ]}
         />
-        {CLUB.stravaUrl || CLUB.instagramUrl ? (
-          <div className={styles.socialRow} style={{ marginTop: "var(--hy-space-4)" }}>
-            <span className={styles.note}>Suis-nous :</span>
-            <SocialLinks stravaUrl={CLUB.stravaUrl} instagramUrl={CLUB.instagramUrl} />
-          </div>
-        ) : null}
       </section>
 
       <section className={styles.section}>
@@ -142,10 +115,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           ctaLabel="Voir les prochaines sorties"
           ctaHref={`/club/${CLUB.slug}/planning`}
         />
-        <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
-          Le groupe WhatsApp, c&rsquo;est là que s&rsquo;organisent les afters et tout ce qui ne rentre pas dans le programme. Le lien
-          arrive à l&rsquo;inscription sur Luma.
-        </p>
       </section>
 
       <ClubFooter
