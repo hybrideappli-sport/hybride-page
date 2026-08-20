@@ -1,6 +1,6 @@
 # ADR-006 — E-mails transactionnels : outbox idempotent en base
 
-- **Statut** : Accepté — §1 amendé le 2026-08-17, voir **ADR-009**
+- **Statut** : Accepté — §1 amendé le 2026-08-17 (voir ADR-009) ; **dormant depuis le 2026-08-19**, voir **ADR-010**
 - **Date** : 2026-08-12
 - **Décideur** : `architect`
 - **Portée** : Projet — intégration
@@ -8,6 +8,10 @@
 - **Feature déclenchante** : US-03, US-04 (AC2, AC6), US-05, US-06 (AC4)
 
 > **Amendement 2026-08-17** : le prestataire choisi en §1 (Brevo) a été remplacé par **Resend** pour les e-mails du club — voir **ADR-009** pour le contexte et les conséquences (deux sous-traitants distincts club/app, hébergement des données Resend). §1 ci-dessous est conservé tel quel comme trace de la décision initiale ; le reste du document (§2 à §6, mécanique de l'outbox) reste exact et n'a pas changé — seul le nom du prestataire dans les schémas/exemples a été mis à jour pour refléter l'état réel.
+
+> **Amendement 2026-08-18** : le compte Vercel du projet est en plan **Hobby**, qui limite les cron jobs déclarés (`vercel.json`) à **une exécution par jour** — le cron de reprise de §3/§6, documenté à 5 minutes, tourne en réalité une fois par jour (`0 4 * * *`, `vercel.json`) tant que le projet reste en Hobby. Conséquence concrète et surveillance requise détaillées en §6 et en Conséquences. **Le passage en plan Pro (~20$/mois) est un prérequis à l'ouverture des inscriptions aux mineurs, pas une optimisation optionnelle** — voir §6.
+
+> **Amendement 2026-08-19** : l'inscription aux sorties passe par Luma cette saison (ADR-010) — l'amendement du 2026-08-18 ci-dessus devient sans objet, pas faux : aucun e-mail n'est jamais enfilé dans `club.email_log` sans inscription maison, donc la cadence du cron de reprise (5 min visés, quotidien en réalité) ne se pose plus. L'outbox entier — pas seulement sa cadence — est dormant. Réactivable sans révision si la voie maison reprend (critères de réouverture, ADR-010).
 
 ---
 
@@ -61,7 +65,8 @@ transaction : verrou événement → écriture inscription → INSERT club.email
                                         │
                       after() : dispatch immédiat ──→ Resend ──→ status='sent'
                                         │ (échec)
-                      cron 5 min : reprise des 'pending'/'failed' avec back-off
+                      cron de reprise : 'pending'/'failed' avec back-off
+                      (5 min visé — quotidien en réalité tant que Vercel Hobby, voir §6)
 ```
 
 Trois propriétés en découlent :
@@ -101,6 +106,23 @@ Motivation : ne pas créer un second entrepôt de données personnelles, soumis 
 
 `attempts`, `last_error`, back-off exponentiel, abandon après 5 tentatives avec `status = 'failed'` définitif et une ligne visible en supervision. Une demande d'autorisation parentale abandonnée est le cas le plus grave (le mineur perd sa place sans que personne n'ait pu répondre) : elle doit être alertée, pas seulement journalisée. À câbler par `devops`.
 
+**Cadence réelle du cron de reprise, en Vercel Hobby (amendement 2026-08-18).** Le chemin nominal reste l'envoi immédiat via `after()` sur les 4 actions (inscription, annulation, décision parentale, annulation d'événement) : le cron n'intervient qu'en rattrapage d'un échec du chemin immédiat, qui reste l'exception, pas la règle. Mais Vercel Hobby limite les cron jobs déclarés à une exécution par jour — `*/5 * * * *` y est refusé à la validation du déploiement, le cron tourne donc à `0 4 * * *` (§3), une fois par jour.
+
+Conséquence honnête, par type d'e-mail :
+
+- **Confirmation d'inscription, promotion, annulation** : un échec de l'envoi immédiat peut rester non corrigé jusqu'à 24h. Sans conséquence fonctionnelle — la place est déjà occupée ou libérée en base dès l'écriture de la transaction (§3), indépendamment de l'e-mail. Le retard est un inconfort, pas un bug métier.
+- **Demande d'autorisation parentale** : seul cas où le retard a une conséquence réelle. La fenêtre de 48h démarre à l'écriture de la ligne (US-05), pas à la réception de l'e-mail par le parent. Si l'envoi immédiat échoue peu après l'écriture, le parent peut ne recevoir la demande que jusqu'à ~24h plus tard — sur une fenêtre de 48h, c'est une part significative du délai de réponse dont le parent dispose réellement, et dans le pire cas (échec juste après le passage du cron), le mineur reste bloqué en attente sans qu'aucune notification ne parte avant le prochain passage.
+
+**Décision, en attendant le passage en Pro** : aucun contournement mis en œuvre côté code (§ »options envisagées, non retenues« ci-dessous pour mémoire). **Le passage au plan Vercel Pro (~20$/mois, cron 5 min restauré) est un prérequis au lancement pour les mineurs, pas une optimisation optionnelle** — à faire avant l'ouverture réelle des inscriptions, pas après. Tant que le projet reste en Hobby, ne pas ouvrir les inscriptions à un public mineur en conditions réelles.
+
+*Options envisagées pour réduire la fenêtre sans passer en Pro, non retenues pour l'instant (aucune implémentée) :*
+
+- **Cron externe gratuit** (GitHub Actions `schedule:`, ou un service tiers de type cron-job.org) appelant `/api/cron/dispatch-emails` toutes les 5 minutes, en dehors de Vercel — la route ne sait pas qui l'appelle au-delà du `CRON_SECRET` déjà en place, donc rien à changer côté code. Restaure la cadence voulue à coût nul, mais ajoute une dépendance externe (fiabilité, supervision) hors du périmètre Vercel déjà budgété par `devops`.
+- **Rattrapage opportuniste sur consultation admin** : faire déclencher `dispatchPendingEmails()` (ou un lot limité) depuis `after()` d'une page admin fréquemment visitée (`/admin/sorties`). Réduit la fenêtre uniquement quand un admin est actif — pas de garantie pour une demande parentale reçue hors des heures où l'admin consulte le site.
+- **Rattrapage élargi sur chaque `after()` existant** : en plus d'enfiler son propre e-mail, chaque action (`registerForEvent`, etc.) pourrait aussi déclencher un passage limité de `dispatchPendingEmails()` sur les lignes `pending`/`failed` en attente, pas seulement la sienne — répartit le rattrapage sur tout le trafic du site plutôt que sur un seul point d'entrée admin, sans cron du tout. Fonctionne tant que le site a du trafic régulier ; silencieux si le site est inactif (calme plat un jour donné = aucun rattrapage ce jour-là, contrairement à un vrai cron).
+
+Aucune de ces options n'est un remplacement complet d'un cron à cadence fixe — chacune dégrade différemment plutôt que de résoudre le problème. Le passage en Pro reste la solution qui ne dégrade rien.
+
 ## Conséquences
 
 **Positives**
@@ -112,7 +134,7 @@ Motivation : ne pas créer un second entrepôt de données personnelles, soumis 
 
 **Négatives / à surveiller**
 
-- Un e-mail peut arriver quelques minutes après le geste en cas d'échec du premier envoi. Acceptable pour tous les types ; à surveiller pour la demande parentale, dont l'horloge de 48 h démarre à l'écriture, pas à la réception.
+- Un e-mail peut arriver en retard en cas d'échec du premier envoi — quelques minutes visées (cron 5 min, Vercel Pro), jusqu'à 24h en réalité tant que le projet reste en Vercel Hobby (amendement 2026-08-18, détail §6). Acceptable pour tous les types sauf la demande parentale, dont l'horloge de 48 h démarre à l'écriture, pas à la réception — c'est le cas qui rend le passage en Pro non optionnel avant le lancement.
 - `email_log` grossit indéfiniment. Purge à prévoir dans la politique de conservation (même mécanique que la purge des inscriptions, ADR-005 §3).
 - Le contenu reconstruit interdit de rejouer à l'identique un e-mail dont les données sous-jacentes ont changé.
 - `after()` de Next.js ne garantit pas l'exécution en cas d'arrêt brutal de l'instance — c'est précisément pourquoi le cron de reprise existe et n'est pas optionnel.

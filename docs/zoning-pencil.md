@@ -4,6 +4,8 @@
 >
 > Version : 2.1 — 2026-08-12
 > Statut : ✅ Canvas Pencil reconstruit — 13 écrans posés et vérifiés (structure + captures d'écran de contrôle)
+>
+> **Amendement 2026-08-19** : bascule de saison, voir **ADR-010**. Les écrans C1-C3 (compte), D1-D3 (inscription), E1 (autorisation parentale), F1-F3 (dashboard admin) décrivent des parcours retirés du site. A1, B1, G1 restent d'actualité. Document conservé tel quel comme trace du zoning bas-fidélité initial.
 
 ---
 

@@ -1,12 +1,14 @@
 # ADR-005 — Traitements planifiés : `pg_cron` en base, Vercel Cron pour le seul relais e-mail
 
-- **Statut** : Accepté
+- **Statut** : Accepté — **dormant depuis le 2026-08-19**, voir **ADR-010**
 - **Date** : 2026-08-12
 - **Décideur** : `architect`
 - **Portée** : Projet — exploitation
 - **Dépend de** : ADR-003, ADR-006
 - **Feature déclenchante** : US-05 (AC7, expiration du hold parental à 48 h)
 - **Diverge de** : ADR-011 du repo de l'app (Vercel Cron + file de jobs) — voir §Comparaison
+
+> **Amendement 2026-08-19** : sans inscription ni compte maison cette saison (ADR-010), aucun des deux jobs `pg_cron` décrits ici n'a de hold ou de donnée à traiter. Le raisonnement reste correct, réactivable sans révision.
 
 ---
 

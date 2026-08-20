@@ -3,7 +3,7 @@
 > Fiche fonctionnalité SDD. Lecture seule pour tous les autres agents.
 >
 > Branche : `feature/US-03-compte-utilisateur`
-> Statut : ⏳ Specify
+> Statut : ⏳ Specify — **retiré du site le 2026-08-19, voir ADR-010**. Plus aucun compte sur le site : l'inscription passe par Luma, l'adhésion et les achats par HelloAsso. Pages, middleware et actions serveur supprimés (pas seulement dormants, contrairement au schéma `club`) — cette fiche reste comme trace de la conception initiale.
 
 ---
 

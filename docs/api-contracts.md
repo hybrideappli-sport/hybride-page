@@ -4,6 +4,8 @@
 >
 > Version : 1.0 — 2026-08-12
 > Références : `docs/architecture.md`, ADR-003 (verrou), ADR-004 (privilèges), ADR-006 (e-mails)
+>
+> **Amendement 2026-08-19** : bascule de saison, voir **ADR-010**. Tous les contrats ci-dessous (compte, inscription, actions admin, e-mails) décrivent des actions serveur retirées du site — le code a été supprimé, ces contrats ne sont plus appelables. Trace de la conception initiale, réactivable si la voie maison reprend.
 
 ---
 

@@ -4,6 +4,8 @@
 >
 > Version : 2.0 — 2026-08-12 (remplace la version 1.0, périmètre "site club autonome")
 > Statut : ✅ Décisions structurelles et modèle de données validés — prêt pour `designer` puis `architect`
+>
+> **Amendement 2026-08-19** : bascule de saison, voir **ADR-010**. US-03 (compte), US-04 (inscription en ligne), US-05 (autorisation parentale en ligne) et US-06 (dashboard admin) décrivent la conception initiale, retirée du site — pas le fonctionnement réel actuel (Luma, HelloAsso, tableur public, papier).
 
 ---
 

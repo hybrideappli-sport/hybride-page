@@ -6,6 +6,8 @@
 >
 > Version : 1.0 — 2026-08-12
 > Sources : `00-brief-site-hybride.md`, `docs/PRD.md`, `docs/features/US-01..07`, `docs/zoning-pencil.md`
+>
+> **Amendement 2026-08-19** : bascule de saison, voir **ADR-010**. Tout ce qui touche comptes, inscription en ligne, autorisation parentale en ligne, dashboard admin et e-mails transactionnels (§5 à §9, ADR-003/005/006/009) décrit une architecture retirée du site — le code correspondant a été supprimé, pas seulement le schéma. §1 à §4 (vue d'ensemble, stack de base, sécurité RLS) restent globalement valides pour ce qui subsiste (vitrine, page club, agenda en tableur, shop).
 
 ---
 
@@ -192,9 +194,7 @@ Le même motif avait été initialement signalé ici comme probablement présent
 
 **Exception au même motif, propre à ce repo** : `club.expire_parental_holds()` et `club.purge_expired_member_data()` (`20260812093600`) s'exécutent via `pg_cron`, en connexion directe hors PostgREST — `request.jwt.claims` y est vide, un contrôle sur cette revendication échouerait à chaque exécution planifiée. Ces deux fonctions ne portent donc **aucune** garde interne, seulement le privilège `EXECUTE` restreint à `service_role, postgres`. Détail : ADR-005.
 
-**Vecteur `pg_temp`** (recherche de relation non qualifiée par schéma, cherché implicitement en premier quand `pg_temp` est absent de `search_path` ; `TEMPORARY` accordé à `PUBLIC` par défaut, non révoqué sur ce projet non plus) : audité côté app sur ses 7 fonctions `security definer`, 2 vecteurs réels trouvés et corrigés (`has_active_consent`, `is_staff` — `EXECUTE` accordé à `authenticated`), 5 non exploitables corrigés par cohérence (`hybrideappli/supabase/migrations/0016_security_definer_search_path_hardening.sql`). Détail : ADR-008.
-
-Même audit fait sur les 18 fonctions `security definer` de ce repo (grep, pas déduction) : **aucune référence non qualifiée** — toutes préfixent systématiquement `club.` (`club.events`, `club.registrations`, etc.), y compris dans `club.expire_parental_holds()` et `club.purge_expired_member_data()`. Le vecteur n'a donc rien à intercepter, `pg_temp` étant absent de `search_path = club, pg_catalog` sans conséquence pratique ici. Non corrigé pour autant que la discipline de qualification ne se relâche silencieusement dans une future migration — candidat de durcissement P1, coût nul, sans urgence tant que la revue de code exige la qualification (§4).
+**Vecteur `pg_temp`** (recherche de relation non qualifiée par schéma) : côté app, audité et corrigé — état de sécurité référencé par nom de migration, voir ADR-008, non reproduit ici. Côté repo, audit fait sur les 18 fonctions `security definer` (grep, pas déduction) : aucune référence non qualifiée, toutes préfixées `club.` — vecteur sans prise ici.
 
 ---
 

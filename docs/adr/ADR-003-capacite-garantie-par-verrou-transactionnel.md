@@ -1,11 +1,13 @@
 # ADR-003 — Capacité et liste d'attente garanties par verrou transactionnel
 
-- **Statut** : Accepté
+- **Statut** : Accepté — **dormant depuis le 2026-08-19**, voir **ADR-010**
 - **Date** : 2026-08-12
 - **Décideur** : `architect`
 - **Portée** : Projet — intégrité des données
 - **Dépend de** : ADR-002
 - **Feature déclenchante** : US-04 (AC2, AC3, AC6), US-05 (AC5, AC7), US-06 (AC6, AC7)
+
+> **Amendement 2026-08-19** : l'inscription aux sorties passe par Luma cette saison (ADR-010) — le verrou décrit ici n'est plus exercé, faute d'inscription maison. Le raisonnement reste correct, rien n'est invalidé : réactivable sans révision si la voie maison reprend (critères de réouverture, ADR-010).
 
 ---
 

@@ -13,6 +13,17 @@
 > pas de script `db:push`).
 >
 > Version : 1.0 — 2026-08-17
+>
+> **Amendement 2026-08-19** : bascule de saison, voir **ADR-010**. Les étapes concernant l'exposition
+> PostgREST du schéma `club`, `pg_cron` et le push des migrations sont **suspendues** cette saison —
+> le schéma `club` reste dormant et non appliqué en production (ADR-010 §8), aucune de ces étapes
+> n'est à exécuter tant que les critères de réouverture (ADR-010) ne sont pas atteints.
+>
+> **Amendement 2026-08-19 (suite)** : Supabase entièrement retiré de l'application (`getPublishedClub`
+> remplacé par `lib/config.ts`, statique) — **plus aucune variable d'environnement** n'est nécessaire
+> côté Vercel, `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` compris. Le tableau §3 ci-dessous décrit un état
+> antérieur à retirer du dashboard Vercel si déjà configuré. Reste valable : la création du projet
+> Vercel elle-même. Le cron Vercel est sans objet, `vercel.json` ne déclare plus aucun cron.
 
 ---
 
@@ -91,23 +102,39 @@ checks passer dans l'onglet Actions.
 **Vérification** : un premier déploiement (probablement en échec, faute de variables d'environnement
 — normal à ce stade) apparaît dans l'onglet Deployments.
 
-### Cron Vercel — point d'attention plan tarifaire
+### Cron Vercel — Hobby confirmé insuffisant, résolu par une cadence quotidienne (2026-08-18)
 
-**Fait par cet agent** : `vercel.json` déclare le cron du relais e-mail :
+> **Dormant depuis le 2026-08-19**, voir **ADR-010**. `vercel.json` ne déclare plus aucun cron —
+> `app/api/cron/dispatch-emails/route.ts` a été supprimé avec l'outbox e-mails (ADR-006, dormant).
+> Rien à activer, rien à vérifier post-déploiement sur ce point cette saison : la décision
+> Hobby/Pro ci-dessous et l'étape de vérification qui suit sont sans objet tant que les critères de
+> réouverture d'ADR-010 ne sont pas atteints. Section conservée telle quelle comme trace de
+> l'incident du 2026-08-18, réactivable sans révision si la voie maison reprend.
+
+Le risque signalé plus haut s'est concrétisé : le premier déploiement a échoué à la validation de
+`vercel.json` (`Hobby accounts are limited to daily cron jobs`), avant même de créer une entrée
+dans l'onglet Deployments — symptôme trompeur (liste vide, pas un déploiement en erreur visible).
+
+**Décision** : rester en Hobby pour l'instant, passer en Pro (~20$/mois) avant l'ouverture réelle
+des inscriptions, pas maintenant. `vercel.json` déclare donc une cadence quotidienne :
 
 ```json
 {
-  "crons": [{ "path": "/api/cron/dispatch-emails", "schedule": "*/5 * * * *" }]
+  "crons": [{ "path": "/api/cron/dispatch-emails", "schedule": "0 4 * * *" }]
 }
 ```
 
-**À vérifier par l'utilisateur avant de compter dessus** : sur le plan **Hobby**, Vercel limite les
-Cron Jobs à **une exécution par jour**, pas toutes les 5 minutes. ADR-005 §2 exige un relais toutes
-les 5 minutes (filet de reprise des e-mails en échec ou enfilés par `pg_cron`, ADR-006). Si le
-projet reste sur Hobby, ce cron ne tiendra pas la fréquence prévue — un plan **Pro** (au moins pour
-ce projet Vercel) est un prérequis implicite d'ADR-005, non chiffré explicitement dans les ADR
-existantes. À trancher par l'utilisateur : c'est une dépense récurrente, pas une simple case à
-cocher.
+`0 4 * * *` (04:00 UTC, soit ~5h-6h heure de Paris selon la saison) : heure creuse côté trafic
+public, et distincte du job `club-purge-expired-member-data` de `pg_cron` (3h30, non encore activé
+— §4/§9 de ce document), pour ne pas les faire chevaucher le jour où il sera activé.
+
+**Conséquence documentée dans ADR-006 §6** (amendement 2026-08-18) : le chemin nominal reste
+l'envoi immédiat via `after()`, le cron n'est qu'un filet de rattrapage. Sans impact pour
+confirmation/promotion/annulation. Impact réel sur la demande d'autorisation parentale (fenêtre de
+48h) : un échec d'envoi immédiat peut désormais attendre jusqu'à 24h avant reprise. **Le passage en
+Pro est un prérequis à l'ouverture des inscriptions aux mineurs, pas une optimisation optionnelle**
+— ne pas ouvrir les inscriptions à un public mineur en conditions réelles tant que le projet reste
+en Hobby.
 
 **Vérification post-déploiement** : `Vercel → Project → Cron Jobs` affiche le job et son historique
 d'exécution ; chaque exécution doit renvoyer `200` avec un corps `{ processed, sent, failed,

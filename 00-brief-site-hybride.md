@@ -6,6 +6,8 @@
 
 > Ce document remplace `00-brief-site-club.md` (obsolète, périmètre initial : un site autonome pour le seul club de Toulon). Renommé car le périmètre a changé : ce n'est plus le site d'un club, c'est **le site Hybride**, avec une vitrine de l'app et une section « points club » par ville.
 
+> **Amendement 2026-08-19** : bascule de saison actée dans **ADR-010** — comptes, inscription en ligne, autorisation parentale en ligne et dashboard admin retirés du site (pas seulement dormants). Inscription aux sorties sur Luma, adhésion et boutique sur HelloAsso, agenda dans un tableur public, autorisation parentale sur papier. Le modèle de données ci-dessous (comptes, inscriptions, e-mails transactionnels) reste la trace de la conception initiale et le schéma `club` correspondant existe toujours (migrations non appliquées) — mais ne décrit plus le fonctionnement réel du site. Voir ADR-010 pour les critères de réouverture de ce sujet.
+
 ---
 
 ## Objectif

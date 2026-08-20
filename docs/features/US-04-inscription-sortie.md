@@ -3,7 +3,7 @@
 > Fiche fonctionnalité SDD. Lecture seule pour tous les autres agents.
 >
 > Branche : `feature/US-04-inscription-sortie`
-> Statut : ⏳ Specify
+> Statut : ⏳ Specify — **remplacé par Luma le 2026-08-19, voir ADR-010**. Le verrou de capacité, la liste d'attente et le formulaire maison décrits ici ne sont plus le chemin d'inscription réel ; le code correspondant a été retiré (pas seulement le schéma, dormant). Cette fiche reste comme trace de la conception initiale, réactivable si la voie maison reprend (critères de réouverture, ADR-010).
 
 ---
 

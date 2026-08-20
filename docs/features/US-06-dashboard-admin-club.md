@@ -3,7 +3,7 @@
 > Fiche fonctionnalité SDD. Lecture seule pour tous les autres agents.
 >
 > Branche : `feature/US-06-dashboard-admin-club`
-> Statut : ⏳ Specify
+> Statut : ⏳ Specify — **retiré du site le 2026-08-19, voir ADR-010**. Les sorties ne sont plus créées depuis un dashboard : elles viennent d'un tableur public (ADR-010 §2), édité directement par l'association. Le code du dashboard a été supprimé (pas seulement dormant) — cette fiche reste comme trace de la conception initiale.
 
 ---
 

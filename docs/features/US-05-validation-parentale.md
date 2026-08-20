@@ -3,7 +3,7 @@
 > Fiche fonctionnalité SDD. Lecture seule pour tous les autres agents.
 >
 > Branche : `feature/US-05-validation-parentale`
-> Statut : ⏳ Specify
+> Statut : ⏳ Specify — **remplacé par une procédure papier le 2026-08-19, voir ADR-010 §4 et `docs/procedure-autorisation-parentale-papier.md`**. Luma ne gère pas l'autorisation parentale ; le flux jeton/48h décrit ici n'est plus le chemin réel, le code correspondant a été retiré. Rigueur réduite assumée pour le régime papier — cette fiche reste comme trace de la conception initiale.
 
 ---
 
