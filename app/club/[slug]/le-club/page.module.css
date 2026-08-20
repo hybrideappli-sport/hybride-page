@@ -9,6 +9,88 @@
   max-width: 62ch;
 }
 
+/* Icônes décoratives, une par discipline (US couleur+vie, 2026-08-21) : petite
+   rangée discrète au-dessus du titre, plutôt qu'en fond ou collées au texte —
+   cette page n'a pas de photo dans son hero (contrairement au hub /club/[slug]),
+   c'est l'endroit le plus "vide" de la page club. Opacité réduite + violet de
+   l'accent : un repère décoratif, pas un second système de couleur. */
+.heroIcons {
+  display: flex;
+  gap: var(--hy-space-3);
+  margin-bottom: var(--hy-space-3);
+  color: var(--hy-violet);
+  opacity: 0.55;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .iconFloat {
+    animation: hy-icon-float 4s ease-in-out infinite;
+  }
+
+  .iconFloatSlow {
+    animation: hy-icon-float 6.5s ease-in-out infinite;
+    animation-delay: 0.6s;
+  }
+
+  .iconRock {
+    animation: hy-icon-rock 5s ease-in-out infinite;
+    animation-delay: 0.3s;
+  }
+
+  .iconSpin {
+    animation: hy-icon-spin 22s linear infinite;
+  }
+
+  .iconSway {
+    animation: hy-icon-sway 4.5s ease-in-out infinite;
+    animation-delay: 0.9s;
+  }
+}
+
+@keyframes hy-icon-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes hy-icon-rock {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes hy-icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hy-icon-sway {
+  0%,
+  100% {
+    transform: translateX(-3px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
 .eyebrow {
   font-family: var(--hy-font-mono);
   font-size: 12px;
@@ -31,6 +113,17 @@
   line-height: 1.6;
   color: var(--hy-text-2);
   padding-bottom: var(--hy-space-6);
+}
+
+/* Trail/rando/bivouac/volley colorés par discipline PARENTE (course/montagne/
+   collectif), pas par leur propre identité de format — mapping explicite de
+   l'utilisateur (2026-08-21), distinct du traitement "format" neutre utilisé
+   sur la page marketing (Tag.tsx). Deux pastilles partagent volontairement la
+   couleur course (Trail) et deux la couleur montagne (Rando, Bivouac). */
+.activities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hy-space-2);
 }
 
 .join {
@@ -87,14 +180,50 @@
    (Strava/Instagram n'ont pas d'icône neutre dans lucide, cf. SocialLink.tsx —
    ici, texte nommé en toutes lettres, décision explicite du 2026-08-21). */
 .outLink {
-  color: var(--hy-text-1);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 600;
 }
 
 .outLink:hover {
-  color: var(--hy-violet);
+  filter: brightness(1.2);
+}
+
+/*
+ * Couleurs de marque (US couleur+vie, 2026-08-21) — CONFINÉES à cette page :
+ * aucune de ces quatre couleurs n'est réutilisée ailleurs sur le site (les 5
+ * couleurs de discipline + le violet d'accent restent le seul système de
+ * couleur du reste du site). Teintes (hue) choisies pour rester séparées les
+ * unes des autres ET des couleurs de discipline/violet déjà utilisées
+ * ailleurs (orange course #ff8a5b, teal vélo #3ed9c4, bleu eau #6fb2ff, vert
+ * montagne #8bd86c, or collectif #ebbb43, violet accent #b79cff). Contraste
+ * vérifié AA (4.5:1 minimum) sur fond noir #000 :
+ * - Strava #FC4C02 (orange officiel, hue ~16°)         → 6.2:1
+ * - Instagram #F2498C (rose-magenta, hue ~336° — PAS
+ *   notre violet, qui se confondrait)                   → 6.1:1
+ * - WhatsApp #25D366 (vert officiel, hue ~145°)          → 10.6:1
+ * - HelloAsso #CF3CDD (magenta-fuchsia, hue ~295° :
+ *   à mi-chemin entre le violet (256°) et le rose
+ *   Instagram (336°), équidistant des deux)              → 5.4:1
+ */
+/* .outLink.strava (deux classes) plutôt que .strava seul : .joinText a (une
+   classe + un sélecteur d'élément) a une spécificité plus élevée qu'une seule
+   classe et écrasait sinon la couleur de marque — trouvé en vérifiant dans le
+   navigateur, pas supposé. */
+.outLink.strava {
+  color: #fc4c02;
+}
+
+.outLink.instagram {
+  color: #f2498c;
+}
+
+.outLink.helloasso {
+  color: #cf3cdd;
+}
+
+.whatsappLabel {
+  color: #25d366;
 }
 
 .outboundNote {
