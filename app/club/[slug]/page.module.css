@@ -60,6 +60,20 @@
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
+    /* Composition mobile dédiée (2026-08-21), pas une réduction du desktop : la
+       photo passe avant le texte visuellement — sur le premier écran d'un
+       téléphone, on doit voir de quoi il s'agit avant de lire. L'ordre du DOM ne
+       bouge pas (texte d'abord, cohérent pour la lecture au clavier/lecteur
+       d'écran) — seul l'ordre visuel change. */
+    padding: var(--hy-space-4) 0 var(--hy-space-5);
+  }
+
+  .heroText {
+    order: 2;
+  }
+
+  .hero > *:last-child {
+    order: 1;
   }
 }
 

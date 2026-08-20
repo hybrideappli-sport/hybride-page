@@ -57,6 +57,25 @@
   gap: var(--hy-space-2);
 }
 
+/* Composition mobile dédiée (2026-08-21) : sur téléphone, rien n'est visible avant
+   la première porte (aucune photo dans le hero lui-même) — les marges généreuses
+   pensées pour desktop repoussaient la première photo bien après le premier écran.
+   Resserré spécifiquement en dessous de 820px, pas une réduction linéaire du
+   desktop : le hero garde son texte en entier, juste moins d'air autour. */
+@media (max-width: 820px) {
+  .hero {
+    padding-top: var(--hy-space-2);
+  }
+
+  .lead {
+    margin: var(--hy-space-3) 0 var(--hy-space-4);
+  }
+
+  .doorsIntro {
+    margin-bottom: var(--hy-space-3);
+  }
+}
+
 @media (max-width: 820px) {
   .doors {
     grid-template-columns: 1fr;

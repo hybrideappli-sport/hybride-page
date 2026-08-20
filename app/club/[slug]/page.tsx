@@ -58,7 +58,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
       <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
 
       <div className={styles.hero}>
-        <div>
+        <div className={styles.heroText}>
           <p className={styles.eyebrow}>{CLUB.city} · depuis 2026</p>
           <h1 className={styles.heroTitle}>
             <span>Un club</span>

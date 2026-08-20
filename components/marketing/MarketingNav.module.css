@@ -4,6 +4,14 @@
   padding: var(--hy-space-4) 0 var(--hy-space-6);
 }
 
+/* Composition mobile (2026-08-21) : 64px de marge basse avant même le hero — repoussait
+   d'autant la première photo (aucune dans le hero) hors du premier écran sur téléphone. */
+@media (max-width: 820px) {
+  .nav {
+    padding-bottom: var(--hy-space-3);
+  }
+}
+
 .brand {
   font-family: var(--hy-font-display);
   font-weight: 800;
