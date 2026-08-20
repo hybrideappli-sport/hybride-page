@@ -51,8 +51,11 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
         </div>
         <p>On ne s&rsquo;enferme pas dans une discipline : on fait ce dont on a envie, quand on en a envie.</p>
         <p>
-          Deux rendez-vous sont fixes — la piste du lundi et le run du mercredi. Tout le reste sort du groupe : quelqu&rsquo;un propose
-          une sortie, trois personnes disent oui, et c&rsquo;est parti. Il se passe quelque chose presque tous les jours.
+          Les rituels sont fixes — la piste du lundi, le run du mercredi. Le club programme aussi des sorties à l&rsquo;avance : trails,
+          bivouacs, sorties vélo, tournois, à retrouver sur le{" "}
+          <Link href={`/club/${CLUB.slug}/planning`}>planning</Link>, qui fait foi pour les dates. Et le reste part des membres :
+          quelqu&rsquo;un propose une sortie, deux ou trois disent oui, et c&rsquo;est parti — souvent le jour même. Il se passe quelque
+          chose presque tous les jours, autant par le programme que par le groupe.
         </p>
         <p>Ce qu&rsquo;on cherche ici, c&rsquo;est simple : bien s&rsquo;entourer.</p>
         <p>

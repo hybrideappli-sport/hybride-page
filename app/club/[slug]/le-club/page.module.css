@@ -115,6 +115,16 @@
   padding-bottom: var(--hy-space-6);
 }
 
+.about a {
+  color: var(--hy-violet);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.about a:hover {
+  filter: brightness(1.2);
+}
+
 /* Trail/rando/bivouac/volley colorés par discipline PARENTE (course/montagne/
    collectif), pas par leur propre identité de format — mapping explicite de
    l'utilisateur (2026-08-21), distinct du traitement "format" neutre utilisé
