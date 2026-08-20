@@ -47,6 +47,13 @@
   margin-bottom: var(--hy-space-4);
 }
 
+/* Deux lignes compactes plutôt que deux grandes cartes (2026-08-21) : sur mobile,
+   les deux rituels doivent tenir dans un seul écran — voir RitualRow.module.css
+   pour le gabarit de chaque ligne. */
+.ritualsList {
+  max-width: 480px;
+}
+
 /* Hero */
 
 .hero {

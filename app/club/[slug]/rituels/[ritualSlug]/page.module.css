@@ -1,0 +1,87 @@
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.back {
+  display: inline-block;
+  color: var(--hy-text-2);
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: var(--hy-space-3);
+}
+
+.back:hover {
+  color: var(--hy-violet);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--hy-space-5);
+  align-items: start;
+  padding-bottom: var(--hy-space-6);
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-bottom: var(--hy-space-5);
+  }
+
+  /* Composition mobile : photo avant le texte, même logique que la page club (2026-08-21). */
+  .heroText {
+    order: 2;
+  }
+
+  .hero > *:last-child {
+    order: 1;
+  }
+}
+
+.title {
+  margin: var(--hy-space-2) 0 var(--hy-space-4);
+}
+
+.facts {
+  display: grid;
+  gap: var(--hy-space-2);
+  margin: 0 0 var(--hy-space-4);
+}
+
+.fact dt {
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+}
+
+.fact dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--hy-text-1);
+}
+
+.body {
+  max-width: 68ch;
+  padding-bottom: var(--hy-space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-3);
+}
+
+.paragraph {
+  color: var(--hy-text-2);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.blockHeading {
+  margin-top: var(--hy-space-2);
+}
+
+.galleryPhoto {
+  max-width: 420px;
+}

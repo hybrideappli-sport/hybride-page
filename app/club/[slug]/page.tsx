@@ -8,50 +8,21 @@ import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
 import { EventsAgenda } from "@/components/club/EventsAgenda";
 import { PhotoStrip } from "@/components/club/PhotoStrip";
-import { RitualsGrid } from "@/components/club/RitualsGrid";
+import { RitualRow } from "@/components/club/RitualRow";
 import { SocialLinks } from "@/components/club/SocialLinks";
 import { getAgendaEvents } from "@/lib/agenda/source";
 import { CLUB } from "@/lib/config";
+import { getAllRituals } from "@/lib/rituals/content";
 import styles from "./page.module.css";
 
 const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
-
-/**
- * "Rituels récurrents" : contenu éditorial, volontairement pas en base (US-02 :
- * "on présente les rituels, pas les dates"). Deux vrais rendez-vous à jour, lieu
- * et horaire fixes chaque semaine — communiqués en session le 2026-08-20. Tout
- * le reste (vélo, trail, volley…) existe mais s'organise au coup par coup, sans
- * créneau fixe : ce n'est pas un rituel, ça vit dans le tableur et apparaît
- * dans "Prochaines sorties" quand c'est programmé — pas ici. Une grille "Une
- * semaine hybride" à 4 jours fixes a existé ici avant cette date : supprimée,
- * elle promettait un planning qui n'existait pas (risque réel : quelqu'un se
- * déplace un jour où il n'y a personne). L'idée qu'elle portait — le club est
- * multisport — reste affichée juste en dessous, sans promettre de créneau.
- */
-const RITUALS = [
-  {
-    discipline: "course" as Discipline,
-    disciplineLabel: `${disciplineLabel.course} · lundi`,
-    title: "La piste du lundi",
-    description:
-      "Rendez-vous à la piste Léo Lagrange, à Toulon, tous les lundis à 18h30. Séance d'athlétisme encadrée par Esteban, athlète et ancien coach d'athlétisme. Tous niveaux acceptés.",
-    photoCaption: "photo — piste Léo Lagrange",
-  },
-  {
-    discipline: "course" as Discipline,
-    disciplineLabel: `${disciplineLabel.course} · mercredi`,
-    title: "Le Run chill du mercredi",
-    description:
-      "Trois groupes d'allure : 5 min/km, 6 min 20/km et 6 min 50/km. Tout le monde est le bienvenu, dans la limite des places. Bonne ambiance et after assuré. Rendez-vous à 19h ou 19h30 selon les semaines — l'agenda ci-dessous fait foi pour l'heure exacte.",
-    photoCaption: "photo — Run chill Mourillon",
-  },
-];
 
 export default async function ClubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   if (slug !== CLUB.slug) notFound();
 
   const events = await getAgendaEvents();
+  const rituals = getAllRituals();
 
   return (
     <div className={styles.wrap}>
@@ -109,7 +80,18 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             On présente les rituels, pas les dates. Le rituel donne envie de venir, la date sert à réserver sa place.
           </p>
         </div>
-        <RitualsGrid entries={RITUALS} />
+        <div className={styles.ritualsList}>
+          {rituals.map((ritual) => (
+            <RitualRow
+              key={ritual.frontmatter.slug}
+              href={`/club/${CLUB.slug}/rituels/${ritual.frontmatter.slug}`}
+              title={ritual.frontmatter.title}
+              day={ritual.frontmatter.day}
+              photoSrc={ritual.frontmatter.photo ? `/photos/rituels/${ritual.frontmatter.slug}/${ritual.frontmatter.photo}` : null}
+              photoAlt={ritual.frontmatter.photoAlt}
+            />
+          ))}
+        </div>
       </section>
 
       <section id="sorties" className={styles.section}>
