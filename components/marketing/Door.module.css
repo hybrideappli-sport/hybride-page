@@ -51,7 +51,10 @@
 }
 
 .title {
-  font-size: clamp(28px, 3.4vw, 42px);
+  /* Minimum recalibré le 2026-08-21 (voir globals.css h1/h2) : 3.4vw@375 = 12.75px,
+     entièrement dominé par l'ancien plancher de 28px — vérifié dans un vrai viewport
+     de 375px. */
+  font-size: clamp(24px, 6vw, 42px);
   font-weight: 600;
   line-height: 1.02;
 }
