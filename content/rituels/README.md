@@ -20,11 +20,12 @@ C'est en deux étapes, parce que GitHub sépare les fichiers de texte des fichie
 
 **Étape 1 — envoyer la photo :**
 
-1. Va dans le dossier des photos du rituel concerné, par exemple :
-   `github.com/hybrideappli-sport/hybride-page/tree/main/public/photos/rituels/piste-du-lundi`
+1. Va dans le dossier des photos du site (pas de sous-dossier par rituel — tout est au même endroit, comme les autres photos du site) :
+   `github.com/hybrideappli-sport/hybride-page/tree/main/public/photos`
 2. Clique sur **"Add file" → "Upload files"**.
 3. Glisse ta photo dans la fenêtre (idéalement déjà compressée, quelques centaines de Ko à 1-2 Mo — pas un export brut d'appareil photo, ça ralentirait le site).
-4. Commit.
+4. Donne-lui un nom qui commence par le nom du rituel, pour que ça reste lisible dans un dossier commun à tout le site : `piste-hero.jpg`, `piste-1.jpg`, `piste-2.jpg`... ou `run-chill-hero.jpg`, `run-chill-1.jpg`, etc.
+5. Commit.
 
 **Étape 2 — l'ajouter à la page :**
 
@@ -38,7 +39,11 @@ Le texte entre crochets est ce qu'un lecteur d'écran lira à la place de l'imag
 
 ## La photo d'en-tête et la vignette de liste
 
-Le champ `photo:` en haut du fichier (dans les `---`) sert à deux endroits : la miniature affichée sur `/club/toulon` et la photo en haut de la page du rituel. Mets-y le nom du fichier envoyé dans le dossier de photos, par exemple `photo: portrait.jpg`. `photoAlt:` est sa description pour un lecteur d'écran.
+Le champ `photo:` en haut du fichier (dans les `---`) sert à deux endroits : la miniature affichée sur `/club/toulon` et la photo en haut de la page du rituel. Mets-y le nom du fichier envoyé dans le dossier de photos, par exemple `photo: piste-hero.jpg`. `photoAlt:` est sa description pour un lecteur d'écran.
+
+## Le champ `capacity:`
+
+Optionnel — un plafond de places, s'il y en a un (par exemple `capacity: 15 personnes maximum`). Laisse-le vide s'il n'y a pas de limite fixe.
 
 ## Si un fichier ne s'affiche plus après une modification
 

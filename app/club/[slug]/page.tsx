@@ -87,7 +87,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               href={`/club/${CLUB.slug}/rituels/${ritual.frontmatter.slug}`}
               title={ritual.frontmatter.title}
               day={ritual.frontmatter.day}
-              photoSrc={ritual.frontmatter.photo ? `/photos/rituels/${ritual.frontmatter.slug}/${ritual.frontmatter.photo}` : null}
+              photoSrc={ritual.frontmatter.photo ? `/photos/${ritual.frontmatter.photo}` : null}
               photoAlt={ritual.frontmatter.photoAlt}
             />
           ))}

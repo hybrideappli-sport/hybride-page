@@ -30,10 +30,14 @@ export interface RitualFrontmatter {
   day: string;
   time: string;
   level: string;
+  /** Ex. "15 personnes maximum" — absent pour les rituels sans plafond fixe. */
+  capacity: string | null;
   meetingPoint: string;
   mapsUrl: string | null;
   coach: string | null;
-  /** Chemin sous public/photos/rituels/<slug>/, ex. "hero.jpg" — vignette de liste ET photo d'en-tête de page. */
+  /** Nom de fichier sous public/photos/ (pas de sous-dossier — même convention à plat que le
+      reste du site, préfixée par rituel : piste-hero.jpg, run-chill-hero.jpg…). Vignette de
+      liste ET photo d'en-tête de page. */
   photo: string | null;
   photoAlt: string;
 }
@@ -100,6 +104,7 @@ function loadRitual(slug: string): RitualContent {
     day: data.day,
     time: data.time,
     level: data.level,
+    capacity: data.capacity || null,
     meetingPoint: data.meetingPoint,
     mapsUrl: data.mapsUrl || null,
     coach: data.coach || null,

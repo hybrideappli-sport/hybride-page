@@ -18,7 +18,7 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
   if (!ritual) notFound();
 
   const { frontmatter, blocks } = ritual;
-  const photoSrc = frontmatter.photo ? `/photos/rituels/${frontmatter.slug}/${frontmatter.photo}` : undefined;
+  const photoSrc = frontmatter.photo ? `/photos/${frontmatter.photo}` : undefined;
 
   return (
     <div className={styles.wrap}>
@@ -45,6 +45,12 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
               <dt>Niveau</dt>
               <dd>{frontmatter.level}</dd>
             </div>
+            {frontmatter.capacity ? (
+              <div className={styles.fact}>
+                <dt>Places</dt>
+                <dd>{frontmatter.capacity}</dd>
+              </div>
+            ) : null}
             <div className={styles.fact}>
               <dt>Rendez-vous</dt>
               <dd>{frontmatter.meetingPoint}</dd>
@@ -84,7 +90,7 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
           if (block.type === "image") {
             return (
               <div key={i} className={styles.galleryPhoto}>
-                <PhotoSlot ratio="1/1" radius="card" src={`/photos/rituels/${frontmatter.slug}/${block.src}`} alt={block.alt} />
+                <PhotoSlot ratio="1/1" radius="card" src={`/photos/${block.src}`} alt={block.alt} />
               </div>
             );
           }
