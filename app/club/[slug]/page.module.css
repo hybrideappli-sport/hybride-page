@@ -27,6 +27,16 @@
   max-width: 62ch;
 }
 
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-3);
+  max-width: 62ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+}
+
 .section {
   padding: var(--hy-space-6) 0;
 }

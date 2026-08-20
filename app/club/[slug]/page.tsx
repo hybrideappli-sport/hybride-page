@@ -40,8 +40,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             ))}
           </div>
           <p className={`${styles.lead} ${styles.heroLead}`}>
-            Toutes les allures, tous les niveaux — et un after à chaque fois, au bar ou sur la plage. Le lundi et le mercredi sont fixes,
-            le reste s&rsquo;invente au fil des semaines.
+            Toutes les allures, tous les niveaux — et un after à chaque fois, au bar ou sur la plage.
           </p>
           <div className={styles.heroCta}>
             <Button href={`/club/${CLUB.slug}/planning`}>Voir le planning</Button>
@@ -56,6 +55,26 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           alt="Le groupe du club Hybride Toulon au départ d'une sortie"
         />
       </div>
+
+      <section className={styles.section}>
+        <p className={styles.eyebrow}>Le club</p>
+        <div className={styles.about}>
+          <p>Un club multisport, à Toulon.</p>
+          <p>
+            Course à pied, trail, rando, sorties vélo, bivouac, tournois de volley. On ne s&rsquo;enferme pas dans une discipline : on
+            fait ce dont on a envie, quand on en a envie.
+          </p>
+          <p>
+            Deux rendez-vous sont fixes — la piste du lundi et le run du mercredi. Tout le reste sort du groupe : quelqu&rsquo;un
+            propose une sortie, trois personnes disent oui, et c&rsquo;est parti. Il se passe quelque chose presque tous les jours.
+          </p>
+          <p>Ce qu&rsquo;on cherche ici, c&rsquo;est simple : bien s&rsquo;entourer.</p>
+          <p>
+            Et c&rsquo;est gratuit. Toutes les sorties, sans exception. Ce n&rsquo;est pas une offre de lancement, c&rsquo;est comme ça
+            qu&rsquo;on veut que le club fonctionne.
+          </p>
+        </div>
+      </section>
 
       <section id="le-club" className={styles.section}>
         <div className={styles.sectionHead}>
@@ -119,7 +138,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               La deuxième, si.
             </>
           }
-          lead="Toutes nos sorties sont gratuites et ouvertes. Tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux."
+          lead="Toutes nos sorties sont ouvertes. Tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux."
           ctaLabel="Voir les prochaines sorties"
           ctaHref={`/club/${CLUB.slug}/planning`}
         />
