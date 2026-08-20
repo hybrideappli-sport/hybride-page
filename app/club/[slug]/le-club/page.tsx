@@ -119,7 +119,11 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
           <div className={styles.joinItem}>
             <p className={styles.joinLabel}>Merch</p>
             <p className={styles.joinText}>
-              Quelques pièces aux couleurs du club. <Link href={`/club/${CLUB.slug}/shop`}>Voir la boutique</Link>.
+              Quelques pièces aux couleurs du club.{" "}
+              <Link href={`/club/${CLUB.slug}/shop`} className={styles.merchLink}>
+                Voir la boutique
+              </Link>
+              .
             </p>
           </div>
         </div>

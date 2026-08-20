@@ -231,3 +231,62 @@
   color: var(--hy-text-3);
   margin-top: var(--hy-space-4);
 }
+
+/*
+ * Lien merch en dégradé animé (US couleur+vie, 2026-08-21) — SEUL lien du site
+ * à recevoir ce traitement, volontairement, pour se démarquer des quatre
+ * couleurs de marque fixes ci-dessus. Reste dans la famille violet du site
+ * (--hy-violet + deux teintes voisines, pas de couleur étrangère) : les trois
+ * arrêts du dégradé sont individuellement vérifiés AA sur fond noir #000 —
+ * #d8b4fe 11.9:1, --hy-violet (#b79cff) 9.2:1, #a78bfa 7.7:1 — le point le
+ * plus sombre du cycle (7.7:1) reste largement au-dessus du minimum 4.5:1, le
+ * texte ne devient donc jamais illisible. Cycle lent (9s) via
+ * background-position plutôt que les couleurs elles-mêmes, pour un mouvement
+ * fluide sans à-coup ni clignotement.
+ *
+ * .joinText a.merchLink(:hover) plutôt que .merchLink seul : mêmes raisons de
+ * spécificité que .outLink.strava plus haut — .joinText a et .joinText
+ * a:hover doivent être battus explicitement, sinon ils écrasent le texte
+ * transparent nécessaire à l'effet de dégradé "clippé".
+ */
+.joinText a.merchLink {
+  font-weight: 600;
+  background-image: linear-gradient(90deg, var(--hy-violet) 0%, #d8b4fe 25%, #a78bfa 50%, var(--hy-violet) 75%, #d8b4fe 100%);
+  background-size: 300% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .joinText a.merchLink {
+    animation: hy-gradient-move 9s ease-in-out infinite;
+  }
+}
+
+/* Coupe court même à un dégradé figé par la coupure globale d'animation
+   (globals.css) : demande explicite d'une couleur UNIQUE et fixe, pas d'un
+   dégradé immobile. */
+@media (prefers-reduced-motion: reduce) {
+  .joinText a.merchLink {
+    background-image: none;
+    color: var(--hy-violet);
+    -webkit-text-fill-color: var(--hy-violet);
+  }
+}
+
+.joinText a.merchLink:hover {
+  filter: brightness(1.15);
+}
+
+@keyframes hy-gradient-move {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
