@@ -66,3 +66,27 @@
 .cta {
   flex: 0 0 auto;
 }
+
+/* En dessous de 600px, date+titre (rigides à eux deux : 62px + contenu de .duration/.cta
+   non compressible) ne tiennent plus sur une ligne — .duration et .cta passent sur une
+   deuxième ligne plutôt que de déborder le viewport (cause du débordement horizontal
+   trouvé le 2026-08-21 : .outing ne wrappait jamais, .duration/.cta avaient flex-shrink: 0). */
+@media (max-width: 600px) {
+  .outing {
+    flex-wrap: wrap;
+    row-gap: var(--hy-space-2);
+  }
+
+  .main {
+    flex-basis: 200px;
+  }
+
+  .duration {
+    text-align: left;
+    margin-left: calc(62px + var(--hy-space-3));
+  }
+
+  .cta {
+    margin-left: auto;
+  }
+}
