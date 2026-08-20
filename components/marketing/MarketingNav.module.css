@@ -12,7 +12,11 @@
   }
 }
 
+/* min-height: 44px pour une zone cliquable confortable au doigt, même si le texte seul est plus bas. */
 .brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-family: var(--hy-font-display);
   font-weight: 800;
   font-size: 21px;

@@ -21,7 +21,7 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
   return (
     <nav className={styles.nav}>
       <div className={styles.bar}>
-        <Link href={`/club/${clubSlug}`} className={styles.brand} onClick={close}>
+        <Link href="/" className={styles.brand} onClick={close}>
           Hybride
         </Link>
         <div className={styles.links}>
