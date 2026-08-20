@@ -16,7 +16,9 @@
   background: transparent;
   color: var(--hy-text-2);
   cursor: pointer;
-  transition: border-color var(--hy-dur) var(--hy-ease), color var(--hy-dur) var(--hy-ease);
+  transition:
+    border-color var(--hy-dur) var(--hy-ease),
+    color var(--hy-dur) var(--hy-ease);
 }
 
 .chip:hover {
@@ -34,7 +36,33 @@
   color: var(--hy-violet);
 }
 
-.note {
-  font-size: 14px;
+.week {
+  margin-bottom: var(--hy-space-5);
+}
+
+.week:last-child {
+  margin-bottom: 0;
+}
+
+.weekLabel {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-2);
+}
+
+.empty {
+  color: var(--hy-text-2);
+  font-size: 15px;
+  max-width: 54ch;
+}
+
+.empty p {
+  margin: 0 0 var(--hy-space-2);
+}
+
+.empty a {
+  color: var(--hy-violet);
 }

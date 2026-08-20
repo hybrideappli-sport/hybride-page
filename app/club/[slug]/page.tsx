@@ -6,11 +6,9 @@ import { disciplineLabel, Tag, type Discipline } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
-import { EventsAgenda } from "@/components/club/EventsAgenda";
 import { PhotoStrip } from "@/components/club/PhotoStrip";
 import { RitualRow } from "@/components/club/RitualRow";
 import { SocialLinks } from "@/components/club/SocialLinks";
-import { getAgendaEvents } from "@/lib/agenda/source";
 import { CLUB } from "@/lib/config";
 import { getAllRituals } from "@/lib/rituals/content";
 import styles from "./page.module.css";
@@ -21,7 +19,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   if (slug !== CLUB.slug) notFound();
 
-  const events = await getAgendaEvents();
   const rituals = getAllRituals();
 
   return (
@@ -47,10 +44,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             le reste s&rsquo;invente au fil des semaines.
           </p>
           <div className={styles.heroCta}>
-            <Button href="#sorties">Voir les prochaines sorties</Button>
-            <Button href="#le-club" variant="line">
-              Comment ça marche
-            </Button>
+            <Button href={`/club/${CLUB.slug}/planning`}>Voir le planning</Button>
           </div>
         </div>
         <PhotoSlot
@@ -80,13 +74,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             />
           ))}
         </div>
-      </section>
-
-      <section id="sorties" className={styles.section}>
-        <div className={styles.sectionHead}>
-          <h2>Prochaines sorties</h2>
-        </div>
-        {events.length === 0 ? <p className={styles.note}>Aucune sortie programmée pour le moment.</p> : <EventsAgenda events={events} />}
       </section>
 
       <section id="nous-trouver" className={styles.section}>
@@ -134,7 +121,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           }
           lead="Toutes nos sorties sont gratuites et ouvertes. Tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux."
           ctaLabel="Voir les prochaines sorties"
-          ctaHref="#sorties"
+          ctaHref={`/club/${CLUB.slug}/planning`}
         />
         <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
           Le groupe WhatsApp, c&rsquo;est là que s&rsquo;organisent les afters et tout ce qui ne rentre pas dans le programme. Le lien
