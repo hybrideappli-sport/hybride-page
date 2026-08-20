@@ -35,12 +35,19 @@
   gap: var(--hy-space-2);
 }
 
+/* Badge plutôt que simple légende discrète (US-01, 2026-08-20) : fond + pill,
+   pour porter l'info (catégorie + lieu) même en lecture rapide. */
 .kicker {
   font-family: var(--hy-font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--hy-violet);
+  background: var(--hy-violet-bg);
+  width: fit-content;
+  padding: 5px 12px;
+  border-radius: var(--hy-radius-pill);
 }
 
 .title {
@@ -56,15 +63,62 @@
   max-width: 34ch;
 }
 
+/* Bouton, pas du texte avec une flèche (US-01, 2026-08-20) : même langage visuel
+   que Button.module.css .btn, dupliqué plutôt que réutilisé — Door pose son CTA
+   à l'intérieur d'un <Link> englobant, jamais un <a>/<button> imbriqué. */
 .go {
   margin-top: var(--hy-space-2);
+  width: fit-content;
+  padding: 12px 22px;
+  border-radius: var(--hy-radius-pill);
+  background: var(--hy-violet-fill);
+  color: var(--hy-on-violet);
   font-weight: 600;
+  font-size: 15px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--hy-space-1);
+  transition:
+    transform var(--hy-dur) var(--hy-ease),
+    background var(--hy-dur) var(--hy-ease);
 }
 
 .door:hover .go {
-  gap: 14px;
-  transition: gap var(--hy-dur) var(--hy-ease);
+  background: #7c3aed;
+  transform: translateY(-2px);
+}
+
+/* "Bientôt disponible" : badge neutre, pas un bouton mort — l'affordance de clic
+   disparaît avec le remplissage violet, la porte ne paraît pas cassée pour
+   autant (contour visible, même gabarit que .go). */
+.goDisabled {
+  margin-top: var(--hy-space-2);
+  width: fit-content;
+  padding: 12px 22px;
+  border-radius: var(--hy-radius-pill);
+  background: transparent;
+  border: 1.5px solid var(--hy-line-2);
+  color: var(--hy-text-2);
+  font-weight: 600;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hy-space-1);
+}
+
+/*
+ * Logo qui flotte, jamais une photo plein cadre (US-01, 2026-08-20) : `object-fit:
+ * contain`, taille bornée, air tout autour — inset positif (pas 0) pour ne jamais
+ * chevaucher .body (ancré en bas, hauteur variable selon le texte).
+ */
+.logoWrap {
+  /* `fill` (Image) + object-fit: contain centrent et bornent le logo tout seuls dans cette
+     boîte — inset définit uniquement l'air autour, pas de flex de centrage nécessaire ici. */
+  position: absolute;
+  inset: var(--hy-space-5) var(--hy-space-5) 40%;
+  z-index: 1;
+}
+
+.logo {
+  object-fit: contain;
 }

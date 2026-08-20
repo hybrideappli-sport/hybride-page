@@ -31,15 +31,20 @@ export default function MarketingHomePage() {
         </p>
       </div>
 
+      <p className={styles.doorsIntro}>
+        Hybride, c&rsquo;est deux choses distinctes : un club de sport à Toulon, et une application d&rsquo;entraînement. Choisis ton univers
+        ci-dessous.
+      </p>
+
       <div className={styles.doors}>
         <Door
           href="/club/toulon"
           kicker="Le club · Toulon"
           title={
             <>
-              S&rsquo;entraîner
+              Le club
               <br />
-              ensemble
+              de sport
             </>
           }
           description="Des sorties chaque semaine à Toulon et ses alentours. Toutes les allures, places limitées."
@@ -52,14 +57,16 @@ export default function MarketingHomePage() {
           kicker="L'application"
           title={
             <>
-              Ton coach
+              L&rsquo;application
               <br />
-              IA personnel
+              d&rsquo;entraînement
             </>
           }
           description="Un plan d'entraînement qui s'adapte à toi et à ton emploi du temps réel, toutes disciplines confondues."
           goLabel="Bientôt disponible"
-          photoCaption="photo plein cadre — l'app en main · portrait 4:5"
+          photoCaption="logo — centré, fond sombre, pas plein cadre"
+          logoSrc="/photos/logo-hybride.png"
+          logoAlt="Logo Hybride"
         />
       </div>
 

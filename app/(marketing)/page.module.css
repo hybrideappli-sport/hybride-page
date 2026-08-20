@@ -35,6 +35,21 @@
   color: var(--hy-violet);
 }
 
+/*
+ * Signal structurel lu AVANT les portes (US-01, 2026-08-20) : le hero explique
+ * déjà "club + app" en une phrase, mais noyée dans le lead — trop discret pour
+ * que ce soit compris avant même de regarder les cartes. Poids visuel
+ * volontairement supérieur au `.lead` du hero (texte pleine couleur, pas
+ * atténué) : c'est un repère de structure, pas une description.
+ */
+.doorsIntro {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--hy-text-1);
+  max-width: 56ch;
+  margin: 0 0 var(--hy-space-4);
+}
+
 /* Deux panneaux plein cadre à égalité stricte. */
 .doors {
   display: grid;
