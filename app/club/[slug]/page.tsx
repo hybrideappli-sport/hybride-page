@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { disciplineLabel, Tag, type Discipline } from "@/components/ui/Tag";
+import { AboutBand } from "@/components/club/AboutBand";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
@@ -32,9 +33,8 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <div className={styles.heroText}>
           <p className={styles.eyebrow}>{CLUB.city} · depuis 2026</p>
           <h1 className={styles.heroTitle}>
-            <span>Un club</span>
-            <span>pour ceux qui</span>
-            <span className={styles.heroAccent}>font tout.</span>
+            <span>On vient pour le sport.</span>
+            <span className={styles.heroAccent}>On reste pour les gens.</span>
           </h1>
           <div className={styles.heroDisciplines}>
             {ALL_DISCIPLINES.map((code) => (
@@ -44,8 +44,8 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             ))}
           </div>
           <p className={`${styles.lead} ${styles.heroLead}`}>
-            Les rituels du lundi et du mercredi sont fixes ; le reste s&rsquo;organise sortie par sortie, à retrouver dans les prochaines
-            sorties.
+            Toutes les allures, tous les niveaux — et un after à chaque fois, au bar ou sur la plage. Le lundi et le mercredi sont fixes,
+            le reste s&rsquo;invente au fil des semaines.
           </p>
           <div className={styles.heroCta}>
             <Button href="#sorties">Voir les prochaines sorties</Button>
@@ -64,13 +64,14 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         />
       </div>
 
+      <section id="qui-on-est" className={styles.section}>
+        <AboutBand />
+      </section>
+
       <section id="le-club" className={styles.section}>
         <div className={styles.sectionHead}>
           <p className={styles.eyebrow}>Nos rendez-vous</p>
           <h2>Ce qui revient chaque semaine</h2>
-          <p className={styles.lead} style={{ marginTop: "var(--hy-space-2)" }}>
-            On présente les rituels, pas les dates. Le rituel donne envie de venir, la date sert à réserver sa place.
-          </p>
         </div>
         <div className={styles.ritualsList}>
           {rituals.map((ritual) => (
@@ -88,7 +89,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
       <section id="sorties" className={styles.section}>
         <div className={styles.sectionHead}>
-          <p className={styles.eyebrow}>Places limitées</p>
           <h2>Prochaines sorties</h2>
         </div>
         {events.length === 0 ? <p className={styles.note}>Aucune sortie programmée pour le moment.</p> : <EventsAgenda events={events} />}
@@ -132,17 +132,18 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         <CtaBand
           title={
             <>
-              Viens voir une fois.
+              La première fois, tu ne connais personne.
               <br />
-              Tu verras si ça te plaît.
+              La deuxième, si.
             </>
           }
-          lead="Pas d'inscription compliquée, pas d'engagement : tu viens comme tu es."
+          lead="Toutes nos sorties sont gratuites et ouvertes. Tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux."
           ctaLabel="Voir les prochaines sorties"
           ctaHref="#sorties"
         />
         <p className={styles.note} style={{ marginTop: "var(--hy-space-4)" }}>
-          On a aussi un groupe WhatsApp : le lien est communiqué au moment de l&rsquo;inscription à une sortie sur Luma.
+          Le groupe WhatsApp, c&rsquo;est là que s&rsquo;organisent les afters et tout ce qui ne rentre pas dans le programme. Le lien
+          arrive à l&rsquo;inscription sur Luma.
         </p>
       </section>
 

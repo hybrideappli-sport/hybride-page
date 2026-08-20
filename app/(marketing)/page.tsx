@@ -32,8 +32,7 @@ export default function MarketingHomePage() {
       </div>
 
       <p className={styles.doorsIntro}>
-        Hybride, c&rsquo;est deux choses distinctes : un club de sport à Toulon, et une application d&rsquo;entraînement. Choisis ton univers
-        ci-dessous.
+        Hybride, c&rsquo;est deux choses distinctes : un club de sport à Toulon, et une application d&rsquo;entraînement.
       </p>
 
       <div className={styles.doors}>
@@ -47,7 +46,7 @@ export default function MarketingHomePage() {
               de sport
             </>
           }
-          description="Des sorties chaque semaine à Toulon et ses alentours. Toutes les allures, places limitées."
+          description="Des sorties chaque semaine à Toulon et ses alentours. Toutes les allures, tout le monde."
           goLabel="Voir le club →"
           photoCaption="photo plein cadre — groupe au départ · portrait 4:5"
           photoSrc="/photos/porte-club.jpg"
@@ -73,7 +72,7 @@ export default function MarketingHomePage() {
       <section className={styles.disciplines}>
         <p className={styles.eyebrow}>Les disciplines du club</p>
         <p className={styles.disciplinesLead}>
-          Cinq familles, et une sortie peut en combiner plusieurs — un swim and run compte à la fois pour l&rsquo;eau et la course à pied.
+          On mélange les disciplines plus qu&rsquo;on ne les sépare — un swim and run compte pour l&rsquo;eau et pour la course à pied.
           C&rsquo;est tout le sens du mot hybride.
         </p>
         <div className={styles.tags}>
@@ -95,10 +94,9 @@ export default function MarketingHomePage() {
       </section>
 
       <div className={styles.soon}>
-        <strong>Toulon pour commencer.</strong>
+        <strong>Un club Hybride ailleurs qu&rsquo;à Toulon ?</strong>
         <span>
-          D&rsquo;autres points ouvriront ailleurs en France. Envie d&rsquo;en monter un chez toi ?{" "}
-          <a href="mailto:contact@hybride-club.fr">Écris-nous</a>.
+          Si tu veux en monter un, <a href="mailto:contact@hybride-club.fr">écris-nous</a>.
         </span>
       </div>
 
