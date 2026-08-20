@@ -88,8 +88,8 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <p className={styles.eyebrow}>La signature</p>
           <h2>On ne fait pas que courir.</h2>
           <p className={styles.lead} style={{ marginTop: "var(--hy-space-2)" }}>
-            Cinq disciplines, une seule communauté. Les rituels du lundi et du mercredi ci-dessous sont fixes ; le reste — vélo, trail, volley
-            — s&rsquo;organise sortie par sortie, à retrouver dans les prochaines sorties.
+            Cinq familles de sport, une seule communauté. Les rituels du lundi et du mercredi ci-dessous sont fixes ; tout le reste
+            s&rsquo;organise sortie par sortie, à retrouver dans les prochaines sorties.
           </p>
         </div>
         <div className={styles.disciplinesRow}>
@@ -160,10 +160,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             <>
               Viens voir une fois.
               <br />
-              Tu décideras après.
+              Tu verras si ça te plaît.
             </>
           }
-          lead="La première sortie est libre et gratuite. L'adhésion annuelle vient ensuite, si le club te plaît."
+          lead="Pas d'inscription compliquée, pas d'engagement : tu viens comme tu es."
           ctaLabel="Voir les prochaines sorties"
           ctaHref="#sorties"
         />
