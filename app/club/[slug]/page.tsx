@@ -126,7 +126,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         />
       </section>
 
-      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} city={CLUB.city} contactEmail={CLUB.contactEmail} />
+      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} legalCity={CLUB.legalCity} contactEmail={CLUB.contactEmail} />
     </div>
   );
 }

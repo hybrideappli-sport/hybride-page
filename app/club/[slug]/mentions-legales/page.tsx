@@ -3,15 +3,8 @@ import { notFound } from "next/navigation";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { LegalPage } from "@/components/legal/LegalPage";
+import { CLUB } from "@/lib/config";
 import styles from "../page.module.css";
-
-const CLUB = {
-  slug: "toulon",
-  name: "Hybride Club Toulon",
-  city: "La Seyne-sur-Mer",
-  contactEmail: "contact@hybride-club.fr",
-  helloAssoUrl: "https://www.helloasso.com/associations/hybride-club-toulon",
-};
 
 export default async function ClubMentionsLegalesPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -23,8 +16,8 @@ export default async function ClubMentionsLegalesPage({ params }: { params: Prom
       <LegalPage title="Mentions légales" updatedAt="2026-08-14">
         <h2>Éditeur</h2>
         <p>
-          {CLUB.name}, association loi du 1er juillet 1901, {CLUB.city}. Déclarée au Journal officiel des associations (JOAFE) — numéro RNA à
-          compléter.
+          {CLUB.name}, association loi du 1er juillet 1901, {CLUB.legalCity}. Déclarée au Journal officiel des associations (JOAFE) — numéro
+          RNA à compléter.
         </p>
         <p>Contact : {CLUB.contactEmail}</p>
 
@@ -41,7 +34,7 @@ export default async function ClubMentionsLegalesPage({ params }: { params: Prom
           <a href={`/club/${CLUB.slug}/politique-de-confidentialite`}>politique de confidentialité</a>.
         </p>
       </LegalPage>
-      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} city={CLUB.city} contactEmail={CLUB.contactEmail} />
+      <ClubFooter clubSlug={CLUB.slug} clubName={CLUB.name} legalCity={CLUB.legalCity} contactEmail={CLUB.contactEmail} />
     </div>
   );
 }

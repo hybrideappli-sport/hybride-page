@@ -11,18 +11,19 @@ import styles from "./ClubFooter.module.css";
 export function ClubFooter({
   clubSlug,
   clubName,
-  city,
+  legalCity,
   contactEmail,
 }: {
   clubSlug: string;
   clubName: string;
-  city: string;
+  /** Commune de domiciliation légale (siège social) — PAS la ville d'activité du club (CLUB.city). */
+  legalCity: string;
   contactEmail: string | null;
 }) {
   return (
     <footer className={styles.footer}>
       <p>
-        <strong>{clubName}</strong> — association loi 1901, {city}.
+        <strong>{clubName}</strong> — association loi 1901, {legalCity}.
       </p>
       <p>
         <Link href={`/club/${clubSlug}/mentions-legales`}>Mentions légales</Link> ·{" "}
