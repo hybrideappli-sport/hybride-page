@@ -48,9 +48,9 @@ export default function MarketingHomePage() {
           kicker="L'application"
           title={
             <>
-              L&rsquo;application
+              Le coach
               <br />
-              d&rsquo;entraînement
+              dans ta poche
             </>
           }
           description="Un coach IA qui construit ton plan d’entraînement et de nutrition, tous sports confondus, et l’ajuste à ce que tu vis vraiment."
