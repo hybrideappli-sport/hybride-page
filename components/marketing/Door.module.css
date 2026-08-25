@@ -91,15 +91,25 @@
   transform: translateY(-2px);
 }
 
-/* "Bientôt disponible" : badge neutre, pas un bouton mort — l'affordance de clic
-   disparaît avec le remplissage violet, la porte ne paraît pas cassée pour
-   autant (contour visible, même gabarit que .go). */
+/*
+ * "Bientôt disponible" : badge neutre, pas un bouton mort — l'affordance de clic
+ * disparaît avec le remplissage violet, la porte ne paraît pas cassée pour
+ * autant (même gabarit que .go).
+ *
+ * Fond sombre translucide plutôt que `transparent` (2026-08-25) : sur un visuel
+ * clair par endroits, un badge sans fond ne tient que par son contour — et ce
+ * contour disparaît. Mesuré sur porte-app.png à 375px, pire pixel derrière le
+ * badge (un liseré blanc de téléphone, #D3CED7, atténué par le dégradé à 76 %) :
+ * contour --hy-line-2 à 1,27:1, invisible. Le fond règle le problème à la
+ * source — la pastille se lit comme une forme pleine quel que soit ce qui passe
+ * dessous, sans toucher au violet d'accent.
+ */
 .goDisabled {
   margin-top: var(--hy-space-2);
   width: fit-content;
   padding: 12px 22px;
   border-radius: var(--hy-radius-pill);
-  background: transparent;
+  background: rgba(10, 11, 13, 0.72);
   border: 1.5px solid var(--hy-line-2);
   color: var(--hy-text-2);
   font-weight: 600;

@@ -55,9 +55,9 @@ export default function MarketingHomePage() {
           }
           description="Un plan d'entraînement qui s'adapte à toi et à ton emploi du temps réel, toutes disciplines confondues."
           goLabel="Bientôt disponible"
-          photoCaption="logo — centré, fond sombre, pas plein cadre"
-          logoSrc="/photos/logo-hybride.png"
-          logoAlt="Logo Hybride"
+          photoCaption="visuel plein cadre — écrans de l'app · portrait 4:5"
+          photoSrc="/photos/porte-app.png"
+          photoAlt="Plusieurs écrans de l'application Hybride disposés en diagonale sur fond violet"
         />
       </div>
 
