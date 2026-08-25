@@ -16,16 +16,31 @@ import styles from "./page.module.css";
  * l'entité commerciale n'a AUCUN rôle ici — l'association ne peut pas encaisser
  * dessus (deux responsables de traitement distincts, ADR-002).
  */
-const PRODUCTS = [
-  { name: "T-shirt technique club", sizes: "XS à XL", price: "28 €", photoCaption: "photo — t-shirt technique" },
-  { name: "Coupe-vent Hybride Club Toulon", sizes: "S à XXL", price: "55 €", photoCaption: "photo — coupe-vent" },
-  { name: "Casquette running", sizes: "Taille unique", price: "18 €", photoCaption: "photo — casquette" },
-  { name: "Bidon vélo 750 ml", sizes: "Taille unique", price: "9 €", photoCaption: "photo — bidon" },
-];
+interface ShopProduct {
+  name: string;
+  sizes: string;
+  price: string;
+  photoCaption: string;
+}
+
+/**
+ * Vide depuis le 2026-08-25 : les articles qui figuraient ici étaient des
+ * exemples de mise en page (t-shirts fictifs, prix inventés), retirés parce
+ * qu'ils se lisaient comme un vrai catalogue. Les vraies pièces ne sont pas
+ * prêtes.
+ *
+ * La grille produits reste branchée juste en dessous plutôt que commentée :
+ * remettre des entrées dans ce tableau suffit à la rallumer, et d'ici là le
+ * code continue d'être compilé et vérifié par le lint — un bloc mis en
+ * commentaire, lui, pourrit sans que rien ne le signale.
+ */
+const PRODUCTS: ShopProduct[] = [];
 
 export default async function ClubShopPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   if (slug !== CLUB.slug) notFound();
+
+  const hasProducts = PRODUCTS.length > 0;
 
   return (
     <div className={styles.wrap}>
@@ -35,29 +50,63 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
         <p className={styles.eyebrow}>Boutique</p>
         <h1 className={styles.title}>Le merch du club</h1>
         <p className={styles.lead}>
-          Prix indicatifs, tailles et références sujettes à disponibilité. La commande et le paiement se font entièrement sur la boutique
-          HelloAsso de l&rsquo;association — rien n&rsquo;est collecté ni encaissé sur ce site.
+          {hasProducts
+            ? "Prix indicatifs, tailles et références sujettes à disponibilité. La commande et le paiement se font entièrement sur la boutique HelloAsso de l’association — rien n’est collecté ni encaissé sur ce site."
+            : "Les premières pièces sont en préparation. Rien n’est encore en vente."}
         </p>
       </div>
 
-      <div className={styles.grid}>
-        {PRODUCTS.map((product) => (
-          <Card key={product.name} className={styles.product}>
-            <PhotoSlot ratio="1/1" radius="none" caption={product.photoCaption} />
-            <div className={styles.body}>
-              <h2 className={styles.productName}>{product.name}</h2>
-              <p className={styles.meta}>
-                {product.sizes} · {product.price}
-              </p>
-              <Button href={HELLOASSO_SHOP_URL} variant="line" size="mini" target="_blank" rel="noopener noreferrer">
-                Voir sur la boutique HelloAsso ↗
-              </Button>
-            </div>
-          </Card>
-        ))}
-      </div>
+      {hasProducts ? (
+        <>
+          <div className={styles.grid}>
+            {PRODUCTS.map((product) => (
+              <Card key={product.name} className={styles.product}>
+                <PhotoSlot ratio="1/1" radius="none" caption={product.photoCaption} />
+                <div className={styles.body}>
+                  <h2 className={styles.productName}>{product.name}</h2>
+                  <p className={styles.meta}>
+                    {product.sizes} · {product.price}
+                  </p>
+                  <Button href={HELLOASSO_SHOP_URL} variant="line" size="mini" target="_blank" rel="noopener noreferrer">
+                    Voir sur la boutique HelloAsso ↗
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
 
-      <p className={styles.outboundNote}>↗ Les liens « boutique » ouvrent HelloAsso.com dans un nouvel onglet, en dehors de ce site.</p>
+          <p className={styles.outboundNote}>↗ Les liens « boutique » ouvrent HelloAsso.com dans un nouvel onglet, en dehors de ce site.</p>
+        </>
+      ) : (
+        /*
+         * Pas de compte à rebours : aucune date ferme côté club, et un décompte
+         * qui expire sans livraison abîme la confiance plus qu'il ne fait
+         * patienter. À rajouter le jour où une date existe.
+         */
+        <section className={styles.waiting}>
+          <h2 className={styles.waitingTitle}>Où sera annoncée la sortie</h2>
+          <div className={styles.channels}>
+            <div className={styles.channel}>
+              <p className={styles.channelLabel}>Groupe WhatsApp</p>
+              <p className={styles.channelText}>
+                C&rsquo;est là que ça se saura en premier. Le lien du groupe arrive à l&rsquo;inscription à une sortie sur Luma.
+              </p>
+            </div>
+
+            {CLUB.instagramUrl ? (
+              <div className={styles.channel}>
+                <p className={styles.channelLabel}>Instagram</p>
+                <p className={styles.channelText}>
+                  <a href={CLUB.instagramUrl} target="_blank" rel="noopener noreferrer" className={styles.outLink}>
+                    Le club sur Instagram ↗
+                  </a>
+                </p>
+              </div>
+            ) : null}
+          </div>
+          <p className={styles.outboundNote}>↗ Ce lien ouvre Instagram dans un nouvel onglet, en dehors de ce site.</p>
+        </section>
+      )}
 
       <ClubFooter
         clubSlug={CLUB.slug}
