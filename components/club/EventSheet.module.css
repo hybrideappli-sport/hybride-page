@@ -1,0 +1,193 @@
+/*
+ * <dialog> en mode modal reçoit `inset: 0` de la feuille de style du navigateur.
+ * Conséquence contre-intuitive, vérifiée dans le navigateur avant d'être
+ * corrigée : avec `left` ET `right` à 0, une largeur `auto` ne se réduit pas au
+ * contenu — elle remplit le viewport, et `margin: auto` n'a plus rien à
+ * centrer horizontalement (le panneau restait collé à gauche).
+ *
+ * D'où ce parti pris : le <dialog> couvre tout l'écran et sert de conteneur
+ * flex ; c'est lui qui place le panneau (en bas sur mobile, au centre sur grand
+ * écran). Bonus, la zone hors panneau devient le fond cliquable pour fermer.
+ *
+ * `display` n'est posé que sur [open] : `dialog:not([open])` garde le
+ * `display: none` du navigateur, sinon la fiche resterait visible fermée.
+ */
+.dialog {
+  padding: 0;
+  border: none;
+  background: transparent;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  color: var(--hy-text-1);
+}
+
+.dialog[open] {
+  display: flex;
+  justify-content: center;
+  /* Mobile : feuille ancrée en bas. */
+  align-items: flex-end;
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+/* Le panneau ne défile pas lui-même : il borne sa hauteur et délègue le
+   défilement à .body. C'est ce qui garde l'en-tête — donc le bouton de
+   fermeture — toujours visible sur une fiche longue (deux sorties le même
+   jour), au lieu de le laisser défiler hors de vue. */
+.panel {
+  background: var(--hy-surface-1);
+  border: 1px solid var(--hy-line);
+  padding: var(--hy-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-4);
+  overflow: hidden;
+  width: 100%;
+  border-radius: var(--hy-radius-card) var(--hy-radius-card) 0 0;
+  border-bottom: none;
+  max-height: 85dvh;
+  padding-bottom: max(var(--hy-space-4), env(safe-area-inset-bottom));
+}
+
+.body {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-4);
+  /* min-height: 0 : sans lui, un enfant flex refuse de descendre sous la hauteur
+     de son contenu et le défilement ne se déclenche jamais. */
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog[open] .panel {
+    animation: hy-sheet-up 220ms var(--hy-ease);
+  }
+}
+
+@keyframes hy-sheet-up {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Modale centrée (grand écran) : même point de rupture que le reste du site. */
+@media (min-width: 861px) {
+  .dialog[open] {
+    align-items: center;
+  }
+
+  .panel {
+    width: min(560px, calc(100vw - 2 * var(--hy-space-4)));
+    max-height: min(80dvh, 720px);
+    border-radius: var(--hy-radius-card);
+    border-bottom: 1px solid var(--hy-line);
+    padding: var(--hy-space-5);
+    padding-bottom: var(--hy-space-5);
+  }
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--hy-space-3);
+  flex: 0 0 auto;
+}
+
+.date {
+  margin: 0;
+  font-size: 15px;
+  font-family: var(--hy-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--hy-text-3);
+  font-weight: 400;
+  /* min-width: 0 : sans lui, un enfant flex refuse de rétrécir sous son contenu et
+     pousserait le bouton de fermeture hors du panneau sur les dates longues. */
+  min-width: 0;
+}
+
+/* Séparateur seulement entre deux sorties d'un même jour — invisible dans le cas
+   courant (une seule sortie). */
+.event + .event {
+  border-top: 1px solid var(--hy-line);
+  padding-top: var(--hy-space-4);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--hy-space-2);
+}
+
+.title {
+  margin: 0 0 var(--hy-space-4);
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.close {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius-pill);
+  color: var(--hy-text-2);
+  cursor: pointer;
+  transition:
+    border-color var(--hy-dur) var(--hy-ease),
+    color var(--hy-dur) var(--hy-ease);
+}
+
+.close:hover {
+  border-color: var(--hy-violet);
+  color: var(--hy-violet);
+}
+
+.close:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+.facts {
+  display: grid;
+  gap: var(--hy-space-3);
+  margin: 0;
+}
+
+.fact dt {
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+}
+
+.fact dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--hy-text-1);
+}
+
+.cta {
+  border-top: 1px solid var(--hy-line);
+  padding-top: var(--hy-space-4);
+}

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
-import { PlanningList } from "@/components/club/PlanningList";
+import { PlanningCalendar } from "@/components/club/PlanningCalendar";
 import { eventsInMonth, getCurrentMonthKey, getMonthLabel, shiftMonthKey } from "@/lib/agenda/planning";
 import { getAgendaEvents } from "@/lib/agenda/source";
 import { CLUB } from "@/lib/config";
@@ -47,7 +47,7 @@ export default async function PlanningPage({
         </div>
       </div>
 
-      <PlanningList events={events} clubSlug={CLUB.slug} />
+      <PlanningCalendar events={events} monthKey={monthKey} clubSlug={CLUB.slug} />
 
       <ClubFooter
         clubSlug={CLUB.slug}

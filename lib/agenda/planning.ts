@@ -1,18 +1,16 @@
 import type { AgendaEvent } from "@/lib/agenda/source";
 
 /**
- * Regroupement par mois/semaine pour /club/[slug]/planning (US mobile,
- * 2026-08-21). Pas de "server-only" ici, contrairement à lib/agenda/source.ts :
- * ce fichier ne fait que du calcul de date pur (aucun fetch, aucun secret) —
- * groupEventsByWeek est appelé côté client par PlanningList.tsx (filtre par
- * discipline en state client), les autres fonctions côté serveur uniquement.
+ * Calcul de dates pour /club/[slug]/planning. Pas de "server-only" ici,
+ * contrairement à lib/agenda/source.ts : ce fichier ne fait que du calcul de
+ * date pur (aucun fetch, aucun secret) — buildMonthGrid est appelé côté client
+ * par PlanningCalendar.tsx (filtre par discipline + sélection en state).
  *
- * Grille de calendrier volontairement pas construite : au volume actuel
- * (2-3 sorties/semaine), une grille mensuelle serait très majoritairement
- * vide — coût de code pour un affichage qui n'aiderait personne. Critère de
- * réouverture : le jour où le volume de sorties publiées justifie une vue
- * densité (plusieurs sorties par jour, pas seulement par semaine),
- * reconsidérer une grille sur grand écran.
+ * Grille de calendrier construite le 2026-08-25 : le critère de réouverture
+ * noté ici en 2026-08-21 (« le jour où le volume justifie une vue densité »)
+ * est atteint — deux rituels hebdomadaires plus les sorties programmées font
+ * une douzaine d'événements par mois, la grille n'est plus majoritairement
+ * vide.
  */
 
 const TIMEZONE = "Europe/Paris";
@@ -54,41 +52,69 @@ export function eventsInMonth(events: AgendaEvent[], monthKey: string): AgendaEv
   return events.filter((event) => getMonthKey(event.startsAtIso) === monthKey);
 }
 
-/** "YYYY-MM-DD" du lundi de la semaine (fuseau Paris) contenant cet instant. */
-function getMondayKey(iso: string): string {
+/** "YYYY-MM-DD" du jour (fuseau Paris) de cet instant — clé de regroupement des cases de la grille. */
+export function getParisDayKey(iso: string): string {
   const { year, month, day } = getParisDateParts(iso);
-  const asUtc = new Date(Date.UTC(year, month - 1, day));
-  const weekday = asUtc.getUTCDay(); // 0 = dimanche .. 6 = samedi
-  const diffToMonday = weekday === 0 ? -6 : 1 - weekday;
-  asUtc.setUTCDate(asUtc.getUTCDate() + diffToMonday);
-  return asUtc.toISOString().slice(0, 10);
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
-function formatWeekLabel(mondayKey: string): string {
-  const [y, m, d] = mondayKey.split("-").map(Number);
-  const monday = new Date(Date.UTC(y, m - 1, d));
-  const sunday = new Date(Date.UTC(y, m - 1, d + 6));
-  const dayFmt = new Intl.DateTimeFormat("fr-FR", { day: "numeric", timeZone: "UTC" });
-  const monthFmt = new Intl.DateTimeFormat("fr-FR", { month: "long", timeZone: "UTC" });
-  if (monday.getUTCMonth() === sunday.getUTCMonth()) {
-    return `Semaine du ${dayFmt.format(monday)} au ${dayFmt.format(sunday)} ${monthFmt.format(sunday)}`;
-  }
-  return `Semaine du ${dayFmt.format(monday)} ${monthFmt.format(monday)} au ${dayFmt.format(sunday)} ${monthFmt.format(sunday)}`;
+/** "YYYY-MM-DD" d'aujourd'hui en fuseau Paris. À n'appeler que côté client : figé par le cache au rendu serveur. */
+export function getTodayParisKey(): string {
+  return getParisDayKey(new Date().toISOString());
 }
 
-export interface WeekGroup {
+export interface CalendarCell {
+  /** "YYYY-MM-DD" */
   key: string;
-  label: string;
+  dayNumber: number;
+  /** false pour les jours de complément (fin du mois précédent, début du suivant) qui remplissent la première et la dernière semaine. */
+  inMonth: boolean;
   events: AgendaEvent[];
 }
 
-export function groupEventsByWeek(events: AgendaEvent[]): WeekGroup[] {
-  const groups = new Map<string, AgendaEvent[]>();
+/** Lundi → dimanche, comme un calendrier papier français (et comme la norme ISO 8601). */
+export const WEEKDAY_LABELS = ["L", "M", "M", "J", "V", "S", "D"] as const;
+
+/**
+ * Grille du mois : des semaines de 7 cases, complétées avant le 1er et après le
+ * dernier jour pour que chaque ligne soit pleine. Arithmétique en UTC sur des
+ * dates déjà ramenées au fuseau Paris (getParisDayKey), jamais sur des instants
+ * bruts : c'est ce qui évite qu'un événement de 23h bascule d'un jour.
+ */
+export function buildMonthGrid(monthKey: string, events: AgendaEvent[]): CalendarCell[][] {
+  const eventsByDay = new Map<string, AgendaEvent[]>();
   for (const event of events) {
-    const key = getMondayKey(event.startsAtIso);
-    const bucket = groups.get(key);
+    const key = getParisDayKey(event.startsAtIso);
+    const bucket = eventsByDay.get(key);
     if (bucket) bucket.push(event);
-    else groups.set(key, [event]);
+    else eventsByDay.set(key, [event]);
   }
-  return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([key, weekEvents]) => ({ key, label: formatWeekLabel(key), events: weekEvents }));
+
+  const [year, month] = monthKey.split("-").map(Number);
+  const firstOfMonth = new Date(Date.UTC(year, month - 1, 1));
+  const weekday = firstOfMonth.getUTCDay(); // 0 = dimanche .. 6 = samedi
+  const daysBefore = weekday === 0 ? 6 : weekday - 1; // lundi en tête de semaine
+
+  const cursor = new Date(firstOfMonth);
+  cursor.setUTCDate(cursor.getUTCDate() - daysBefore);
+
+  const weeks: CalendarCell[][] = [];
+  // Boucle sur les semaines entières tant que la précédente n'a pas dépassé le mois :
+  // 4, 5 ou 6 lignes selon le calendrier, jamais une ligne vide de complément.
+  do {
+    const week: CalendarCell[] = [];
+    for (let i = 0; i < 7; i++) {
+      const key = cursor.toISOString().slice(0, 10);
+      week.push({
+        key,
+        dayNumber: cursor.getUTCDate(),
+        inMonth: cursor.getUTCMonth() === month - 1 && cursor.getUTCFullYear() === year,
+        events: eventsByDay.get(key) ?? [],
+      });
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+    weeks.push(week);
+  } while (cursor.getUTCMonth() === month - 1 && cursor.getUTCFullYear() === year);
+
+  return weeks;
 }
