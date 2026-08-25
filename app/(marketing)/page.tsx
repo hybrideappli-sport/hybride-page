@@ -53,7 +53,7 @@ export default function MarketingHomePage() {
               d&rsquo;entraînement
             </>
           }
-          description="Un plan d'entraînement qui s'adapte à toi et à ton emploi du temps réel, toutes disciplines confondues."
+          description="Un coach IA qui construit ton plan d’entraînement et de nutrition, tous sports confondus, et l’ajuste à ce que tu vis vraiment."
           goLabel="Bientôt disponible"
           photoCaption="visuel plein cadre — écrans de l'app · portrait 4:5"
           photoSrc="/photos/porte-app.png"
@@ -63,10 +63,7 @@ export default function MarketingHomePage() {
 
       <section className={styles.disciplines}>
         <p className={styles.eyebrow}>Les disciplines du club</p>
-        <p className={styles.disciplinesLead}>
-          On mélange les disciplines plus qu&rsquo;on ne les sépare — un swim and run compte pour l&rsquo;eau et pour la course à pied.
-          C&rsquo;est tout le sens du mot hybride.
-        </p>
+        <p className={styles.disciplinesLead}>Chacun arrive avec son sport et repart avec trois autres.</p>
         <div className={styles.tags}>
           <Tag variant="course">Course à pied</Tag>
           <Tag variant="format">running</Tag>
