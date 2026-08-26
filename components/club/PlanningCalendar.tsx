@@ -4,22 +4,30 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { disciplineLabel, type Discipline } from "@/components/ui/Tag";
-import { buildMonthGrid, getTodayParisKey, WEEKDAY_LABELS, type CalendarCell } from "@/lib/agenda/planning";
+import { buildMonthGrid, getTodayParisKey, WEEKDAY_LABELS, WEEKDAY_SHORT, type CalendarCell } from "@/lib/agenda/planning";
 import type { AgendaEvent } from "@/lib/agenda/source";
-import { formatEventDateLong } from "@/lib/format";
+import { formatEventDateLong, formatEventTime } from "@/lib/format";
 import { EventSheet } from "./EventSheet";
 import styles from "./PlanningCalendar.module.css";
 
 const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
 
 /**
- * Grille mensuelle 7 colonnes (US grille, 2026-08-25), remplaçant la liste
- * groupée par semaine — voir lib/agenda/planning.ts pour le critère de
- * réouverture qui a mené à ce changement.
+ * Un seul balisage, deux mises en page (2026-08-26) :
  *
- * Une case ne porte QUE le numéro du jour et un point par sortie : c'est ce qui
- * la laisse tenir dans 1/7e de 375px sans déborder. Tout le texte (titre, lieu,
- * horaire, inscription) est dans la fiche, ouverte au clic — voir EventSheet.
+ * - Grand écran : grille 7 colonnes, chaque case porte le nom de la sortie et
+ *   son heure. Les cases font ~150px dans le conteneur de 1120px commun à
+ *   toutes les pages club — assez pour du texte, contrairement au plafond de
+ *   720px précédent (~100px/case) qui imposait des points de couleur muets.
+ * - Mobile : la même grille devient une liste groupée par semaine, chaque
+ *   sortie occupant une carte pleine largeur. Sept colonnes sur 375px font
+ *   53px, où aucun nom ne tient ; et une grille verticale de 31 lignes ferait
+ *   défiler ~19 jours vides pour ~12 sorties. Les jours sans sortie et les
+ *   semaines sans sortie sont donc masqués en CSS, pas retirés du DOM.
+ *
+ * Cette bascule est purement CSS (PlanningCalendar.module.css) : pas de mesure
+ * de viewport en JavaScript, donc pas d'écart entre le rendu serveur et
+ * l'hydratation.
  */
 export function PlanningCalendar({ events, monthKey, clubSlug }: { events: AgendaEvent[]; monthKey: string; clubSlug: string }) {
   const [selected, setSelected] = useState<Set<Discipline>>(new Set());
@@ -74,10 +82,11 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
           ))}
         </div>
 
-        {weeks.map((week, i) => (
-          <div key={i} className={styles.week}>
-            {week.map((cell) => (
-              <Cell key={cell.key} cell={cell} isToday={cell.key === todayKey} onOpen={() => setOpenDay(cell.events)} />
+        {weeks.map((week) => (
+          <div key={week.key} className={`${styles.week} ${week.hasEvents ? "" : styles.weekEmpty}`}>
+            <p className={styles.weekLabel}>{week.label}</p>
+            {week.cells.map((cell, i) => (
+              <Cell key={cell.key} cell={cell} weekdayIndex={i} isToday={cell.key === todayKey} onOpen={() => setOpenDay(cell.events)} />
             ))}
           </div>
         ))}
@@ -86,9 +95,7 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
       {filtered.length === 0 ? (
         <div className={styles.empty}>
           <p>
-            {events.length === 0
-              ? "Le programme de ce mois n’est pas encore en ligne."
-              : "Aucune sortie de cette discipline ce mois-ci."}
+            {events.length === 0 ? "Le programme de ce mois n’est pas encore en ligne." : "Aucune sortie de cette discipline ce mois-ci."}
           </p>
           <p>
             En attendant, les rituels du lundi et du mercredi restent fixes.{" "}
@@ -102,33 +109,47 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
   );
 }
 
-function Cell({ cell, isToday, onOpen }: { cell: CalendarCell; isToday: boolean; onOpen: () => void }) {
+function Cell({
+  cell,
+  weekdayIndex,
+  isToday,
+  onOpen,
+}: {
+  cell: CalendarCell;
+  weekdayIndex: number;
+  isToday: boolean;
+  onOpen: () => void;
+}) {
   const classes = [styles.cell, cell.inMonth ? "" : styles.cellOut, isToday ? styles.cellToday : ""].filter(Boolean).join(" ");
-
-  const dots = (
-    <span className={styles.dots} aria-hidden="true">
-      {cell.events.map((event) => (
-        <span key={event.id} className={`${styles.dot} ${styles[event.disciplines[0].code]}`} />
-      ))}
-    </span>
-  );
 
   if (cell.events.length === 0) {
     return (
-      <div className={classes}>
+      <div className={`${classes} ${styles.cellEmpty}`}>
         <span className={styles.dayNumber}>{cell.dayNumber}</span>
       </div>
     );
   }
 
-  // Le libellé accessible porte ce que la case ne peut pas afficher (pas de texte
-  // dans une case de 1/7e d'écran) : la date en toutes lettres et le nombre de sorties.
-  const label = `${formatEventDateLong(cell.events[0].startsAtIso)} — ${cell.events.length} sortie${cell.events.length > 1 ? "s" : ""}`;
+  const label = `${formatEventDateLong(cell.events[0].startsAtIso)} — ${cell.events
+    .map((e) => e.title ?? e.disciplines.map((d) => d.label).join(" + "))
+    .join(", ")}`;
 
   return (
     <button type="button" className={`${classes} ${styles.cellHasEvents}`} onClick={onOpen} aria-label={label}>
-      <span className={styles.dayNumber}>{cell.dayNumber}</span>
-      {dots}
+      <span className={styles.dayNumber}>
+        {/* L'abrégé du jour n'a de sens que sur mobile : en grille, c'est l'en-tête de colonne qui le porte. */}
+        <span className={styles.weekdayShort}>{WEEKDAY_SHORT[weekdayIndex]} </span>
+        {cell.dayNumber}
+      </span>
+
+      <span className={styles.events}>
+        {cell.events.map((event) => (
+          <span key={event.id} className={`${styles.event} ${styles[event.disciplines[0].code]}`}>
+            <span className={styles.eventTime}>{formatEventTime(event.startsAtIso)}</span>
+            <span className={styles.eventName}>{event.title ?? event.disciplines.map((d) => d.label).join(" + ")}</span>
+          </span>
+        ))}
+      </span>
     </button>
   );
 }

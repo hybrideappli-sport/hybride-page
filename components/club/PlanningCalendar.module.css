@@ -37,14 +37,10 @@
   outline-offset: var(--hy-focus-ring-offset);
 }
 
-/* Largeur bornée sur grand écran : sans cap, les cases carrées de 1/7e de 1120px
-   font 160px — une grille de calendrier n'a pas besoin de cette place, et les
-   points s'y perdent au centre de cases presque vides. */
 .grid {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-width: 720px;
 }
 
 /*
@@ -52,8 +48,7 @@
  * refuse de descendre sous la taille de son contenu — c'est exactement le
  * mécanisme qui a déjà provoqué des débordements horizontaux sur ce site (nav
  * club, page planning). Avec minmax(0, …), les 7 colonnes se partagent la
- * largeur disponible quoi qu'il arrive : à 375px, (375 - 2×24 de marge - 6×4 de
- * gouttière) / 7 ≈ 43px par case.
+ * largeur disponible quoi qu'il arrive.
  */
 .weekdays,
 .week {
@@ -71,21 +66,28 @@
   padding-bottom: 4px;
 }
 
+/* Le libellé de semaine ne sert qu'à la liste mobile : en grille il n'aurait pas
+   de colonne où se poser. */
+.weekLabel {
+  display: none;
+}
+
 .cell {
   /* min-width: 0 en plus de minmax(0, 1fr) : la case est elle-même un conteneur
      flex, et ses enfants ne doivent pas non plus l'empêcher de rétrécir. */
   min-width: 0;
-  aspect-ratio: 1;
+  min-height: 96px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
   gap: 4px;
-  padding: 0;
+  padding: 6px;
+  text-align: left;
   border: 1px solid transparent;
   border-radius: var(--hy-radius);
   background: var(--hy-surface-1);
   color: var(--hy-text-2);
+  font: inherit;
 }
 
 /* Jours de complément (mois précédent / suivant) : présents pour que la ligne soit
@@ -98,16 +100,15 @@
 
 .cellToday {
   border-color: var(--hy-violet);
+}
+
+.cellToday .dayNumber {
   color: var(--hy-violet);
 }
 
 .cellHasEvents {
   cursor: pointer;
-  background: var(--hy-surface-2);
-  font: inherit;
-  transition:
-    border-color var(--hy-dur) var(--hy-ease),
-    background var(--hy-dur) var(--hy-ease);
+  transition: border-color var(--hy-dur) var(--hy-ease);
 }
 
 .cellHasEvents:hover {
@@ -121,45 +122,166 @@
 
 .dayNumber {
   font-family: var(--hy-font-mono);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1;
+  flex: 0 0 auto;
 }
 
-.dots {
+/* Redondant en grille (l'en-tête de colonne porte déjà le jour), indispensable
+   dans la liste mobile où les colonnes disparaissent. */
+.weekdayShort {
+  display: none;
+}
+
+.events {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: 3px;
-  /* Hauteur réservée même sans point : sinon le numéro du jour n'est pas aligné
-     entre une case avec sortie et une case vide. */
-  min-height: 6px;
+  min-width: 0;
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: block;
+/*
+ * La sortie porte la couleur de sa discipline en fond teinté ET en bordure
+ * gauche marquée (2026-08-26) — un point de couleur ne disait pas de quelle
+ * sortie il s'agissait. Le nom est en --hy-text-1 plutôt que dans la teinte de
+ * la discipline : c'est l'information à lire sans effort, la couleur est portée
+ * par la bordure et l'heure.
+ */
+.event {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  padding: 4px 6px;
+  border-left: 4px solid;
+  border-radius: 0 6px 6px 0;
+}
+
+.eventTime {
+  font-family: var(--hy-font-mono);
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+/* Jamais de troncature à l'illisible : le nom passe à la ligne et se borne à
+   deux lignes en grille (largement de quoi loger un titre de sortie dans une
+   case de ~150px) ; en liste mobile la contrainte saute, la largeur suffit. */
+.eventName {
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--hy-text-1);
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 .course {
-  background: var(--hy-course);
+  background: var(--hy-course-bg);
+  border-left-color: var(--hy-course);
+}
+.course .eventTime {
+  color: var(--hy-course);
 }
 
 .velo {
-  background: var(--hy-velo);
+  background: var(--hy-velo-bg);
+  border-left-color: var(--hy-velo);
+}
+.velo .eventTime {
+  color: var(--hy-velo);
 }
 
 .eau {
-  background: var(--hy-eau);
+  background: var(--hy-eau-bg);
+  border-left-color: var(--hy-eau);
+}
+.eau .eventTime {
+  color: var(--hy-eau);
 }
 
 .montagne {
-  background: var(--hy-montagne);
+  background: var(--hy-montagne-bg);
+  border-left-color: var(--hy-montagne);
+}
+.montagne .eventTime {
+  color: var(--hy-montagne);
 }
 
 .collectif {
-  background: var(--hy-collectif);
+  background: var(--hy-collectif-bg);
+  border-left-color: var(--hy-collectif);
+}
+.collectif .eventTime {
+  color: var(--hy-collectif);
+}
+
+/*
+ * Bascule mobile : la grille devient une liste de cartes groupée par semaine.
+ * Même point de rupture (860px) que le reste du site. Rien n'est retiré du DOM —
+ * les jours et semaines sans sortie sont masqués, ce qui garde une seule source
+ * de balisage pour les deux mises en page.
+ */
+@media (max-width: 860px) {
+  .weekdays {
+    display: none;
+  }
+
+  .week {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hy-space-2);
+    margin-bottom: var(--hy-space-4);
+  }
+
+  .weekEmpty,
+  .cellEmpty {
+    display: none;
+  }
+
+  .weekLabel {
+    display: block;
+    font-family: var(--hy-font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--hy-text-3);
+    margin: 0 0 var(--hy-space-1);
+  }
+
+  .cell {
+    min-height: 0;
+    padding: var(--hy-space-3);
+    gap: var(--hy-space-2);
+  }
+
+  .dayNumber {
+    font-size: 13px;
+    color: var(--hy-text-2);
+  }
+
+  .weekdayShort {
+    display: inline;
+  }
+
+  .event {
+    padding: var(--hy-space-2) var(--hy-space-3);
+    border-left-width: 5px;
+    gap: 3px;
+  }
+
+  .eventTime {
+    font-size: 12px;
+  }
+
+  /* Pleine largeur : plus de raison de borner le nom à deux lignes. */
+  .eventName {
+    font-size: 16px;
+    -webkit-line-clamp: none;
+    display: block;
+  }
 }
 
 .empty {
