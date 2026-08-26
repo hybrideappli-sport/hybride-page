@@ -24,7 +24,14 @@ export interface AgendaEvent {
   details: string | null;
   location: string;
   level: string | null;
-  opensAtIso: string;
+  /**
+   * null = aucune ouverture différée : la sortie est ouverte. Les colonnes
+   * "Date ouverture"/"Heure ouverture" ont été retirées du tableur le
+   * 2026-08-26 (trop longues à saisir) ; le champ reste optionnel plutôt que
+   * supprimé, pour que le décompte refonctionne si une date réapparaît un jour
+   * sans nouvelle modification du code.
+   */
+  opensAtIso: string | null;
   lumaUrl: string | null;
 }
 
@@ -149,10 +156,18 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
     return null;
   }
 
-  const opensAtIso = parisWallClockToIso(row["Date ouverture"], row["Heure ouverture"]);
-  if (!opensAtIso) {
-    warn(`ligne ${rowNumber} : date/heure d'ouverture invalide ("${row["Date ouverture"]}" "${row["Heure ouverture"]}"), ignorée`);
-    return null;
+  // Ouverture absente = cas NORMAL depuis le retrait des colonnes (2026-08-26),
+  // pas une anomalie : aucun avertissement, et la ligne n'est plus rejetée. On
+  // n'avertit que si une date est saisie mais illisible — là, c'est une vraie
+  // faute de frappe à corriger.
+  const rawOpenDate = row["Date ouverture"]?.trim() ?? "";
+  const rawOpenTime = row["Heure ouverture"]?.trim() ?? "";
+  let opensAtIso: string | null = null;
+  if (rawOpenDate || rawOpenTime) {
+    opensAtIso = parisWallClockToIso(rawOpenDate, rawOpenTime);
+    if (!opensAtIso) {
+      warn(`ligne ${rowNumber} : date/heure d'ouverture illisible ("${rawOpenDate}" "${rawOpenTime}"), sortie traitée comme ouverte`);
+    }
   }
 
   const title = row["Titre"]?.trim() || null;

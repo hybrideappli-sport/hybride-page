@@ -38,6 +38,17 @@ Deux sources de contenu, séparées parce qu'elles ne changent pas au même ryth
 
 Chaque sortie porte deux dates : `starts_at` (la sortie) et `opens_at` (l'ouverture des inscriptions).
 
+> **Révisé le 2026-08-26 — `opens_at` est devenu optionnel.** Les colonnes
+> « Date ouverture » et « Heure ouverture » ont été retirées du tableur (trop
+> longues à saisir), qui passe de 17 à 15 colonnes. **Sans ouverture, la sortie
+> est ouverte** : une sortie publiée est une sortie où l'on peut venir. Le
+> premier cas ci-dessous est alors simplement sauté ; les deux autres sont
+> inchangés. Le champ reste lu plutôt que supprimé du code — remettre les
+> colonnes suffirait à réactiver le décompte, sans modification. Une ouverture
+> absente n'émet aucun avertissement (c'est le cas normal) ; seule une date
+> saisie mais illisible en émet un, et la sortie est alors traitée comme
+> ouverte plutôt que masquée.
+
 - **Avant `opens_at`** : la carte affiche un compte à rebours, **calculé côté client** — une page mise en cache ne doit jamais figer un décompte. Pattern hydratation-safe : état neutre tant que le composant n'est pas monté (même logique que `PhotoSlot.tsx`, qui initialise déjà son état d'animation en fonction d'une condition non déterministe au rendu serveur), calcul réel après montage, tick à la minute (pas besoin de la seconde près).
 - **Après `opens_at`, URL Luma toujours vide** : cas réel à distinguer du précédent — pas un lien mort, pas un silence qui ressemble à un bug, mais un état neutre dédié (« Inscriptions bientôt disponibles »), jamais un décompte à zéro ou négatif. C'est un signal opérationnel pour l'exploitant (Luma pas encore créé à temps), pas quelque chose que le code peut résoudre au-delà d'éviter que ça ait l'air cassé.
 - **Avant `opens_at`, URL vide** : non pertinent, le bouton ne s'affiche de toute façon pas encore.

@@ -20,12 +20,17 @@ function formatCountdown(msRemaining: number): string {
  * `lumaUrl` est renseignée, état neutre distinct sinon — jamais un lien mort,
  * jamais un décompte à zéro/négatif.
  *
+ * `opensAtIso` à null = pas d'ouverture différée, la sortie est ouverte : une
+ * sortie publiée est une sortie où l'on peut venir (décision du 2026-08-26,
+ * après le retrait des colonnes d'ouverture du tableur). Le décompte est alors
+ * simplement sauté, les deux autres états restent inchangés.
+ *
  * Calculé côté client, jamais au rendu serveur : une page mise en cache ne
  * doit pas figer un décompte. `now` reste `null` jusqu'au montage (même
  * pattern que `PhotoSlot.tsx`) pour ne jamais afficher un état potentiellement
  * faux avant que le calcul réel n'ait eu lieu.
  */
-export function RegistrationCta({ opensAtIso, lumaUrl }: { opensAtIso: string; lumaUrl: string | null }) {
+export function RegistrationCta({ opensAtIso, lumaUrl }: { opensAtIso: string | null; lumaUrl: string | null }) {
   const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
@@ -43,11 +48,11 @@ export function RegistrationCta({ opensAtIso, lumaUrl }: { opensAtIso: string; l
 
   if (now === null) return <div className={styles.cta} aria-hidden="true" />;
 
-  const opensAtMs = new Date(opensAtIso).getTime();
-  const isOpen = now >= opensAtMs;
-
-  if (!isOpen) {
-    return <p className={styles.countdown}>{formatCountdown(opensAtMs - now)}</p>;
+  if (opensAtIso !== null) {
+    const opensAtMs = new Date(opensAtIso).getTime();
+    if (now < opensAtMs) {
+      return <p className={styles.countdown}>{formatCountdown(opensAtMs - now)}</p>;
+    }
   }
 
   if (!lumaUrl) {
