@@ -29,7 +29,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           <p className={styles.eyebrow}>{CLUB.city} · depuis 2026</p>
           <h1 className={styles.heroTitle}>
             <span>On vient pour le sport.</span>
-            <span className={styles.heroAccent}>On reste pour les gens.</span>
+            <span className={styles.heroAccent}>On reste pour l&rsquo;ambiance.</span>
           </h1>
           <div className={styles.heroDisciplines}>
             {ALL_DISCIPLINES.map((code) => (
