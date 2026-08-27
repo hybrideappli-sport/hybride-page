@@ -1,0 +1,90 @@
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.hero {
+  padding: var(--hy-space-5) 0 var(--hy-space-5);
+  max-width: 62ch;
+}
+
+.eyebrow {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-2);
+}
+
+.title {
+  margin: 0 0 var(--hy-space-3);
+}
+
+.lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+  margin: 0;
+}
+
+.section {
+  padding: var(--hy-space-5) 0;
+  border-top: 1px solid var(--hy-line);
+  max-width: 62ch;
+}
+
+.sectionTitle {
+  margin: 0 0 var(--hy-space-3);
+  font-size: 21px;
+}
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-3);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+}
+
+.prose p {
+  margin: 0;
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.1em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-2);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+}
+
+/* Le point que quelqu'un risque de découvrir trop tard, sur l'écran de paiement :
+   détaché du reste pour qu'il ne se lise pas en diagonale. */
+.callout {
+  padding: var(--hy-space-3);
+  border-left: 3px solid var(--hy-violet);
+  border-radius: 0 var(--hy-radius) var(--hy-radius) 0;
+  background: var(--hy-violet-bg);
+  color: var(--hy-text-1);
+}
+
+.callout strong {
+  color: var(--hy-violet);
+}
+
+.cta {
+  padding: var(--hy-space-5) 0 var(--hy-space-7);
+  border-top: 1px solid var(--hy-line);
+}
+
+.outboundNote {
+  font-size: 13px;
+  color: var(--hy-text-3);
+  margin: var(--hy-space-3) 0 0;
+}

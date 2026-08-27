@@ -166,6 +166,13 @@ Les questions structurantes du cadrage sont tranchées (voir `00-brief-site-hybr
 - [ ] `contact@hybride-club.fr` (adresse de contact légal affichée sur les pages mentions légales et confidentialité du club) : la redirection OVH vers une boîte réelle n'est pas encore créée côté association. Une adresse de contact légal qui ne reçoit rien est un problème à résoudre avant toute communication publique de l'URL du site — pas seulement une tâche différable.
 - [ ] `/mentions-legales` racine (entité commerciale éditrice de l'app, distincte du club) : page publique, tous les champs sont encore des placeholders entre crochets (`[Raison sociale]`, `[SIRET à compléter]`, etc. — voir `app/mentions-legales/page.tsx`). Hors périmètre de la bascule ADR-010, mais bloquant pour cette même raison : **à remplir avant toute communication de l'URL du site**, comme le point ci-dessus.
 
+**Dépendance ouverte — couverture d'assurance (adhésion obligatoire, 2026-08-27)**
+
+L'adhésion devient obligatoire après la séance découverte (1 € pour l'année). Le site en donne publiquement la **couverture par l'assurance du club** comme raison — c'est écrit sur `/club/toulon/adherer` et sur `/club/toulon/le-club`.
+
+- [ ] **Confirmer auprès de l'assureur que l'adhésion ouvre effectivement la couverture annoncée.** Affirmation publique non encore vérifiée à la source : à confirmer avant toute mise en ligne de ces textes. Si la couverture réelle diffère, ce sont les deux pages ci-dessus qu'il faut corriger, pas seulement la page d'adhésion.
+- [ ] **Question annexe, angle mort de la nouvelle règle : un non-adhérent est-il couvert pendant sa séance découverte ?** C'est précisément le moment où quelqu'un n'a encore aucun statut de membre, et c'est aussi le seul moment que le site présente comme ouvert à tous. Deux issues possibles, aux conséquences très différentes : soit la séance découverte est couverte et les textes actuels tiennent, soit elle ne l'est pas — et il faut alors décider ce qu'on dit au visiteur, voire revoir la règle elle-même. À trancher avec l'assureur, pas par déduction.
+
 ---
 
 ## 9. Prochaine étape

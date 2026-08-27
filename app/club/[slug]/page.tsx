@@ -22,7 +22,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <div className={styles.heroText}>
@@ -111,7 +111,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               La deuxième, si.
             </>
           }
-          lead="Toutes nos sorties sont ouvertes. Tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux."
+          lead="La première séance est une découverte : tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux. Ensuite, l’adhésion est de 1 € pour l’année."
           ctaLabel="Voir les prochaines sorties"
           ctaHref={`/club/${CLUB.slug}/planning`}
         />

@@ -26,7 +26,7 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <div className={styles.heroIcons} aria-hidden="true">
@@ -59,8 +59,9 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
         </p>
         <p>Ce qu&rsquo;on cherche ici, c&rsquo;est simple : bien s&rsquo;entourer.</p>
         <p>
-          Et c&rsquo;est gratuit. Toutes les sorties, sans exception. Ce n&rsquo;est pas une offre de lancement, c&rsquo;est comme ça
-          qu&rsquo;on veut que le club fonctionne.
+          La première fois, tu viens en découverte : rien à payer, rien à signer. Ensuite, l&rsquo;adhésion devient obligatoire — 1 €
+          pour l&rsquo;année, le temps d&rsquo;être couvert par l&rsquo;assurance du club. Les sorties, elles, restent gratuites.{" "}
+          <Link href={`/club/${CLUB.slug}/adherer`}>Comment adhérer</Link>.
         </p>
       </div>
 

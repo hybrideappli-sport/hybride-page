@@ -14,7 +14,7 @@ import styles from "./ClubNav.module.css";
  * En dessous de 860px (repris du point de rupture déjà utilisé par .hero et
  * .doors) : liens + CTA passent dans le panneau `.menu`, replié par défaut.
  */
-export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAssoUrl: string | null }) {
+export function ClubNav({ clubSlug }: { clubSlug: string }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -34,12 +34,16 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
           <Link className={styles.link} href={`/club/${clubSlug}/shop`}>
             Shop
           </Link>
-          {helloAssoUrl ? (
-            <Button href={helloAssoUrl} size="mini" target="_blank" rel="noopener noreferrer">
-              Rejoindre
-            </Button>
-          ) : null}
         </div>
+
+        {/* Hors du panneau repliable, donc visible sur mobile sans ouvrir le
+            burger : c'est le seul geste que la page attend vraiment du visiteur.
+            Pointe vers /adherer et non plus vers HelloAsso — l'écran de paiement
+            comporte une contribution pré-cochée qu'il faut avoir expliquée avant. */}
+        <Button href={`/club/${clubSlug}/adherer`} size="mini" className={styles.joinCta} onClick={close}>
+          Adhérer
+        </Button>
+
         <button
           type="button"
           className={styles.burger}
@@ -64,11 +68,6 @@ export function ClubNav({ clubSlug, helloAssoUrl }: { clubSlug: string; helloAss
         <Link className={styles.menuLink} href={`/club/${clubSlug}/shop`} onClick={close}>
           Shop
         </Link>
-        {helloAssoUrl ? (
-          <Button href={helloAssoUrl} size="mini" target="_blank" rel="noopener noreferrer" className={styles.menuCta} onClick={close}>
-            Rejoindre
-          </Button>
-        ) : null}
       </div>
     </nav>
   );

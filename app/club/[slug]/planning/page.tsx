@@ -32,7 +32,7 @@ export default async function PlanningPage({
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Planning</p>

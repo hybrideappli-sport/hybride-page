@@ -41,6 +41,23 @@
   color: var(--hy-violet);
 }
 
+/* Le CTA d'adhésion vit dans la barre, hors du panneau repliable : c'est le seul
+   geste attendu du visiteur, il ne doit pas dépendre de l'ouverture du burger.
+   Sur grand écran il se place après les liens, sur mobile juste avant le burger.
+   Vérifié à 375px : logo + bouton + burger tiennent sans débordement. */
+.joinCta {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+@media (max-width: 860px) {
+  .joinCta {
+    /* .brand porte déjà margin-right:auto, qui pousse tout le reste à droite. */
+    margin-left: 0;
+    margin-right: var(--hy-space-2);
+  }
+}
+
 /* Bouton burger : masqué par défaut (desktop), activé en dessous de 860px. */
 .burger {
   display: none;

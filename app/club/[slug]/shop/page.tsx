@@ -44,7 +44,7 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Boutique</p>

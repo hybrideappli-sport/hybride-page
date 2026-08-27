@@ -12,7 +12,7 @@ export default async function ClubPrivacyPage({ params }: { params: Promise<{ sl
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
       <LegalPage title="Politique de confidentialité" updatedAt="2026-08-19">
         <h2>Responsable de traitement</h2>
         <p>

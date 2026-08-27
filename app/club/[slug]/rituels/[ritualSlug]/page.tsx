@@ -22,7 +22,7 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
 
       <Link href={`/club/${CLUB.slug}#le-club`} className={styles.back}>
         ← Retour au club

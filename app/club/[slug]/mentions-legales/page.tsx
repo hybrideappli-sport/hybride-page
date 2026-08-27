@@ -12,7 +12,7 @@ export default async function ClubMentionsLegalesPage({ params }: { params: Prom
 
   return (
     <div className={styles.wrap}>
-      <ClubNav clubSlug={CLUB.slug} helloAssoUrl={CLUB.helloAssoUrl} />
+      <ClubNav clubSlug={CLUB.slug} />
       <LegalPage title="Mentions légales" updatedAt="2026-08-14">
         <h2>Éditeur</h2>
         <p>
