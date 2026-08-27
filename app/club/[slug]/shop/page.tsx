@@ -86,49 +86,29 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
          * n'annonce pas un décompte inexistant, et c'est le texte à côté qui
          * porte le sens. Le jour où une date existe, ce bloc se remplace par un
          * vrai décompte sans toucher au reste de la page.
+         *
+         * La section « Où sera annoncée la sortie » (WhatsApp + Instagram) qui
+         * suivait a été retirée le 2026-08-27 : le teasing dit déjà qu'il se
+         * passe quelque chose, énumérer les canaux d'annonce diluait le message.
+         * Instagram reste atteignable depuis le pied de page, présent ici comme
+         * sur toutes les pages du club.
          */
-        <>
-          <section className={styles.teaser}>
-            <div className={styles.teaserGlow} aria-hidden="true" />
+        <section className={styles.teaser}>
+          <div className={styles.teaserGlow} aria-hidden="true" />
 
-            <div className={styles.countdown} aria-hidden="true">
-              {/* Chiffres arbitraires et volontairement différents : trois "00"
-                  identiques donnaient trois taches jumelles, sans silhouette de
-                  décompte. Aucune signification — ils ne sont ni lus ni lisibles. */}
-              {["07", "18", "42"].map((digits, i) => (
-                <span key={i} className={styles.countBlock}>
-                  <span className={styles.countDigits}>{digits}</span>
-                </span>
-              ))}
-            </div>
-
-            <p className={styles.teaserLabel}>Bientôt dévoilé</p>
-          </section>
-
-          <section className={styles.waiting}>
-            <h2 className={styles.waitingTitle}>Où sera annoncée la sortie</h2>
-          <div className={styles.channels}>
-            <div className={styles.channel}>
-              <p className={styles.channelLabel}>Groupe WhatsApp</p>
-              <p className={styles.channelText}>
-                C&rsquo;est là que ça se saura en premier. Le lien du groupe arrive à l&rsquo;inscription à une sortie sur Luma.
-              </p>
-            </div>
-
-            {CLUB.instagramUrl ? (
-              <div className={styles.channel}>
-                <p className={styles.channelLabel}>Instagram</p>
-                <p className={styles.channelText}>
-                  <a href={CLUB.instagramUrl} target="_blank" rel="noopener noreferrer" className={styles.outLink}>
-                    Le club sur Instagram ↗
-                  </a>
-                </p>
-              </div>
-            ) : null}
+          <div className={styles.countdown} aria-hidden="true">
+            {/* Chiffres arbitraires et volontairement différents : trois "00"
+                identiques donnaient trois taches jumelles, sans silhouette de
+                décompte. Aucune signification — ils ne sont ni lus ni lisibles. */}
+            {["07", "18", "42"].map((digits, i) => (
+              <span key={i} className={styles.countBlock}>
+                <span className={styles.countDigits}>{digits}</span>
+              </span>
+            ))}
           </div>
-            <p className={styles.outboundNote}>↗ Ce lien ouvre Instagram dans un nouvel onglet, en dehors de ce site.</p>
-          </section>
-        </>
+
+          <p className={styles.teaserLabel}>Bientôt dévoilé</p>
+        </section>
       )}
 
       <ClubFooter
