@@ -4,6 +4,15 @@
   padding: 0 var(--hy-space-4);
 }
 
+/* Espace réservé sous la barre fixe mobile : sans lui, elle masquerait la fin
+   du pied de page, qu'on ne pourrait plus faire défiler pour la dégager.
+   Hauteur de la barre (bouton 44px + 2×16px de padding) plus une marge. */
+@media (max-width: 860px) {
+  .wrap {
+    padding-bottom: 96px;
+  }
+}
+
 .hero {
   padding: var(--hy-space-5) 0 var(--hy-space-5);
   max-width: 62ch;

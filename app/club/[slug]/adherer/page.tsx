@@ -3,8 +3,12 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
+import { StickyJoinCta } from "@/components/club/StickyJoinCta";
 import { CLUB } from "@/lib/config";
 import styles from "./page.module.css";
+
+/** Cible observée par la barre fixe mobile, qui s'efface quand ce bouton entre dans le champ. */
+const REAL_CTA_ID = "adherer-cta";
 
 /**
  * Adhésion obligatoire après la séance découverte (2026-08-27) : le site
@@ -95,11 +99,15 @@ export default async function ClubMembershipPage({ params }: { params: Promise<{
 
       {CLUB.helloAssoUrl ? (
         <div className={styles.cta}>
-          <Button href={CLUB.helloAssoUrl} target="_blank" rel="noopener noreferrer">
+          <Button id={REAL_CTA_ID} href={CLUB.helloAssoUrl} target="_blank" rel="noopener noreferrer">
             Adhérer sur HelloAsso ↗
           </Button>
           <p className={styles.outboundNote}>↗ Ce lien ouvre HelloAsso.com dans un nouvel onglet, en dehors de ce site.</p>
         </div>
+      ) : null}
+
+      {CLUB.helloAssoUrl ? (
+        <StickyJoinCta href={CLUB.helloAssoUrl} label="Adhérer sur HelloAsso ↗" watchId={REAL_CTA_ID} />
       ) : null}
 
       <ClubFooter

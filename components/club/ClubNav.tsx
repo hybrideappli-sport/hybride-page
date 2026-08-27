@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -17,6 +18,12 @@ import styles from "./ClubNav.module.css";
 export function ClubNav({ clubSlug }: { clubSlug: string }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+
+  // Masqué sur la page d'adhésion elle-même : le bouton y pointerait vers la page
+  // courante, et il s'ajouterait au bouton de la page plus à la barre fixe mobile
+  // — trois fois la même action à l'écran.
+  const joinHref = `/club/${clubSlug}/adherer`;
+  const onJoinPage = usePathname() === joinHref;
 
   return (
     <nav className={styles.nav}>
@@ -40,9 +47,11 @@ export function ClubNav({ clubSlug }: { clubSlug: string }) {
             burger : c'est le seul geste que la page attend vraiment du visiteur.
             Pointe vers /adherer et non plus vers HelloAsso — l'écran de paiement
             comporte une contribution pré-cochée qu'il faut avoir expliquée avant. */}
-        <Button href={`/club/${clubSlug}/adherer`} size="mini" className={styles.joinCta} onClick={close}>
-          Adhérer
-        </Button>
+        {onJoinPage ? null : (
+          <Button href={joinHref} size="mini" className={styles.joinCta} onClick={close}>
+            Adhérer
+          </Button>
+        )}
 
         <button
           type="button"
