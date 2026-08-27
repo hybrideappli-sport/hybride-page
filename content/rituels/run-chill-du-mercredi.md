@@ -3,7 +3,7 @@ title: Le Run chill du mercredi
 discipline: course
 day: Mercredi
 time: 19h ou 19h30 selon les semaines
-level: Accessible, y compris aux débutants
+level: Trois allures — 5'45, 6'20 ou 6'50
 meetingPoint: Le Mourillon, Toulon
 mapsUrl: https://www.google.com/maps?q=43.1070970,5.9525701
 coach:
@@ -17,7 +17,7 @@ Une sortie course à pied au Mourillon, tous les mercredis à 19h ou 19h30 selon
 
 ## Trois allures
 
-5'45 au kilomètre, 6'20, ou 6'50. Tu choisis ton groupe en arrivant, tu changes d'une semaine à l'autre si tu veux. Personne ne court seul et personne n'est laissé derrière.
+5'45 au kilomètre, 6'20, ou 6'50. Tu choisis ton groupe en arrivant, tu changes d'une semaine à l'autre si tu veux.
 
 ## L'after
 
@@ -25,7 +25,7 @@ C'est la moitié de la soirée. Bar, plage, volley — ça dépend de l'envie du
 
 ## Le niveau
 
-Six kilomètres à 6'50, c'est accessible à quelqu'un qui court un peu. Si tu débutes vraiment, viens quand même : le groupe le plus lent t'attend.
+Six kilomètres à 6'50, c'est accessible à quelqu'un qui court un peu. Si tu débutes, prends le groupe à 6'50. C'est celui où on parle le plus, et personne n'y court seul.
 
 ## En images
 

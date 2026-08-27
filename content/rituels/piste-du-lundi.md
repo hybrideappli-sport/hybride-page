@@ -26,7 +26,7 @@ Parce que chacun repart avec sa séance, ses temps, son objectif. Tu ne viens pa
 
 ## Le niveau
 
-Tous niveaux. Un débutant fera sa séance, un coureur confirmé la sienne — c'est justement le principe.
+Tous niveaux. Quelqu'un qui commence fait sa séance, quelqu'un qui prépare un chrono fait la sienne — c'est justement le principe.
 
 ## En images
 
