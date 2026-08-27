@@ -69,6 +69,130 @@
   padding-bottom: var(--hy-space-6);
 }
 
+/*
+ * Teasing (2026-08-26) : la page était noire et vide, la plus fade du site.
+ * Composition qui ÉVOQUE un décompte sans en être un — aucune date ferme, et
+ * un décompte qui expire sans livraison abîme la confiance. Les chiffres sont
+ * des glyphes de remplissage floutés, le bloc est aria-hidden côté TSX pour
+ * qu'aucun lecteur d'écran n'annonce un décompte inexistant.
+ *
+ * Toute la couleur vient du violet d'accent déjà en place (--hy-violet,
+ * --hy-violet-bg, --hy-violet-fill) : aucune teinte nouvelle.
+ */
+.teaser {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* Centré : sur 1120px, le bloc calé à gauche laissait les deux tiers du
+     panneau vides — soit exactement le défaut qu'on venait corriger. */
+  justify-content: center;
+  gap: var(--hy-space-4);
+  padding: var(--hy-space-6) var(--hy-space-5);
+  margin-bottom: var(--hy-space-6);
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius-card);
+  background: var(--hy-surface-1);
+  overflow: hidden;
+}
+
+/* Halo violet diffus : donne la couleur sans poser d'aplat, et reste derrière
+   le contenu (z-index négatif dans le contexte isolé par .teaser). */
+.teaserGlow {
+  position: absolute;
+  z-index: -1;
+  inset: -40% -10% auto -10%;
+  height: 260px;
+  background: radial-gradient(ellipse at 50% 50%, var(--hy-violet-fill) 0%, transparent 65%);
+  opacity: 0.4;
+}
+
+.countdown {
+  display: flex;
+  gap: var(--hy-space-2);
+}
+
+.countBlock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  padding: var(--hy-space-3) var(--hy-space-2);
+  border-radius: var(--hy-radius);
+  border: 1px solid var(--hy-violet);
+  background: var(--hy-violet-bg);
+  /* Le flou déborderait des blocs sans ça, et bavait sur les blocs voisins. */
+  overflow: hidden;
+}
+
+/*
+ * Le flou EST l'effet, pas une dégradation : les chiffres ne doivent jamais
+ * redevenir lisibles. filter, pas une image — reste net à tout niveau de zoom
+ * et suit la couleur du texte.
+ */
+.countDigits {
+  font-family: var(--hy-font-mono);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--hy-violet);
+  filter: blur(6px);
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .countDigits {
+    animation: hy-teaser-pulse 3.2s ease-in-out infinite;
+  }
+
+  .countBlock:nth-child(2) .countDigits {
+    animation-delay: 0.4s;
+  }
+
+  .countBlock:nth-child(3) .countDigits {
+    animation-delay: 0.8s;
+  }
+}
+
+/* Respiration lente, jamais un clignotement : l'opacité seule bouge, le flou
+   reste constant pour que rien ne devienne lisible au passage. */
+@keyframes hy-teaser-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.teaserLabel {
+  margin: 0;
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-violet);
+}
+
+@media (max-width: 860px) {
+  .teaser {
+    padding: var(--hy-space-5) var(--hy-space-4);
+    gap: var(--hy-space-3);
+  }
+
+  .countBlock {
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
+  .countDigits {
+    font-size: 34px;
+    filter: blur(5px);
+  }
+}
+
 /* État d'attente (2026-08-25), affiché tant que PRODUCTS est vide — même
    vocabulaire visuel que la section "Nous rejoindre" de /le-club, sans ses
    couleurs de marque : celles-ci sont volontairement confinées à cette

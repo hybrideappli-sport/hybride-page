@@ -79,12 +79,34 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
         </>
       ) : (
         /*
-         * Pas de compte à rebours : aucune date ferme côté club, et un décompte
-         * qui expire sans livraison abîme la confiance plus qu'il ne fait
-         * patienter. À rajouter le jour où une date existe.
+         * Composition graphique, PAS un vrai décompte : aucune date ferme côté
+         * club, et un décompte qui expire sans livraison abîme la confiance plus
+         * qu'il ne fait patienter. Les chiffres sont des glyphes de remplissage
+         * floutés — le bloc entier est aria-hidden pour qu'un lecteur d'écran
+         * n'annonce pas un décompte inexistant, et c'est le texte à côté qui
+         * porte le sens. Le jour où une date existe, ce bloc se remplace par un
+         * vrai décompte sans toucher au reste de la page.
          */
-        <section className={styles.waiting}>
-          <h2 className={styles.waitingTitle}>Où sera annoncée la sortie</h2>
+        <>
+          <section className={styles.teaser}>
+            <div className={styles.teaserGlow} aria-hidden="true" />
+
+            <div className={styles.countdown} aria-hidden="true">
+              {/* Chiffres arbitraires et volontairement différents : trois "00"
+                  identiques donnaient trois taches jumelles, sans silhouette de
+                  décompte. Aucune signification — ils ne sont ni lus ni lisibles. */}
+              {["07", "18", "42"].map((digits, i) => (
+                <span key={i} className={styles.countBlock}>
+                  <span className={styles.countDigits}>{digits}</span>
+                </span>
+              ))}
+            </div>
+
+            <p className={styles.teaserLabel}>Bientôt dévoilé</p>
+          </section>
+
+          <section className={styles.waiting}>
+            <h2 className={styles.waitingTitle}>Où sera annoncée la sortie</h2>
           <div className={styles.channels}>
             <div className={styles.channel}>
               <p className={styles.channelLabel}>Groupe WhatsApp</p>
@@ -104,8 +126,9 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
               </div>
             ) : null}
           </div>
-          <p className={styles.outboundNote}>↗ Ce lien ouvre Instagram dans un nouvel onglet, en dehors de ce site.</p>
-        </section>
+            <p className={styles.outboundNote}>↗ Ce lien ouvre Instagram dans un nouvel onglet, en dehors de ce site.</p>
+          </section>
+        </>
       )}
 
       <ClubFooter
