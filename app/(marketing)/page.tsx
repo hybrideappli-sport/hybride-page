@@ -96,8 +96,10 @@ export default function MarketingHomePage() {
             Association loi 1901, {CLUB.legalCity}.
             <br />
             <Link href="/club/toulon/mentions-legales">Mentions légales</Link> ·{" "}
-            <Link href="/club/toulon/politique-de-confidentialite">Confidentialité</Link> · Déclaration au JOAFE ·{" "}
-            <a href="mailto:contact@hybride-club.fr">contact@hybride-club.fr</a>
+            {/* Mention du JOAFE retirée le 2026-08-28 : le récépissé préfectoral précise
+                que l'insertion au Journal officiel est facultative et que c'est lui qui fait foi. */}
+            <Link href="/club/toulon/politique-de-confidentialite">Confidentialité</Link> ·{" "}
+            <a href={`mailto:${CLUB.contactEmail}`}>{CLUB.contactEmail}</a>
           </div>
           <div>
             <strong>Hybride — l&rsquo;application</strong>

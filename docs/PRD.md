@@ -162,7 +162,7 @@ Les questions structurantes du cadrage sont tranchées (voir `00-brief-site-hybr
 **Dépendances ouvertes de la saison courante (ADR-010, 2026-08-19)** — distinctes des deux ci-dessus, qui concernent le flux en ligne dormant :
 
 - [x] Commune du siège social (`lib/config.ts` → `CLUB.legalCity`) — confirmée le 2026-08-20 : "Toulon". Coïncide avec `city` cette saison, reste un champ distinct.
-- [ ] Mentions légales du club (`app/club/[slug]/mentions-legales`) : numéro RNA et nom du représentant légal — à sourcer dans les statuts et le récépissé de déclaration.
+- [x] Mentions légales du club (`app/club/[slug]/mentions-legales`) — complétées le 2026-08-28 depuis les statuts, le récépissé préfectoral et la liste des dirigeants : siège social, récépissé n° W832023479 (préfecture du Var, 8 juin 2026), responsable de publication, hébergeur. Bandeau « Contenu provisoire » retiré de cette page seule. **Aucune mention du Journal officiel des associations** : le récépissé précise que l'insertion y est facultative et que c'est lui qui fait foi — à ne réintroduire que si une publication a réellement lieu.
 - [ ] `contact@hybride-club.fr` : la redirection OVH vers une boîte réelle n'est pas encore créée côté association. Une adresse de contact légal qui ne reçoit rien est un problème à résoudre avant toute communication publique de l'URL du site — pas seulement une tâche différable. **Portée élargie le 2026-08-28** : cette adresse ne sert plus seulement de contact légal (mentions légales, confidentialité). Elle est désormais le SEUL canal de deux sollicitations entrantes — l'appel à bénévoles de `/club/toulon/le-club` et l'offre de partenariat du pied de page club, toutes deux en `mailto:`. Tant que la redirection n'existe pas, ces deux sections invitent à écrire à une adresse qui ne reçoit rien : les messages sont perdus sans que personne, ni l'expéditeur ni le club, ne s'en aperçoive. C'est le mode de défaillance le plus silencieux du site.
 - [ ] `/mentions-legales` racine (entité commerciale éditrice de l'app, distincte du club) : page publique, tous les champs sont encore des placeholders entre crochets (`[Raison sociale]`, `[SIRET à compléter]`, etc. — voir `app/mentions-legales/page.tsx`). Hors périmètre de la bascule ADR-010, mais bloquant pour cette même raison : **à remplir avant toute communication de l'URL du site**, comme le point ci-dessus.
 
@@ -172,6 +172,10 @@ L'adhésion devient obligatoire après la séance découverte (1 € pour l'ann�
 
 - [ ] **Confirmer auprès de l'assureur que l'adhésion ouvre effectivement la couverture annoncée.** Affirmation publique non encore vérifiée à la source : à confirmer avant toute mise en ligne de ces textes. Si la couverture réelle diffère, ce sont les deux pages ci-dessus qu'il faut corriger, pas seulement la page d'adhésion.
 - [ ] **Question annexe, angle mort de la nouvelle règle : un non-adhérent est-il couvert pendant sa séance découverte ?** C'est précisément le moment où quelqu'un n'a encore aucun statut de membre, et c'est aussi le seul moment que le site présente comme ouvert à tous. Deux issues possibles, aux conséquences très différentes : soit la séance découverte est couverte et les textes actuels tiennent, soit elle ne l'est pas — et il faut alors décider ce qu'on dit au visiteur, voire revoir la règle elle-même. À trancher avec l'assureur, pas par déduction.
+
+**Dépendance ouverte — statuts et cotisation (2026-08-28)**
+
+- [ ] **L'article 4 des statuts définit le membre sans mention de cotisation, alors que le site annonce une adhésion obligatoire à 1 €** (`/club/toulon/adherer`, `/club/toulon/le-club`, bandeau d'appel à l'action de `/club/toulon`). Modification des statuts à prévoir en assemblée générale. Noté, pas à résoudre dans l'immédiat — mais à ne pas perdre de vue : ce que le site annonce publiquement n'est pas encore ce que les statuts prévoient. Toucher aux statuts relève de l'AG, jamais d'une modification de code.
 
 ---
 

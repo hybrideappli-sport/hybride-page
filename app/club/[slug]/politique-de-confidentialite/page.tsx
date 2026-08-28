@@ -13,11 +13,16 @@ export default async function ClubPrivacyPage({ params }: { params: Promise<{ sl
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
-      <LegalPage title="Politique de confidentialité" updatedAt="2026-08-19">
+      <LegalPage title="Politique de confidentialité" updatedAt="2026-08-28">
         <h2>Responsable de traitement</h2>
         <p>
-          {CLUB.name} (association loi 1901) est seule responsable de ce point club. Cette responsabilité est distincte de celle de
-          l&rsquo;entité commerciale éditrice de l&rsquo;app Hybride, responsable de traitement séparée pour ses propres finalités.
+          {CLUB.name} (association régie par la loi du 1<sup>er</sup> juillet 1901), dont le siège social est situé {CLUB.legalAddress},
+          est seule responsable de ce point club. Cette responsabilité est distincte de celle de l&rsquo;entité commerciale éditrice de
+          l&rsquo;app Hybride, responsable de traitement séparée pour ses propres finalités.
+        </p>
+        <p>
+          Pour toute demande relative à vos données (accès, rectification, effacement, opposition) :{" "}
+          <a href={`mailto:${CLUB.contactEmail}`}>{CLUB.contactEmail}</a>.
         </p>
 
         <h2>Ce que ce site collecte lui-même</h2>

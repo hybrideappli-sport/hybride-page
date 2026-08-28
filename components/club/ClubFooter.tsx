@@ -48,7 +48,9 @@ export function ClubFooter({
 
       <p>
         <Link href={`/club/${clubSlug}/mentions-legales`}>Mentions légales</Link> ·{" "}
-        <Link href={`/club/${clubSlug}/politique-de-confidentialite`}>Politique de confidentialité</Link> · Déclaration au JOAFE
+        {/* Aucune mention du JOAFE : le récépissé préfectoral précise que l'insertion
+            au Journal officiel est facultative et que c'est lui qui fait foi (2026-08-28). */}
+        <Link href={`/club/${clubSlug}/politique-de-confidentialite`}>Politique de confidentialité</Link>
         {contactEmail ? (
           <>
             {" "}

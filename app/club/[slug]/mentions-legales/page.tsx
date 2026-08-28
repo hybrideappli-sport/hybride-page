@@ -13,19 +13,43 @@ export default async function ClubMentionsLegalesPage({ params }: { params: Prom
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
-      <LegalPage title="Mentions légales" updatedAt="2026-08-14">
+      {/*
+       * Informations réelles depuis le 2026-08-28 (statuts, récépissé
+       * préfectoral, liste des dirigeants) — d'où provisional={false}.
+       *
+       * Aucune mention du Journal officiel des associations : le récépissé
+       * précise que l'insertion y est facultative et que c'est lui qui fait
+       * foi. Ne réintroduire cette mention que si une publication a
+       * effectivement eu lieu.
+       */}
+      <LegalPage title="Mentions légales" updatedAt="2026-08-28" provisional={false}>
         <h2>Éditeur</h2>
         <p>
-          {CLUB.name}, association loi du 1er juillet 1901, {CLUB.legalCity}. Déclarée au Journal officiel des associations (JOAFE) — numéro
-          RNA à compléter.
+          {CLUB.name}, association régie par la loi du 1<sup>er</sup> juillet 1901.
         </p>
-        <p>Contact : {CLUB.contactEmail}</p>
+        <p>Siège social : {CLUB.legalAddress}.</p>
+        <p>
+          Déclarée à la {CLUB.declaration} — récépissé n<sup>o</sup> {CLUB.rnaNumber}.
+        </p>
 
         <h2>Responsable de publication</h2>
-        <p>Le bureau de l&rsquo;association — nom du représentant légal à compléter.</p>
+        <p>{CLUB.publicationDirector}.</p>
 
-        <h2>Hébergement</h2>
-        <p>Vercel Inc. — hébergement mutualisé avec l&rsquo;app Hybride sur un domaine commun (00-brief-site-hybride.md, décision 1).</p>
+        <h2>Contact</h2>
+        <p>
+          <a href={`mailto:${CLUB.contactEmail}`}>{CLUB.contactEmail}</a>
+        </p>
+
+        <h2>Hébergeur</h2>
+        <p>
+          Vercel Inc.
+          <br />
+          340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis
+          <br />
+          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">
+            vercel.com
+          </a>
+        </p>
 
         <h2>Responsable de traitement</h2>
         <p>
