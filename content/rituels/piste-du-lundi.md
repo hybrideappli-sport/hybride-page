@@ -7,7 +7,7 @@ level: Tous niveaux
 capacity: 15 personnes maximum
 meetingPoint: Piste du stade Léo Lagrange, Toulon
 mapsUrl: https://www.google.com/maps?q=43.1277111,5.9738709
-coach: Esteban, deux ans entraîneur d'athlétisme avant de monter le club à Toulon.
+coach: Un coach du club, deux ans d'expérience en athlétisme avant de monter Hybride.
 photo: piste-hero.jpg
 photoAlt: Deux membres du club plaisantant sur la piste, collines en arrière-plan
 ---
