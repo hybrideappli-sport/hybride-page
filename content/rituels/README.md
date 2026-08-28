@@ -1,6 +1,6 @@
 # Éditer les pages rituels — guide sans code
 
-Ce dossier contient le texte des pages "La piste du lundi" et "Le Run chill du mercredi" (`/club/toulon/rituels/...`). Tu peux modifier ces fichiers directement sur github.com, dans le navigateur — pas besoin d'installer quoi que ce soit.
+Ce dossier contient le texte des pages de rituels (« La piste du lundi », « Le Run chill du mercredi », « Les soirées Hybride ») (`/club/toulon/rituels/...`). Tu peux modifier ces fichiers directement sur github.com, dans le navigateur — pas besoin d'installer quoi que ce soit.
 
 ## Modifier un texte
 
@@ -45,10 +45,20 @@ Le champ `photo:` en haut du fichier (dans les `---`) sert à deux endroits : la
 
 Dans un paragraphe, écris `[texte du lien](adresse)` — par exemple `[le planning](/club/toulon/planning)`. Ça devient un lien cliquable sur la page, avec "texte du lien" affiché et souligné.
 
+## Le champ `activity:`
+
+Il donne la **couleur** de la sortie sur tout le site. Une seule valeur, à choisir dans cette liste exactement : `piste`, `social-run`, `trail`, `velo`, `nage`, `bivouac`, `soirees`, `communautaire`.
+
+Si tu écris autre chose, la page ne s'affichera pas.
+
+## Une page sans photo
+
+Laisse `photo:` et `photoAlt:` vides. La page affichera une carte colorée avec le titre à la place d'une image — c'est prévu, ce n'est pas un défaut. Ajoute la photo plus tard quand tu l'as.
+
 ## Le champ `capacity:`
 
 Optionnel — un plafond de places, s'il y en a un (par exemple `capacity: 15 personnes maximum`). Laisse-le vide s'il n'y a pas de limite fixe.
 
 ## Si un fichier ne s'affiche plus après une modification
 
-Le format est volontairement simple mais strict sur un point : les champs `title`, `discipline`, `day`, `time`, `level` et `meetingPoint` (en haut du fichier) doivent tous avoir une valeur, sinon la page ne s'affiche pas. Si ça arrive, compare avec l'autre fichier `.md` du dossier pour repérer ce qui manque, ou demande de l'aide.
+Le format est volontairement simple mais strict sur un point : les champs `title`, `activity`, `day`, `time`, `level` et `meetingPoint` (en haut du fichier) doivent tous avoir une valeur, sinon la page ne s'affiche pas. Si ça arrive, compare avec un autre fichier `.md` du dossier pour repérer ce qui manque, ou demande de l'aide.

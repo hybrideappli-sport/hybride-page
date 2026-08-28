@@ -1,6 +1,6 @@
 ---
 title: Le Run chill du mercredi
-discipline: course
+activity: social-run
 day: Mercredi
 time: 19h ou 19h30 selon les semaines
 level: Trois allures — 5'45, 6'20 ou 6'50

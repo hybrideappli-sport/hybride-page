@@ -1,6 +1,6 @@
 import "server-only";
 
-import { disciplineLabel, type Discipline } from "@/components/ui/Tag";
+import { activityLabel, type Activity } from "@/components/ui/Tag";
 
 /**
  * ADR-010 §2 : le tableur est la source d'autorité de l'agenda, pas Supabase
@@ -16,7 +16,9 @@ const REVALIDATE_SECONDS = 300;
 export interface AgendaEvent {
   id: string;
   title: string | null;
-  disciplines: { code: Discipline; label: string }[];
+  /** Une seule activité par sortie depuis le 2026-08-28 — voir ACTIVITY_BY_SHEET_VALUE. */
+  activity: Activity;
+  activityLabelText: string;
   format: string | null;
   /** ISO, instant réel (converti depuis le texte brut Europe/Paris de la feuille). */
   startsAtIso: string;
@@ -35,13 +37,50 @@ export interface AgendaEvent {
   lumaUrl: string | null;
 }
 
-const DISCIPLINE_COLUMNS: { header: string; code: Discipline }[] = [
-  { header: "Course", code: "course" },
-  { header: "Vélo", code: "velo" },
-  { header: "Eau", code: "eau" },
-  { header: "Montagne", code: "montagne" },
-  { header: "Collectif", code: "collectif" },
-];
+/**
+ * Colonne unique « Activité » à liste déroulante, depuis le 2026-08-28 — elle
+ * remplace les cinq colonnes de cases à cocher (Course/Vélo/Eau/Montagne/
+ * Collectif).
+ *
+ * Trois raisons, la première décisive : la saisie se fait depuis un téléphone,
+ * où une cellule à choisir bat huit colonnes à balayer horizontalement ; la
+ * liste va s'agrandir, et une entrée de plus dans un menu déroulant ne
+ * restructure pas le tableur ; et une validation de données rend la cellule
+ * impossible à laisser invalide, alors qu'une ligne sans aucune case cochée
+ * était jusqu'ici silencieusement ignorée.
+ *
+ * Clés tolérantes : on compare en minuscules sans accents, pour qu'une saisie
+ * « Social Run » ou « velo » passe quand même.
+ */
+const ACTIVITY_BY_SHEET_VALUE: Record<string, Activity> = {
+  piste: "piste",
+  "social run": "social-run",
+  "run chill": "social-run",
+  trail: "trail",
+  velo: "velo",
+  "sunset bike": "velo",
+  route: "velo",
+  nage: "nage",
+  "nage en eau libre": "nage",
+  "eau libre": "nage",
+  bivouac: "bivouac",
+  soiree: "soirees",
+  "soiree hybride": "soirees",
+  communautaire: "communautaire",
+  "evenement communautaire": "communautaire",
+  volley: "communautaire",
+  "danse fit": "communautaire",
+};
+
+/** Minuscules, sans accents, espaces normalisés — pour comparer une saisie humaine à une clé. */
+function normalizeActivity(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ");
+}
 
 /**
  * CSV minimal (RFC 4180 : champs entre guillemets, virgules et guillemets
@@ -129,12 +168,16 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   // sans avertissement (état normal, pas une erreur de saisie).
   if (row["Statut"]?.trim() !== "publiée") return null;
 
-  const disciplines = DISCIPLINE_COLUMNS.filter((d) => row[d.header]?.trim().toUpperCase() === "TRUE").map((d) => ({
-    code: d.code,
-    label: disciplineLabel[d.code],
-  }));
-  if (disciplines.length === 0) {
-    warn(`ligne ${rowNumber} : aucune discipline cochée, ignorée`);
+  const rawActivity = row["Activité"]?.trim() ?? "";
+  const activity = ACTIVITY_BY_SHEET_VALUE[normalizeActivity(rawActivity)];
+  if (!activity) {
+    // Distinguer les deux cas : une cellule vide est une ligne mal remplie, une
+    // valeur inconnue est une activité nouvelle qu'on a oublié de câbler ici.
+    warn(
+      rawActivity
+        ? `ligne ${rowNumber} : activité inconnue ("${rawActivity}"), ignorée — à ajouter dans ACTIVITY_BY_SHEET_VALUE et dans la palette`
+        : `ligne ${rowNumber} : activité manquante, ignorée`,
+    );
     return null;
   }
 
@@ -175,7 +218,8 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   return {
     id: `${row["Date"]}-${row["Heure"]}-${(title ?? location).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
     title,
-    disciplines,
+    activity,
+    activityLabelText: activityLabel[activity],
     format: row["Format"]?.trim() || null,
     startsAtIso,
     duration,

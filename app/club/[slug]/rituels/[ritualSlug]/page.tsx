@@ -3,12 +3,24 @@ import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/Button";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
-import { disciplineLabel, Tag } from "@/components/ui/Tag";
+import { activityLabel, Tag, type Activity } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB } from "@/lib/config";
 import { getRitualBySlug } from "@/lib/rituals/content";
 import styles from "./page.module.css";
+
+/** `social-run` porte un tiret, illégal comme nom de classe de module CSS. */
+const ACTIVITY_CLASS: Record<Activity, string> = {
+  piste: "piste",
+  "social-run": "socialRun",
+  trail: "trail",
+  velo: "velo",
+  nage: "nage",
+  bivouac: "bivouac",
+  soirees: "soirees",
+  communautaire: "communautaire",
+};
 
 export default async function RitualPage({ params }: { params: Promise<{ slug: string; ritualSlug: string }> }) {
   const { slug, ritualSlug } = await params;
@@ -30,7 +42,7 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
 
       <div className={styles.hero}>
         <div className={styles.heroText}>
-          <Tag variant={frontmatter.discipline}>{disciplineLabel[frontmatter.discipline]}</Tag>
+          <Tag variant={frontmatter.activity}>{activityLabel[frontmatter.activity]}</Tag>
           <h1 className={styles.title}>{frontmatter.title}</h1>
           <dl className={styles.facts}>
             <div className={styles.fact}>
@@ -68,14 +80,18 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
             </Button>
           ) : null}
         </div>
-        <PhotoSlot
-          ratio="4/5"
-          radius="card"
-          bordered
-          caption="photo — à venir"
-          src={photoSrc}
-          alt={frontmatter.photoAlt}
-        />
+        {/* Sans photo : carte typographique aux couleurs de l'activité, jamais un
+            cadre gris « photo à venir » — qui se lirait comme une image cassée
+            plutôt que comme un choix (2026-08-28, soirées Hybride). */}
+        {photoSrc ? (
+          <PhotoSlot ratio="4/5" radius="card" bordered src={photoSrc} alt={frontmatter.photoAlt} />
+        ) : (
+          <div className={`${styles.typoCard} ${styles[ACTIVITY_CLASS[frontmatter.activity]]}`} aria-hidden="true">
+            <span className={styles.typoCardLabel}>{activityLabel[frontmatter.activity]}</span>
+            <span className={styles.typoCardTitle}>{frontmatter.title}</span>
+            <span className={styles.typoCardDay}>{frontmatter.day}</span>
+          </div>
+        )}
       </div>
 
       <div className={styles.body}>

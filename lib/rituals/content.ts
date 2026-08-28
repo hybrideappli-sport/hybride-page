@@ -3,7 +3,7 @@ import "server-only";
 import { readFileSync, readdirSync } from "fs";
 import path from "path";
 
-import { type Discipline } from "@/components/ui/Tag";
+import { type Activity } from "@/components/ui/Tag";
 
 /**
  * Contenu des pages rituels, éditable sans toucher au code (US mobile,
@@ -26,7 +26,7 @@ const CONTENT_DIR = path.join(process.cwd(), "content", "rituels");
 export interface RitualFrontmatter {
   slug: string;
   title: string;
-  discipline: Discipline;
+  activity: Activity;
   day: string;
   time: string;
   level: string;
@@ -55,7 +55,7 @@ export interface RitualContent {
   blocks: RitualBlock[];
 }
 
-const REQUIRED_FIELDS = ["title", "discipline", "day", "time", "level", "meetingPoint"] as const;
+const REQUIRED_FIELDS = ["title", "activity", "day", "time", "level", "meetingPoint"] as const;
 
 function parseFrontmatter(raw: string): { data: Record<string, string>; body: string } {
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(raw);
@@ -121,7 +121,7 @@ function loadRitual(slug: string): RitualContent {
   const frontmatter: RitualFrontmatter = {
     slug,
     title: data.title,
-    discipline: data.discipline as Discipline,
+    activity: data.activity as Activity,
     day: data.day,
     time: data.time,
     level: data.level,

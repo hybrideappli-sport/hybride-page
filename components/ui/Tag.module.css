@@ -1,4 +1,6 @@
-/* Porté depuis docs/design/direction-visuelle-accueil.html — .tag, .t-course..t-collectif, .t-format */
+/* Porté depuis docs/design/direction-visuelle-accueil.html — .tag, .t-format.
+   Les variantes colorées suivent désormais les ACTIVITÉS (2026-08-28), plus les
+   5 familles d'origine — voir la section ACTIVITÉS de globals.css. */
 
 .tag {
   align-self: flex-start;
@@ -11,25 +13,37 @@
   border-radius: var(--hy-radius-pill);
 }
 
-.course {
-  background: var(--hy-course-bg);
-  color: var(--hy-course);
+.piste {
+  background: var(--hy-piste-bg);
+  color: var(--hy-piste);
+}
+.socialRun {
+  background: var(--hy-social-run-bg);
+  color: var(--hy-social-run);
+}
+.trail {
+  background: var(--hy-trail-bg);
+  color: var(--hy-trail);
 }
 .velo {
   background: var(--hy-velo-bg);
   color: var(--hy-velo);
 }
-.eau {
-  background: var(--hy-eau-bg);
-  color: var(--hy-eau);
+.nage {
+  background: var(--hy-nage-bg);
+  color: var(--hy-nage);
 }
-.montagne {
-  background: var(--hy-montagne-bg);
-  color: var(--hy-montagne);
+.bivouac {
+  background: var(--hy-bivouac-bg);
+  color: var(--hy-bivouac);
 }
-.collectif {
-  background: var(--hy-collectif-bg);
-  color: var(--hy-collectif);
+.soirees {
+  background: var(--hy-soirees-bg);
+  color: var(--hy-soirees);
+}
+.communautaire {
+  background: var(--hy-communautaire-bg);
+  color: var(--hy-communautaire);
 }
 
 /* Format : étiquette secondaire descriptive (trail, piste, longe-côte, bivouac,

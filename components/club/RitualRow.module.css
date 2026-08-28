@@ -56,3 +56,51 @@
   outline-offset: var(--hy-focus-ring-offset);
   border-radius: var(--hy-radius);
 }
+
+/* Repli sans photo : pastille typographique à la couleur de l'activité. Jamais
+   un rectangle gris, qui se lirait comme une image cassée. */
+.monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--hy-radius);
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.piste {
+  background: var(--hy-piste-bg);
+  color: var(--hy-piste);
+}
+.socialRun {
+  background: var(--hy-social-run-bg);
+  color: var(--hy-social-run);
+}
+.trail {
+  background: var(--hy-trail-bg);
+  color: var(--hy-trail);
+}
+.velo {
+  background: var(--hy-velo-bg);
+  color: var(--hy-velo);
+}
+.nage {
+  background: var(--hy-nage-bg);
+  color: var(--hy-nage);
+}
+.bivouac {
+  background: var(--hy-bivouac-bg);
+  color: var(--hy-bivouac);
+}
+.soirees {
+  background: var(--hy-soirees-bg);
+  color: var(--hy-soirees);
+}
+.communautaire {
+  background: var(--hy-communautaire-bg);
+  color: var(--hy-communautaire);
+}

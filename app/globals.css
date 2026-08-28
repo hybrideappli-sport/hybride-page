@@ -31,19 +31,57 @@
   /* Crème, pour le bandeau inversé */
   --hy-cream: #f5f0e6;
 
-  /* Disciplines — teinte claire + fond teinté profond. Renommé le 2026-08-17
-     (course/velo/eau/montagne/collectif) : la liste réelle du club a 5 valeurs,
-     pas 4 — voir components/ui/Tag.tsx. Valeurs inchangées, noms seulement. */
-  --hy-course: #ff8a5b;
-  --hy-course-bg: #34170c;
-  --hy-velo: #3ed9c4;
-  --hy-velo-bg: #06322d;
-  --hy-eau: #6fb2ff;
-  --hy-eau-bg: #0c2445;
-  --hy-collectif: #ebbb43;
-  --hy-collectif-bg: #332609;
-  --hy-montagne: #8bd86c;
-  --hy-montagne-bg: #143010;
+  /*
+   * ACTIVITÉS — teinte claire + fond teinté profond.
+   *
+   * Refonte du 2026-08-28 : on abandonne les 5 familles (course / vélo / eau /
+   * montagne / collectif) pour un code PAR ACTIVITÉ, repris de l'agenda visuel
+   * du club. Voir components/ui/Tag.tsx pour la liste et les libellés.
+   *
+   * RÈGLE À NE PAS PERDRE EN AJOUTANT UNE ACTIVITÉ — la palette compte
+   * aujourd'hui 8 activités plus le violet d'accent, soit 9 couleurs. C'est
+   * au-delà de ce qu'un œil mémorise (6 à 7), et ce n'est pas grave POUR UNE
+   * SEULE RAISON : le nom de la sortie est toujours affiché à côté de sa
+   * couleur — grille du planning, fiche, filtres. La couleur est un renfort,
+   * jamais le porteur de l'information. Le jour où une couleur devient le seul
+   * indice d'une information, la palette est trop grande : il faut alors
+   * réduire, pas ajouter. C'est aussi ce qui garde le site conforme (une
+   * information ne doit jamais reposer sur la seule couleur).
+   *
+   * Trois arbitrages, chacun contraint par une mesure sur fond #000 :
+   * - `piste` était « noir » dans l'agenda : impossible ici (noir sur noir =
+   *   1:1, gris très foncé = 1,21:1, il en faut 4,5). Traduite en INVERSION —
+   *   la seule couleur claire de la palette, donc la plus reconnaissable.
+   * - `communautaire` était « marron / brique » : le marron n'existe pas sur
+   *   fond noir (c'est de l'orange sombre, 2,96:1), et l'éclaircir le ramène à
+   *   5° de l'orange du vélo. Déplacé en rouge tomate (0°, 17° d'écart). La
+   *   famille rose (300-355°) est laissée LIBRE volontairement, pour la danse
+   *   fit.
+   * - `social-run` reste violet clair et chevauche l'accent (7° d'écart), en
+   *   connaissance de cause : un bouton a une forme de bouton, une pastille une
+   *   forme de pastille. Ne pas « corriger » vers un bleu — ce serait entrer en
+   *   collision avec `nage` (14°), soit le même problème déplacé.
+   *
+   * Contrastes vérifiés par calcul sur #000, tous AA : piste 17,45 · bivouac
+   * 12,14 · soirees 11,93 · social-run 10,45 · trail 9,76 · nage 9,49 · velo
+   * 9,04 · communautaire 6,15.
+   */
+  --hy-piste: #e9eaec;
+  --hy-piste-bg: #1e2024;
+  --hy-social-run: #c9a7ff;
+  --hy-social-run-bg: #241a3a;
+  --hy-trail: #a9b2ba;
+  --hy-trail-bg: #1d2226;
+  --hy-velo: #ff8a5b;
+  --hy-velo-bg: #34170c;
+  --hy-nage: #6fb2ff;
+  --hy-nage-bg: #0c2445;
+  --hy-bivouac: #8bd86c;
+  --hy-bivouac-bg: #143010;
+  --hy-soirees: #3ed9c4;
+  --hy-soirees-bg: #06322d;
+  --hy-communautaire: #e85d5d;
+  --hy-communautaire-bg: #3a1111;
 
   /* Polices — next/font auto-hébergées (app/fonts.ts), fallbacks identiques à
      la référence. Les variables --font-* sont posées sur <html> par layout.tsx. */
@@ -89,9 +127,10 @@
   --hy-field-text-disabled: var(--hy-text-3);
   --hy-help-text: var(--hy-text-3);
 
-  /* Erreur — alias sémantique de la paire "course" (aucune nouvelle teinte) */
-  --hy-danger: var(--hy-course);
-  --hy-danger-bg: var(--hy-course-bg);
+  /* Erreur — alias sémantique de la paire "velo" (l'orange, ex-"course" avant la
+     refonte par activité du 2026-08-28) : aucune nouvelle teinte introduite. */
+  --hy-danger: var(--hy-velo);
+  --hy-danger-bg: var(--hy-velo-bg);
 
   /* Focus visible — même traitement que .btn:focus-visible dans la référence,
      factorisé pour être réutilisé par tous les éléments interactifs */

@@ -3,14 +3,26 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { disciplineLabel, type Discipline } from "@/components/ui/Tag";
+import { activityLabel, type Activity } from "@/components/ui/Tag";
 import { buildMonthGrid, getTodayParisKey, WEEKDAY_LABELS, WEEKDAY_SHORT, type CalendarCell } from "@/lib/agenda/planning";
 import type { AgendaEvent } from "@/lib/agenda/source";
 import { formatEventDateLong, formatEventTime } from "@/lib/format";
 import { EventSheet } from "./EventSheet";
 import styles from "./PlanningCalendar.module.css";
 
-const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
+const ALL_ACTIVITIES = Object.keys(activityLabel) as Activity[];
+
+/** `social-run` porte un tiret, illégal comme nom de classe de module CSS — d'où cette table. */
+const ACTIVITY_CLASS: Record<Activity, string> = {
+  piste: "piste",
+  "social-run": "socialRun",
+  trail: "trail",
+  velo: "velo",
+  nage: "nage",
+  bivouac: "bivouac",
+  soirees: "soirees",
+  communautaire: "communautaire",
+};
 
 /**
  * Un seul balisage, deux mises en page (2026-08-26) :
@@ -30,7 +42,7 @@ const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
  * l'hydratation.
  */
 export function PlanningCalendar({ events, monthKey, clubSlug }: { events: AgendaEvent[]; monthKey: string; clubSlug: string }) {
-  const [selected, setSelected] = useState<Set<Discipline>>(new Set());
+  const [selected, setSelected] = useState<Set<Activity>>(new Set());
   const [openDay, setOpenDay] = useState<AgendaEvent[] | null>(null);
 
   // Jour courant calculé après le montage seulement : au rendu serveur, une page
@@ -45,7 +57,7 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
     return () => clearTimeout(timeout);
   }, []);
 
-  function toggle(code: Discipline) {
+  function toggle(code: Activity) {
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(code)) next.delete(code);
@@ -54,13 +66,13 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
     });
   }
 
-  const filtered = selected.size === 0 ? events : events.filter((e) => e.disciplines.some((d) => selected.has(d.code)));
+  const filtered = selected.size === 0 ? events : events.filter((e) => selected.has(e.activity));
   const weeks = buildMonthGrid(monthKey, filtered);
 
   return (
     <div>
-      <div className={styles.filters} role="group" aria-label="Filtrer par discipline">
-        {ALL_DISCIPLINES.map((code) => (
+      <div className={styles.filters} role="group" aria-label="Filtrer par activité">
+        {ALL_ACTIVITIES.map((code) => (
           <button
             key={code}
             type="button"
@@ -68,7 +80,7 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
             aria-pressed={selected.has(code)}
             onClick={() => toggle(code)}
           >
-            {disciplineLabel[code]}
+            {activityLabel[code]}
           </button>
         ))}
       </div>
@@ -95,7 +107,7 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
       {filtered.length === 0 ? (
         <div className={styles.empty}>
           <p>
-            {events.length === 0 ? "Le programme de ce mois n’est pas encore en ligne." : "Aucune sortie de cette discipline ce mois-ci."}
+            {events.length === 0 ? "Le programme de ce mois n’est pas encore en ligne." : "Aucune sortie de cette activité ce mois-ci."}
           </p>
           <p>
             En attendant, les rituels du lundi et du mercredi restent fixes.{" "}
@@ -131,7 +143,7 @@ function Cell({
   }
 
   const label = `${formatEventDateLong(cell.events[0].startsAtIso)} — ${cell.events
-    .map((e) => e.title ?? e.disciplines.map((d) => d.label).join(" + "))
+    .map((e) => e.title ?? e.activityLabelText)
     .join(", ")}`;
 
   return (
@@ -144,9 +156,9 @@ function Cell({
 
       <span className={styles.events}>
         {cell.events.map((event) => (
-          <span key={event.id} className={`${styles.event} ${styles[event.disciplines[0].code]}`}>
+          <span key={event.id} className={`${styles.event} ${styles[ACTIVITY_CLASS[event.activity]]}`}>
             <span className={styles.eventTime}>{formatEventTime(event.startsAtIso)}</span>
-            <span className={styles.eventName}>{event.title ?? event.disciplines.map((d) => d.label).join(" + ")}</span>
+            <span className={styles.eventName}>{event.title ?? event.activityLabelText}</span>
           </span>
         ))}
       </span>

@@ -83,7 +83,7 @@ export function EventSheet({ events, onClose }: { events: AgendaEvent[] | null; 
 }
 
 function EventBlock({ event }: { event: AgendaEvent }) {
-  const title = event.title ?? event.disciplines.map((d) => d.label).join(" + ");
+  const title = event.title ?? event.activityLabelText;
 
   const facts: { label: string; value: string }[] = [
     { label: "Heure", value: formatEventTime(event.startsAtIso) },
@@ -97,11 +97,7 @@ function EventBlock({ event }: { event: AgendaEvent }) {
   return (
     <div className={styles.event}>
       <div className={styles.tags}>
-        {event.disciplines.map((d) => (
-          <Tag key={d.code} variant={d.code}>
-            {d.label}
-          </Tag>
-        ))}
+        <Tag variant={event.activity}>{event.activityLabelText}</Tag>
       </div>
       <h3 className={styles.title}>{title}</h3>
 

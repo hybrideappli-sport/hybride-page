@@ -65,20 +65,20 @@ export default function MarketingHomePage() {
         <p className={styles.eyebrow}>Les disciplines du club</p>
         <p className={styles.disciplinesLead}>Chacun arrive avec son sport et repart avec trois autres.</p>
         <div className={styles.tags}>
-          <Tag variant="course">Course à pied</Tag>
-          <Tag variant="format">running</Tag>
-          <Tag variant="format">piste</Tag>
-          <Tag variant="format">trail</Tag>
+          {/* Activités colorées (taxonomie de Tag.tsx) et formats neutres. Mis à
+              jour le 2026-08-28 avec le code par activité. */}
+          <Tag variant="piste">Piste</Tag>
+          <Tag variant="social-run">Social run</Tag>
+          <Tag variant="trail">Trail</Tag>
           <Tag variant="velo">Vélo</Tag>
-          <Tag variant="eau">Eau</Tag>
-          <Tag variant="format">natation</Tag>
-          <Tag variant="format">longe-côte</Tag>
-          <Tag variant="montagne">Montagne</Tag>
+          <Tag variant="format">route</Tag>
+          <Tag variant="nage">Nage en eau libre</Tag>
+          <Tag variant="bivouac">Bivouac</Tag>
           <Tag variant="format">randonnée</Tag>
-          <Tag variant="format">trek</Tag>
-          <Tag variant="format">bivouac</Tag>
-          <Tag variant="collectif">Collectif</Tag>
+          <Tag variant="soirees">Soirée Hybride</Tag>
+          <Tag variant="communautaire">Événement communautaire</Tag>
           <Tag variant="format">volley</Tag>
+          <Tag variant="format">danse fit</Tag>
         </div>
       </section>
 

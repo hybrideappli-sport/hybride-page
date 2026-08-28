@@ -1,6 +1,6 @@
 ---
 title: La piste du lundi
-discipline: course
+activity: piste
 day: Lundi
 time: 18h30 à 20h
 level: Tous niveaux

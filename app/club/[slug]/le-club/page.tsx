@@ -42,12 +42,14 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
 
       <div className={styles.about}>
         <div className={styles.activities}>
-          <Tag variant="course">Course à pied</Tag>
-          <Tag variant="course">Trail</Tag>
-          <Tag variant="montagne">Rando</Tag>
+          <Tag variant="piste">Piste</Tag>
+          <Tag variant="social-run">Social run</Tag>
+          <Tag variant="trail">Trail</Tag>
           <Tag variant="velo">Sorties vélo</Tag>
-          <Tag variant="montagne">Bivouac</Tag>
-          <Tag variant="collectif">Tournois de volley</Tag>
+          <Tag variant="nage">Nage en eau libre</Tag>
+          <Tag variant="bivouac">Bivouac</Tag>
+          <Tag variant="soirees">Soirée Hybride</Tag>
+          <Tag variant="communautaire">Tournois, danse fit</Tag>
         </div>
         <p>On ne s&rsquo;enferme pas dans une discipline : on fait ce dont on a envie, quand on en a envie.</p>
         <p>

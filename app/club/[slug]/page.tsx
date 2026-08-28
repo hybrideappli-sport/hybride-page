@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/Button";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
-import { disciplineLabel, Tag, type Discipline } from "@/components/ui/Tag";
+import { activityLabel, Tag, type Activity } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
@@ -12,7 +12,7 @@ import { CLUB } from "@/lib/config";
 import { getAllRituals } from "@/lib/rituals/content";
 import styles from "./page.module.css";
 
-const ALL_DISCIPLINES = Object.keys(disciplineLabel) as Discipline[];
+const ALL_ACTIVITIES = Object.keys(activityLabel) as Activity[];
 
 export default async function ClubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -32,9 +32,9 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             <span className={styles.heroAccent}>On reste pour l&rsquo;ambiance.</span>
           </h1>
           <div className={styles.heroDisciplines}>
-            {ALL_DISCIPLINES.map((code) => (
+            {ALL_ACTIVITIES.map((code) => (
               <Tag key={code} variant={code}>
-                {disciplineLabel[code]}
+                {activityLabel[code]}
               </Tag>
             ))}
           </div>
@@ -67,6 +67,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               href={`/club/${CLUB.slug}/rituels/${ritual.frontmatter.slug}`}
               title={ritual.frontmatter.title}
               day={ritual.frontmatter.day}
+              activity={ritual.frontmatter.activity}
               photoSrc={ritual.frontmatter.photo ? `/photos/${ritual.frontmatter.photo}` : null}
               photoAlt={ritual.frontmatter.photoAlt}
             />
