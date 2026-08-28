@@ -31,6 +31,9 @@
 }
 
 .link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--hy-text-2);
   text-decoration: none;
   font-size: 15px;
@@ -41,115 +44,55 @@
   color: var(--hy-violet);
 }
 
-/* Le CTA d'adhésion vit dans la barre, hors du panneau repliable : c'est le seul
-   geste attendu du visiteur, il ne doit pas dépendre de l'ouverture du burger.
-   Sur grand écran il se place après les liens, sur mobile juste avant le burger.
-   Vérifié à 375px : logo + bouton + burger tiennent sans débordement. */
+.link:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+/* Bouton plein, jamais aligné avec les entrées : c'est une action, pas une
+   rubrique — la distinction doit rester lisible d'un coup d'œil. */
 .joinCta {
   flex: 0 0 auto;
   margin-left: auto;
 }
 
+/*
+ * Mobile : deux lignes plutôt qu'une (2026-08-28, remplacement du menu burger).
+ * À 375px il reste 327px utiles ; logo + 3 entrées + bouton sur une seule ligne
+ * les dépassent. Passer sur deux lignes évite d'avoir à raccourcir les libellés
+ * ou à réduire la taille du texte — donc sans perte de lisibilité ni de zone
+ * tactile.
+ *
+ * Ligne 1 : logo (margin-right: auto) et bouton d'adhésion.
+ * Ligne 2 : les trois entrées, sur toute la largeur.
+ */
 @media (max-width: 860px) {
+  .bar {
+    flex-wrap: wrap;
+    gap: var(--hy-space-2);
+  }
+
+  .brand {
+    order: 1;
+  }
+
   .joinCta {
-    /* .brand porte déjà margin-right:auto, qui pousse tout le reste à droite. */
+    order: 2;
     margin-left: 0;
-    margin-right: var(--hy-space-2);
   }
-}
 
-/* Bouton burger : masqué par défaut (desktop), activé en dessous de 860px. */
-.burger {
-  display: none;
-  position: relative;
-  width: 44px;
-  height: 44px;
-  flex: 0 0 auto;
-  background: transparent;
-  border: none;
-  border-radius: var(--hy-radius-pill);
-  cursor: pointer;
-}
-
-.burger:focus-visible {
-  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
-  outline-offset: var(--hy-focus-ring-offset);
-}
-
-.burgerBar,
-.burgerBarOpenTop,
-.burgerBarOpenMid,
-.burgerBarOpenBottom {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  height: 2px;
-  background: var(--hy-text-1);
-  border-radius: 1px;
-  transition:
-    transform var(--hy-dur) var(--hy-ease),
-    opacity var(--hy-dur) var(--hy-ease);
-}
-
-.burgerBar:nth-child(1) {
-  top: 16px;
-}
-.burgerBar:nth-child(2) {
-  top: 21px;
-}
-.burgerBar:nth-child(3) {
-  top: 26px;
-}
-
-/* Burger -> croix : les barres haut/bas pivotent au centre, celle du milieu s'efface. */
-.burgerBarOpenTop {
-  top: 21px;
-  transform: rotate(45deg);
-}
-.burgerBarOpenMid {
-  top: 21px;
-  opacity: 0;
-}
-.burgerBarOpenBottom {
-  top: 21px;
-  transform: rotate(-45deg);
-}
-
-.menu,
-.menuOpen {
-  display: none;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--hy-space-3);
-  padding-top: var(--hy-space-4);
-  margin-top: var(--hy-space-3);
-  border-top: 1px solid var(--hy-line);
-}
-
-.menuLink {
-  color: var(--hy-text-2);
-  text-decoration: none;
-  font-size: 16px;
-}
-
-.menuLink:hover {
-  color: var(--hy-violet);
-}
-
-.menuCta {
-  margin-top: var(--hy-space-1);
-}
-
-@media (max-width: 860px) {
   .links {
-    display: none;
+    order: 3;
+    width: 100%;
+    /* space-between plutôt qu'un gap fixe : les trois entrées occupent la
+       largeur quelle que soit la longueur des libellés, sans jamais déborder. */
+    justify-content: space-between;
+    gap: var(--hy-space-2);
+    padding-top: var(--hy-space-1);
+    border-top: 1px solid var(--hy-line);
   }
 
-  .burger {
-    display: block;
-  }
-
-  .menuOpen {
-    display: flex;
+  .link {
+    font-size: 16px;
   }
 }
