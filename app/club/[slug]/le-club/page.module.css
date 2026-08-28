@@ -261,14 +261,6 @@
   margin: 0;
 }
 
-.helpList {
-  margin: 0;
-  padding-left: 1.1em;
-  display: flex;
-  flex-direction: column;
-  gap: var(--hy-space-2);
-}
-
 /*
  * Lien merch en dégradé animé (US couleur+vie, 2026-08-21) — SEUL lien du site
  * à recevoir ce traitement, volontairement, pour se démarquer des quatre

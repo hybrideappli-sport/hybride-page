@@ -140,11 +140,11 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
        * du temps sont deux démarches différentes, les mélanger brouillerait les
        * deux.
        *
-       * Des besoins nommés, pas des postes à pourvoir : « on cherche quelqu'un
-       * pour prendre des photos » se lit comme un coup de main, « poste de
-       * photographe » comme une organisation qui recrute. Liste courte pour la
-       * même raison — dix rôles donneraient l'impression d'un club en manque de
-       * main-d'œuvre.
+       * Aucun besoin nommé (2026-08-28) : une liste, même courte et formulée en
+       * actions, se lit comme des postes à pourvoir et enferme la proposition
+       * dans ce qu'elle énumère. L'appel reste donc ouvert — c'est la personne
+       * qui dit ce qu'elle sait faire, pas le club qui annonce ce qui lui
+       * manque.
        *
        * Lien mailto et jamais un formulaire : ce site ne collecte aucune donnée
        * (politique de confidentialité), et rien ne justifie d'ajouter un
@@ -154,22 +154,16 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
         <section className={styles.help}>
           <h2 className={styles.joinTitle}>Donner un coup de main</h2>
           <div className={styles.prose}>
-            <p>Le club s&rsquo;organise à plusieurs. Quatre choses nous manquent en ce moment :</p>
-            <ul className={styles.helpList}>
-              <li>Prendre des photos et des vidéos pendant les sorties</li>
-              <li>S&rsquo;occuper des réseaux et des publications</li>
-              <li>Encadrer ou ouvrir des sorties trail</li>
-              <li>Organiser des randos et des bivouacs</li>
-            </ul>
             <p>
-              Si tu sais faire autre chose qui pourrait servir, propose-le — cette liste n&rsquo;est pas fermée. Écris à{" "}
+              Le club s&rsquo;organise à plusieurs. Si tu as une compétence, une envie ou un peu de temps, et que tu penses pouvoir
+              aider, écris à{" "}
               <a
                 href={`mailto:${CLUB.contactEmail}?subject=${encodeURIComponent("Coup de main au club — Hybride Club Toulon")}`}
                 className={styles.outLink}
               >
                 {CLUB.contactEmail}
-              </a>
-              .
+              </a>{" "}
+              — on verra ensemble ce que ça peut donner.
             </p>
           </div>
         </section>
