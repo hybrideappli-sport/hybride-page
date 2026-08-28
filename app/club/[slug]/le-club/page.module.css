@@ -242,6 +242,33 @@
   margin-top: var(--hy-space-4);
 }
 
+.help {
+  padding: var(--hy-space-5) 0 var(--hy-space-6);
+  border-top: 1px solid var(--hy-line);
+}
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-3);
+  max-width: 62ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+}
+
+.prose p {
+  margin: 0;
+}
+
+.helpList {
+  margin: 0;
+  padding-left: 1.1em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-2);
+}
+
 /*
  * Lien merch en dégradé animé (US couleur+vie, 2026-08-21) — SEUL lien du site
  * à recevoir ce traitement, volontairement, pour se démarquer des quatre

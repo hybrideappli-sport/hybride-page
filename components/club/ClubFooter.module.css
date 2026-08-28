@@ -10,3 +10,9 @@
 .footer a {
   color: var(--hy-text-2);
 }
+
+/* Sobre par choix : pas de grille de contreparties ni de niveaux de sponsoring,
+   le club n'en est pas là. Une ligne, à sa place en bas de page. */
+.partnership {
+  max-width: 62ch;
+}

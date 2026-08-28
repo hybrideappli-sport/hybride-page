@@ -31,6 +31,21 @@ export function ClubFooter({
         <strong>{clubName}</strong> — association loi 1901, {legalCity}.
       </p>
       <SocialLinks stravaUrl={stravaUrl} instagramUrl={instagramUrl} />
+
+      {/*
+       * Partenariat : un lien mailto, jamais un formulaire — ce site ne collecte
+       * aucune donnée, et c'est une affirmation de la politique de
+       * confidentialité qu'on ne veut pas avoir à nuancer. L'adresse est aussi
+       * écrite en clair : sur un appareil sans client mail configuré, un
+       * mailto ne fait rien, et il faut pouvoir la copier.
+       */}
+      {contactEmail ? (
+        <p className={styles.partnership}>
+          Une entreprise qui souhaite soutenir le club ou proposer un partenariat peut écrire à{" "}
+          <a href={`mailto:${contactEmail}?subject=${encodeURIComponent("Partenariat — Hybride Club Toulon")}`}>{contactEmail}</a>.
+        </p>
+      ) : null}
+
       <p>
         <Link href={`/club/${clubSlug}/mentions-legales`}>Mentions légales</Link> ·{" "}
         <Link href={`/club/${clubSlug}/politique-de-confidentialite`}>Politique de confidentialité</Link> · Déclaration au JOAFE
