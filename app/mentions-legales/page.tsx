@@ -1,7 +1,26 @@
+import type { Metadata } from "next";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { LegalPage } from "@/components/legal/LegalPage";
 import styles from "../(marketing)/page.module.css";
+
+/**
+ * Retirée de la navigation et désindexée le 2026-08-28, tant que l'app n'est
+ * pas lancée : cette page est publique et décrit une entité dont tous les
+ * champs sont encore entre crochets. Une page absente vaut mieux qu'une page à
+ * crochets.
+ *
+ * `noindex` via les métadonnées et NON un Disallow dans robots.txt : un
+ * robots.txt empêche l'exploration, donc le moteur ne verrait jamais la
+ * directive noindex — et pourrait indexer l'URL quand même si un lien externe
+ * y mène. La balise est le seul outil qui retire vraiment des résultats.
+ *
+ * À rétablir au lancement de l'app : supprimer ce bloc `metadata` et remettre
+ * les deux liens dans le pied de page de app/(marketing)/page.tsx.
+ */
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function MarketingMentionsLegalesPage() {
   return (

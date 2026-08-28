@@ -103,8 +103,10 @@ export default function MarketingHomePage() {
           <div>
             <strong>Hybride — l&rsquo;application</strong>
             Service d&rsquo;entraînement par abonnement.
-            <br />
-            <Link href="/mentions-legales">Mentions légales</Link> · <Link href="/politique-de-confidentialite">Confidentialité</Link>
+            {/* Liens vers /mentions-legales et /politique-de-confidentialite retirés le
+                2026-08-28 : ces deux pages sont encore intégralement entre crochets et
+                décrivent une entité dont l'app n'est pas lancée. Elles restent en place
+                dans le dépôt, désindexées, et seront remises ici au lancement. */}
           </div>
         </div>
       </footer>
