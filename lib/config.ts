@@ -39,6 +39,22 @@ export const CLUB = {
 };
 
 /**
+ * Message d'attente affiché À LA PLACE de la grille du planning.
+ *
+ * Chaîne vide = grille normale. C'est le seul interrupteur : aucune autre
+ * modification n'est nécessaire pour revenir à l'affichage habituel.
+ *
+ * Pensé pour être vidé depuis un téléphone, via l'éditeur web de GitHub —
+ * même geste que pour le contenu des rituels. Vercel redéploie tout seul au
+ * commit, il n'y a rien d'autre à piloter.
+ *
+ * Posé le 2026-08-28 : la colonne « Activité » du tableur n'arrive pas encore
+ * dans le CSV publié, donc toutes les lignes sont rejetées et la grille est
+ * vide. Mieux vaut une date annoncée qu'une grille vide sans explication.
+ */
+export const PLANNING_NOTICE = "Le programme de septembre sera en ligne dimanche à 10h.";
+
+/**
  * URL de la boutique merch HelloAsso de l'association — PAS ENCORE CONNUE.
  * Ne jamais inventer une URL plausible : `.example` est le domaine réservé
  * (RFC 2606) pour ce genre de placeholder, garanti de ne jamais résoudre.
