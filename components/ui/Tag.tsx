@@ -14,6 +14,11 @@ import styles from "./Tag.module.css";
  * colonne à liste déroulante au lieu d'une case à cocher par valeur — voir
  * lib/agenda/source.ts.
  *
+ * `bivouac` couvre AUSSI la rando (décision du 2026-08-28) : marche en montagne
+ * dans les deux cas, et pas de neuvième couleur — la palette est déjà au-delà
+ * de ce qu'un œil mémorise. Le tableur accepte « Rando » comme saisie et la
+ * range ici (lib/agenda/source.ts).
+ *
  * Ajouter une activité = une entrée ici, une paire de jetons dans globals.css,
  * une entrée dans la liste déroulante du tableur. Lire d'abord la règle sur la
  * taille de la palette, en tête de la section ACTIVITÉS de globals.css.
@@ -27,7 +32,7 @@ export const activityLabel: Record<Activity, string> = {
   trail: "Trail",
   velo: "Vélo",
   nage: "Nage en eau libre",
-  bivouac: "Bivouac",
+  bivouac: "Rando, bivouac",
   soirees: "Soirée Hybride",
   communautaire: "Événement communautaire",
 };

@@ -47,7 +47,7 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
           <Tag variant="trail">Trail</Tag>
           <Tag variant="velo">Sorties vélo</Tag>
           <Tag variant="nage">Nage en eau libre</Tag>
-          <Tag variant="bivouac">Bivouac</Tag>
+          <Tag variant="bivouac">Rando, bivouac</Tag>
           <Tag variant="soirees">Soirée Hybride</Tag>
           <Tag variant="communautaire">Tournois, danse fit</Tag>
         </div>

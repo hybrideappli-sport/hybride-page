@@ -73,8 +73,7 @@ export default function MarketingHomePage() {
           <Tag variant="velo">Vélo</Tag>
           <Tag variant="format">route</Tag>
           <Tag variant="nage">Nage en eau libre</Tag>
-          <Tag variant="bivouac">Bivouac</Tag>
-          <Tag variant="format">randonnée</Tag>
+          <Tag variant="bivouac">Rando, bivouac</Tag>
           <Tag variant="soirees">Soirée Hybride</Tag>
           <Tag variant="communautaire">Événement communautaire</Tag>
           <Tag variant="format">volley</Tag>
