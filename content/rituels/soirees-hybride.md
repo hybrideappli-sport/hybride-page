@@ -7,15 +7,15 @@ level: Aucun — il n'y a pas de sport
 meetingPoint: Variable, selon la soirée
 mapsUrl:
 coach:
-photo:
-photoAlt:
+photo: mercredi-5.jpg
+photoAlt: Le groupe du club posant autour d'une table de bar en soirée, en tenue de sport
 ---
 
 ## Ce que c'est
 
 Le dernier week-end du mois, on ne fait pas de sport.
 
-Une soirée organisée par le club, sans chaussures de running. Minigolf, bar, restaurant, ce qui nous passe par la tête.
+Une soirée organisée par le club, sans chaussures de running. Soirée karaoké, minigolf, soirée déguisée — et tout ce qu'on inventera d'ici là.
 
 ## Pourquoi
 
