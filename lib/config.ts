@@ -39,6 +39,25 @@ export const CLUB = {
 };
 
 /**
+ * Les pages légales de l'ENTITÉ COMMERCIALE (/mentions-legales,
+ * /politique-de-confidentialite à la racine) sont-elles servies ?
+ *
+ * `false` = elles renvoient un vrai 404. Retirer les liens et poser un
+ * `noindex` ne suffisait pas : la page restait affichable en tapant son URL,
+ * avec tous ses champs entre crochets (constaté en production le 2026-08-29).
+ * Un moteur ne l'indexe plus, mais un humain la voit encore.
+ *
+ * Les fichiers restent en place : repasser à `true` au lancement de l'app
+ * suffit à les remettre en ligne. Penser alors à retirer aussi le bloc
+ * `metadata` noindex de chaque page, et à remettre les deux liens dans le pied
+ * de page de app/(marketing)/page.tsx.
+ *
+ * Ne concerne PAS les pages légales du club (/club/toulon/...), qui portent
+ * des informations réelles et restent publiques et indexables.
+ */
+export const COMMERCIAL_LEGAL_PAGES_PUBLISHED = false;
+
+/**
  * Message d'attente affiché À LA PLACE de la grille du planning.
  *
  * Chaîne vide = grille normale. C'est le seul interrupteur : aucune autre

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { COMMERCIAL_LEGAL_PAGES_PUBLISHED } from "@/lib/config";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { LegalPage } from "@/components/legal/LegalPage";
@@ -23,6 +26,10 @@ export const metadata: Metadata = {
 };
 
 export default function MarketingPrivacyPage() {
+  // Voir COMMERCIAL_LEGAL_PAGES_PUBLISHED : page non servie tant que l'app n'est
+  // pas lancée, fichier conservé pour la remise en ligne.
+  if (!COMMERCIAL_LEGAL_PAGES_PUBLISHED) notFound();
+
   return (
     <div className={styles.wrap}>
       <MarketingNav />
