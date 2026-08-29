@@ -55,16 +55,24 @@
    * - `communautaire` était « marron / brique » : le marron n'existe pas sur
    *   fond noir (c'est de l'orange sombre, 2,96:1), et l'éclaircir le ramène à
    *   5° de l'orange du vélo. Déplacé en rouge tomate (0°, 17° d'écart). La
-   *   famille rose (300-355°) est laissée LIBRE volontairement, pour la danse
-   *   fit.
+   *   famille rose était alors laissée libre pour la danse fit — elle ne l'est
+   *   plus depuis le 2026-08-29, voir `soirees` ci-dessous.
    * - `social-run` reste violet clair et chevauche l'accent (7° d'écart), en
    *   connaissance de cause : un bouton a une forme de bouton, une pastille une
    *   forme de pastille. Ne pas « corriger » vers un bleu — ce serait entrer en
    *   collision avec `nage` (14°), soit le même problème déplacé.
    *
+   * `soirees` est passée du vert canard au rose le 2026-08-29. Le #BD448C
+   * demandé donnait 4,37:1, juste sous le seuil AA de 4,5 — éclairci d'un cran
+   * à teinte constante (324° -> 325°) pour passer : 5,61:1 sur le fond, et
+   * 4,65:1 en texte sur son propre fond teinté, le cas des pastilles Tag.
+   * Conséquence à connaître : la famille rose, que l'utilisateur avait
+   * volontairement laissée libre le 2026-08-28 pour une future « danse fit »,
+   * est désormais occupée.
+   *
    * Contrastes vérifiés par calcul sur #000, tous AA : piste 17,45 · bivouac
-   * 12,14 · soirees 11,93 · social-run 10,45 · trail 9,76 · nage 9,49 · velo
-   * 9,04 · communautaire 6,15.
+   * 12,14 · social-run 10,45 · trail 9,76 · nage 9,49 · velo 9,04 ·
+   * communautaire 6,15 · soirees 5,61.
    */
   --hy-piste: #e9eaec;
   --hy-piste-bg: #1e2024;
@@ -78,8 +86,8 @@
   --hy-nage-bg: #0c2445;
   --hy-bivouac: #8bd86c;
   --hy-bivouac-bg: #143010;
-  --hy-soirees: #3ed9c4;
-  --hy-soirees-bg: #06322d;
+  --hy-soirees: #ce5b9e;
+  --hy-soirees-bg: #2e0f22;
   --hy-communautaire: #e85d5d;
   --hy-communautaire-bg: #3a1111;
 

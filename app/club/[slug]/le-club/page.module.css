@@ -125,11 +125,8 @@
   filter: brightness(1.2);
 }
 
-/* Trail/rando/bivouac/volley colorés par discipline PARENTE (course/montagne/
-   collectif), pas par leur propre identité de format — mapping explicite de
-   l'utilisateur (2026-08-21), distinct du traitement "format" neutre utilisé
-   sur la page marketing (Tag.tsx). Deux pastilles partagent volontairement la
-   couleur course (Trail) et deux la couleur montagne (Rando, Bivouac). */
+/* Une pastille par activité, couleurs pilotées par la taxonomie de Tag.tsx
+   (refonte du 2026-08-28). */
 .activities {
   display: flex;
   flex-wrap: wrap;
@@ -205,8 +202,8 @@
  * couleurs de discipline + le violet d'accent restent le seul système de
  * couleur du reste du site). Teintes (hue) choisies pour rester séparées les
  * unes des autres ET des couleurs de discipline/violet déjà utilisées
- * ailleurs (orange course #ff8a5b, teal vélo #3ed9c4, bleu eau #6fb2ff, vert
- * montagne #8bd86c, or collectif #ebbb43, violet accent #b79cff). Contraste
+ * ailleurs (voir la section ACTIVITÉS de globals.css, refondue le 2026-08-28,
+ * et le violet d'accent #b79cff). Contraste
  * vérifié AA (4.5:1 minimum) sur fond noir #000 :
  * - Strava #FC4C02 (orange officiel, hue ~16°)         → 6.2:1
  * - Instagram #F2498C (rose-magenta, hue ~336° — PAS
