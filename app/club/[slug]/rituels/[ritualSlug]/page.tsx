@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { activityLabel, Tag, type Activity } from "@/components/ui/Tag";
+import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB } from "@/lib/config";
@@ -36,9 +37,7 @@ export default async function RitualPage({ params }: { params: Promise<{ slug: s
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
 
-      <Link href={`/club/${CLUB.slug}#le-club`} className={styles.back}>
-        ← Retour au club
-      </Link>
+      <BackToClub clubSlug={CLUB.slug} hash="le-club" />
 
       <div className={styles.hero}>
         <div className={styles.heroText}>

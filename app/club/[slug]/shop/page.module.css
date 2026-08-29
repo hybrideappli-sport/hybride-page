@@ -4,8 +4,11 @@
   padding: 0 var(--hy-space-4);
 }
 
+/* padding-top a 0 : le lien « Retour au club » juste au-dessus porte
+   désormais la respiration entre la barre de navigation et le titre. Cumuler
+   les deux ajouterait 40px de vide avant le contenu principal. */
 .hero {
-  padding: var(--hy-space-5) 0 var(--hy-space-6);
+  padding: 0 0 var(--hy-space-6);
   max-width: 62ch;
 }
 

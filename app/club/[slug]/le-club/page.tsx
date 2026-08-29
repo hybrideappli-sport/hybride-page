@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Tag } from "@/components/ui/Tag";
+import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB } from "@/lib/config";
@@ -27,6 +28,8 @@ export default async function ClubAboutPage({ params }: { params: Promise<{ slug
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
+
+      <BackToClub clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <div className={styles.heroIcons} aria-hidden="true">

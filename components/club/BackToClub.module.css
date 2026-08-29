@@ -1,0 +1,23 @@
+/* Reprise à l'identique du `.back` de la page rituel (couleur, taille, absence
+   de soulignement), plus une zone tactile de 44px : le texte seul faisait 21px
+   de haut, sous le minimum confortable au doigt. Les 23px gagnés sont repris
+   sur le padding haut du hero des pages qui l'accueillent — le lien se pose
+   dans l'espace existant, il n'en ajoute pas. */
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--hy-text-2);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back:hover {
+  color: var(--hy-violet);
+}
+
+.back:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+  border-radius: 4px;
+}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { PlanningCalendar } from "@/components/club/PlanningCalendar";
@@ -94,6 +95,8 @@ export default async function PlanningPage({
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
+
+      <BackToClub clubSlug={CLUB.slug} />
 
       {notice ? (
         <>

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
+import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB, HELLOASSO_SHOP_URL } from "@/lib/config";
@@ -45,6 +46,8 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
+
+      <BackToClub clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Boutique</p>

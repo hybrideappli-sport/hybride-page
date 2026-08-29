@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/Button";
+import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { StickyJoinCta } from "@/components/club/StickyJoinCta";
@@ -31,6 +32,8 @@ export default async function ClubMembershipPage({ params }: { params: Promise<{
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
+
+      <BackToClub clubSlug={CLUB.slug} />
 
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Adhérer</p>
