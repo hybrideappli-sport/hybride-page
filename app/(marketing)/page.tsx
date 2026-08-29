@@ -4,7 +4,14 @@ import { Door } from "@/components/marketing/Door";
 import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { Tag } from "@/components/ui/Tag";
 import { CLUB } from "@/lib/config";
+import { rootMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
+
+export const metadata = rootMetadata({
+  title: "Hybride — le club de sport à Toulon et l'app d'entraînement",
+  description: "Deux façons de s'entraîner : le club de sport Hybride à Toulon, avec des sorties chaque semaine et toutes les allures, et un coach dans ta poche.",
+  path: "/",
+});
 
 /**
  * US-01 — carrefour à deux portes à égalité stricte (docs/design/direction-

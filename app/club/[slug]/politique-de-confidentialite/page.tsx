@@ -4,7 +4,14 @@ import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { LegalPage } from "@/components/legal/LegalPage";
 import { CLUB } from "@/lib/config";
+import { clubMetadata } from "@/lib/seo";
 import styles from "../page.module.css";
+
+export const metadata = clubMetadata({
+  title: "Politique de confidentialité — Hybride Club Toulon",
+  description: "Ce site ne collecte aucune donnée personnelle : ni compte, ni formulaire, ni inscription en ligne. Ce qui part chez Luma et HelloAsso, et vos droits.",
+  path: "/club/toulon/politique-de-confidentialite",
+});
 
 export default async function ClubPrivacyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -4,7 +4,14 @@ import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { LegalPage } from "@/components/legal/LegalPage";
 import { CLUB } from "@/lib/config";
+import { clubMetadata } from "@/lib/seo";
 import styles from "../page.module.css";
+
+export const metadata = clubMetadata({
+  title: "Mentions légales — Hybride Club Toulon",
+  description: "Mentions légales de l'association Hybride Club Toulon : éditeur, responsable de publication, hébergeur et contact.",
+  path: "/club/toulon/mentions-legales",
+});
 
 export default async function ClubMentionsLegalesPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

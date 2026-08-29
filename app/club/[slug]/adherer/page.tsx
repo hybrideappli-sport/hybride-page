@@ -6,7 +6,14 @@ import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { StickyJoinCta } from "@/components/club/StickyJoinCta";
 import { CLUB } from "@/lib/config";
+import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
+
+export const metadata = clubMetadata({
+  title: "Adhérer au club — 1 € pour l'année — Hybride Club Toulon",
+  description: "La première séance est une découverte : rien à payer, rien à signer. Si tu reviens, l'adhésion devient obligatoire — 1 € pour toute l'année, sur HelloAsso.",
+  path: "/club/toulon/adherer",
+});
 
 /** Cible observée par la barre fixe mobile, qui s'efface quand ce bouton entre dans le champ. */
 const REAL_CTA_ID = "adherer-cta";

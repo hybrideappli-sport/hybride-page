@@ -10,9 +10,16 @@ import { PhotoStrip } from "@/components/club/PhotoStrip";
 import { RitualRow } from "@/components/club/RitualRow";
 import { CLUB } from "@/lib/config";
 import { getAllRituals } from "@/lib/rituals/content";
+import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
 const ALL_ACTIVITIES = Object.keys(activityLabel) as Activity[];
+
+export const metadata = clubMetadata({
+  title: "Hybride Club Toulon — club de running et multisport",
+  description: "Club de sport à Toulon : piste le lundi, run chill le mercredi, trail, vélo, nage en eau libre. Toutes les allures. Première séance découverte, puis 1 € pour l'année.",
+  path: "/club/toulon",
+});
 
 export default async function ClubPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

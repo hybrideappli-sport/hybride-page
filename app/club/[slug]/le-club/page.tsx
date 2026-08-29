@@ -7,7 +7,14 @@ import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB } from "@/lib/config";
+import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
+
+export const metadata = clubMetadata({
+  title: "Un club multisport à Toulon — Hybride Club Toulon",
+  description: "Piste, social run, trail, vélo, nage en eau libre, rando et bivouac : on ne s'enferme pas dans une discipline. Comment nous rejoindre à Toulon.",
+  path: "/club/toulon/le-club",
+});
 
 /**
  * Présentation du club + "Nous rejoindre" (US-XX, 2026-08-21) : sur sa propre

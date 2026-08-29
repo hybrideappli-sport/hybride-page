@@ -59,6 +59,14 @@ Laisse `photo:` et `photoAlt:` vides. La page affichera une carte colorée avec 
 
 Optionnel — un plafond de places, s'il y en a un (par exemple `capacity: 15 personnes maximum`). Laisse-le vide s'il n'y a pas de limite fixe.
 
+## Le champ `metaDescription:`
+
+Optionnel. C'est la phrase affichée **sous le titre dans Google**, et dans l'aperçu quand quelqu'un colle le lien de la page dans WhatsApp.
+
+Si tu le laisses vide, la phrase est fabriquée toute seule à partir du jour, de l'horaire, du niveau et du point de rendez-vous — par exemple : *« Lundi, 18h30 à 20h. Tous niveaux. Rendez-vous : Piste du stade Léo Lagrange, Toulon. »* C'est très bien pour un rituel à heure et lieu fixes.
+
+Remplis-le quand cette phrase automatique sonne faux — typiquement quand plusieurs champs valent « variable », comme pour les soirées. Vise une ou deux phrases, environ 150 caractères : au-delà, Google coupe.
+
 ## Si un fichier ne s'affiche plus après une modification
 
 Le format est volontairement simple mais strict sur un point : les champs `title`, `activity`, `day`, `time`, `level` et `meetingPoint` (en haut du fichier) doivent tous avoir une valeur, sinon la page ne s'affiche pas. Si ça arrive, compare avec un autre fichier `.md` du dossier pour repérer ce qui manque, ou demande de l'aide.

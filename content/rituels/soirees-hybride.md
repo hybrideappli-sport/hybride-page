@@ -9,6 +9,7 @@ mapsUrl:
 coach:
 photo: mercredi-5.jpg
 photoAlt: Le groupe du club posant autour d'une table de bar en soirée, en tenue de sport
+metaDescription: Une soirée par mois, le dernier week-end : karaoké, minigolf, soirée déguisée. Pas de sport, pas de niveau — le troisième rituel du club, à Toulon.
 ---
 
 ## Ce que c'est

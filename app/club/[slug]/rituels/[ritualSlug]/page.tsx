@@ -9,6 +9,7 @@ import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB } from "@/lib/config";
 import { getRitualBySlug } from "@/lib/rituals/content";
+import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
 /** `social-run` porte un tiret, illégal comme nom de classe de module CSS. */
@@ -22,6 +23,29 @@ const ACTIVITY_CLASS: Record<Activity, string> = {
   soirees: "soirees",
   communautaire: "communautaire",
 };
+
+/**
+ * Titre et description déduits du frontmatter : jour, horaire, niveau et point de
+ * rendez-vous. Rien à ressaisir, et la description reste juste toute seule quand
+ * le Markdown est modifié depuis GitHub. C'est aussi ce qui fait apparaître
+ * « Toulon » sans l'écrire à la main : le point de rendez-vous le porte déjà.
+ */
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; ritualSlug: string }> }) {
+  const { slug, ritualSlug } = await params;
+  if (slug !== CLUB.slug) return {};
+
+  const ritual = getRitualBySlug(ritualSlug);
+  if (!ritual) return {};
+
+  const { title, day, time, level, meetingPoint, metaDescription } = ritual.frontmatter;
+  const phrases = [`${day}, ${time}.`, level ? `${level}.` : null, meetingPoint ? `Rendez-vous : ${meetingPoint}.` : null];
+
+  return clubMetadata({
+    title: `${title} — ${CLUB.name}`,
+    description: metaDescription ?? phrases.filter(Boolean).join(" "),
+    path: `/club/${CLUB.slug}/rituels/${ritualSlug}`,
+  });
+}
 
 export default async function RitualPage({ params }: { params: Promise<{ slug: string; ritualSlug: string }> }) {
   const { slug, ritualSlug } = await params;

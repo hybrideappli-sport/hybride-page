@@ -7,6 +7,7 @@ import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CLUB, HELLOASSO_SHOP_URL } from "@/lib/config";
+import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
 /**
@@ -36,6 +37,12 @@ interface ShopProduct {
  * commentaire, lui, pourrit sans que rien ne le signale.
  */
 const PRODUCTS: ShopProduct[] = [];
+
+export const metadata = clubMetadata({
+  title: "Le merch du club — Hybride Club Toulon",
+  description: "Les premières pièces du merch Hybride Club Toulon sont en préparation. Commande et paiement sur la boutique HelloAsso de l'association.",
+  path: "/club/toulon/shop",
+});
 
 export default async function ClubShopPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

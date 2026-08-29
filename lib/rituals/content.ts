@@ -40,6 +40,13 @@ export interface RitualFrontmatter {
       liste ET photo d'en-tête de page. */
   photo: string | null;
   photoAlt: string;
+  /**
+   * Phrase affichée dans Google et dans les aperçus de lien (WhatsApp). Facultative :
+   * sans elle, elle est fabriquée à partir du jour, de l'horaire, du niveau et du point
+   * de rendez-vous — ce qui suffit pour un rituel à heure et lieu fixes. À renseigner
+   * quand ce gabarit sonne faux, par exemple si plusieurs champs valent « variable ».
+   */
+  metaDescription: string | null;
 }
 
 /** Segment de paragraphe : texte brut, ou lien `[texte](url)`. */
@@ -131,6 +138,7 @@ function loadRitual(slug: string): RitualContent {
     coach: data.coach || null,
     photo: data.photo || null,
     photoAlt: data.photoAlt || "",
+    metaDescription: data.metaDescription || null,
   };
   return { frontmatter, blocks: parseBody(body) };
 }

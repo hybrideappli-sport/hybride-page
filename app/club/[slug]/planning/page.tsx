@@ -10,9 +10,16 @@ import { deadlineHasPassed, eventsInMonth, getCurrentMonthKey, getDefaultMonthKe
 import { getAgendaEvents } from "@/lib/agenda/source";
 import { getAllRituals } from "@/lib/rituals/content";
 import { CLUB, PLANNING_COUNTDOWN_TEXT, PLANNING_COUNTDOWN_TO, PLANNING_NOTICE } from "@/lib/config";
+import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
 const MONTH_KEY_PATTERN = /^\d{4}-\d{2}$/;
+
+export const metadata = clubMetadata({
+  title: "Planning des sorties — Hybride Club Toulon",
+  description: "Toutes les sorties du club à Toulon : piste, run chill, trail, vélo, nage en eau libre, soirées. Le jour, l'heure et le lieu de chaque rendez-vous.",
+  path: "/club/toulon/planning",
+});
 
 export default async function PlanningPage({
   params,
