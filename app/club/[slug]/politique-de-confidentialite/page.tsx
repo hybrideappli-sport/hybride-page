@@ -13,7 +13,10 @@ export default async function ClubPrivacyPage({ params }: { params: Promise<{ sl
   return (
     <div className={styles.wrap}>
       <ClubNav clubSlug={CLUB.slug} />
-      <LegalPage title="Politique de confidentialité" updatedAt="2026-08-28">
+      {/* provisional={false} depuis le 2026-08-29 : le contenu est à jour — siège
+          social réel, responsable de traitement, contact RGPD. Le bandeau
+          « Contenu provisoire » n'avait plus lieu d'être. */}
+      <LegalPage title="Politique de confidentialité" updatedAt="2026-08-29" provisional={false}>
         <h2>Responsable de traitement</h2>
         <p>
           {CLUB.name} (association régie par la loi du 1<sup>er</sup> juillet 1901), dont le siège social est situé {CLUB.legalAddress},
