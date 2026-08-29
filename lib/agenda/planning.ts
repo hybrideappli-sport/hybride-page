@@ -34,6 +34,44 @@ export function getCurrentMonthKey(): string {
   return getMonthKey(new Date().toISOString());
 }
 
+/**
+ * L'échéance est-elle déjà passée selon l'horloge de CELUI QUI APPELLE ?
+ *
+ * Appelée au rendu serveur, elle donne la valeur de départ du compte à rebours
+ * du planning (PlanningCountdown.tsx). Comme `getCurrentMonthKey()` juste
+ * au-dessus, elle lit l'horloge : le rendu n'est donc pas idempotent, et c'est
+ * assumé — la page planning est rendue à la requête. Aucune décision finale ne
+ * repose dessus : le client recalcule au montage et corrige.
+ *
+ * Une échéance illisible renvoie `true` : mieux vaut un planning ouvert qu'un
+ * planning bloqué par une faute de frappe dans la configuration.
+ */
+export function deadlineHasPassed(iso: string): boolean {
+  const targetMs = new Date(iso).getTime();
+  if (Number.isNaN(targetMs)) return true;
+  return new Date().getTime() >= targetMs;
+}
+
+/**
+ * Mois sur lequel ouvrir la page quand le visiteur n'en demande aucun.
+ *
+ * Le mois courant, sauf s'il ne contient aucune sortie : on avance alors sur le
+ * premier mois qui en contient. Sans cela, ouvrir le planning les tout derniers
+ * jours d'un mois donne une grille vide alors que le suivant est rempli — cas
+ * réel du 30 août 2026, où les 17 sorties sont en septembre. Un mois vide reste
+ * possible et n'est pas une erreur (aucune sortie nulle part) : on retombe
+ * simplement sur le mois courant.
+ *
+ * On ne revient jamais en arrière : le planning montre ce qui vient, pas des
+ * archives.
+ */
+export function getDefaultMonthKey(events: AgendaEvent[]): string {
+  const currentKey = getCurrentMonthKey();
+  const upcoming = events.map((e) => getMonthKey(e.startsAtIso)).filter((key) => key >= currentKey);
+  if (upcoming.length === 0) return currentKey;
+  return upcoming.reduce((a, b) => (a < b ? a : b));
+}
+
 /** Décale une clé de mois de `delta` mois (peut être négatif) — arithmétique de calendrier pure, pas de fuseau à considérer ici. */
 export function shiftMonthKey(key: string, delta: number): string {
   const [y, m] = key.split("-").map(Number);

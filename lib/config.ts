@@ -58,20 +58,36 @@ export const CLUB = {
 export const COMMERCIAL_LEGAL_PAGES_PUBLISHED = false;
 
 /**
- * Message d'attente affiché À LA PLACE de la grille du planning.
+ * Compte à rebours affiché À LA PLACE de la grille du planning, jusqu'à
+ * l'instant indiqué — puis la grille apparaît d'elle-même, sans redéploiement.
  *
- * Chaîne vide = grille normale. C'est le seul interrupteur : aucune autre
- * modification n'est nécessaire pour revenir à l'affichage habituel.
+ * DISPOSITIF TEMPORAIRE (posé le 2026-08-29 pour l'ouverture du programme de
+ * septembre). Passé l'échéance il n'a plus aucun effet : le vider est un
+ * nettoyage, pas une réparation. Chaîne vide = grille normale.
  *
- * Pensé pour être vidé depuis un téléphone, via l'éditeur web de GitHub —
- * même geste que pour le contenu des rituels. Vercel redéploie tout seul au
- * commit, il n'y a rien d'autre à piloter.
- *
- * Posé le 2026-08-28 : la colonne « Activité » du tableur n'arrive pas encore
- * dans le CSV publié, donc toutes les lignes sont rejetées et la grille est
- * vide. Mieux vaut une date annoncée qu'une grille vide sans explication.
+ * FORMAT : ISO 8601 avec DÉCALAGE HORAIRE EXPLICITE, jamais un `Z` ni une date
+ * nue. `+02:00` = heure d'été de Paris (mars → octobre) ; une échéance en
+ * hiver s'écrirait `+01:00`. Écrire l'heure locale sans décalage la ferait
+ * interpréter en UTC par le navigateur, soit deux heures d'écart en été.
  */
-export const PLANNING_NOTICE = "Le programme de septembre sera en ligne dimanche à 10h.";
+export const PLANNING_COUNTDOWN_TO = "2026-08-30T10:00:00+02:00";
+
+/** Phrase affichée au-dessus du décompte. Volontairement courte : le décompte porte déjà l'information. */
+export const PLANNING_COUNTDOWN_TEXT = "Le programme de septembre arrive.";
+
+/**
+ * Message d'attente FIGÉ affiché À LA PLACE de la grille — et prioritaire sur
+ * le compte à rebours ci-dessus.
+ *
+ * Chaîne vide = pas de message. C'est le filet : si l'échéance du décompte
+ * arrive avant que le planning ne soit prêt, écrire une phrase ici reprend la
+ * main immédiatement, sans toucher au reste.
+ *
+ * Pensé pour être rempli/vidé depuis un téléphone, via l'éditeur web de GitHub
+ * — même geste que pour le contenu des rituels. Vercel redéploie tout seul au
+ * commit, il n'y a rien d'autre à piloter.
+ */
+export const PLANNING_NOTICE = "";
 
 /**
  * URL de la boutique merch HelloAsso de l'association — PAS ENCORE CONNUE.

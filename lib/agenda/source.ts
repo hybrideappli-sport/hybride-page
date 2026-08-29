@@ -68,7 +68,9 @@ const ACTIVITY_BY_SHEET_VALUE: Record<string, Activity> = {
   randonnee: "bivouac",
   "rando bivouac": "bivouac",
   soiree: "soirees",
+  soirees: "soirees",
   "soiree hybride": "soirees",
+  "soiree d hybride": "soirees",
   communautaire: "communautaire",
   "evenement communautaire": "communautaire",
   volley: "communautaire",
@@ -82,7 +84,11 @@ function normalizeActivity(raw: string): string {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, " ");
+    // Apostrophes droites et typographiques ramenées à un espace : « Soirée
+    // d'hybride » et « Soirée d’hybride » tombent alors sur la même clé.
+    .replace(/['\u2019]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 /**
@@ -154,12 +160,32 @@ function timeZoneOffsetMs(utcMs: number, timeZone: string): number {
  * d'heure (une nuit par semestre, à 2-3h du matin) est négligeable pour des
  * horaires de sortie/ouverture en journée ou en soirée.
  */
+/**
+ * Heure saisie à la main, donc écrite de six façons différentes dans le
+ * tableur réel : « 19:00 », « 08:00 », « 8:45 », « 11H », « 19H », « 9H »
+ * (relevé le 2026-08-29). Un format strict HH:MM rejetait silencieusement six
+ * lignes sur dix-sept.
+ *
+ * Tolérance sur la FORME, jamais sur le fond : heure à un ou deux chiffres,
+ * séparateur « : », « h » ou « H », minutes optionnelles (absentes = 00).
+ * Une valeur hors plage (25:00, 19:70) reste rejetée — c'est une vraie faute
+ * de saisie, pas une variante d'écriture.
+ */
+function parseWallClockTime(raw: string): { hh: string; mi: string } | null {
+  const m = /^(\d{1,2})\s*(?:[:hH]\s*(\d{1,2})?)?$/.exec(raw.trim());
+  if (!m) return null;
+  const hours = Number(m[1]);
+  const minutes = m[2] === undefined ? 0 : Number(m[2]);
+  if (hours > 23 || minutes > 59) return null;
+  return { hh: String(hours).padStart(2, "0"), mi: String(minutes).padStart(2, "0") };
+}
+
 function parisWallClockToIso(dateStr: string | undefined, timeStr: string | undefined): string | null {
   const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr?.trim() ?? "");
-  const t = /^(\d{2}):(\d{2})$/.exec(timeStr?.trim() ?? "");
+  const t = parseWallClockTime(timeStr ?? "");
   if (!d || !t) return null;
   const [, y, mo, day] = d;
-  const [, hh, mi] = t;
+  const { hh, mi } = t;
   const guessUtc = Date.UTC(+y, +mo - 1, +day, +hh, +mi);
   const offset = timeZoneOffsetMs(guessUtc, "Europe/Paris");
   return new Date(guessUtc - offset).toISOString();

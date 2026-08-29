@@ -178,14 +178,27 @@
   overflow-wrap: anywhere;
 }
 
-.course {
-  background: var(--hy-course-bg);
-  border-left-color: var(--hy-course);
+.piste {
+  background: var(--hy-piste-bg);
+  border-left-color: var(--hy-piste);
 }
-.course .eventTime {
-  color: var(--hy-course);
+.piste .eventTime {
+  color: var(--hy-piste);
 }
-
+.socialRun {
+  background: var(--hy-social-run-bg);
+  border-left-color: var(--hy-social-run);
+}
+.socialRun .eventTime {
+  color: var(--hy-social-run);
+}
+.trail {
+  background: var(--hy-trail-bg);
+  border-left-color: var(--hy-trail);
+}
+.trail .eventTime {
+  color: var(--hy-trail);
+}
 .velo {
   background: var(--hy-velo-bg);
   border-left-color: var(--hy-velo);
@@ -193,29 +206,33 @@
 .velo .eventTime {
   color: var(--hy-velo);
 }
-
-.eau {
-  background: var(--hy-eau-bg);
-  border-left-color: var(--hy-eau);
+.nage {
+  background: var(--hy-nage-bg);
+  border-left-color: var(--hy-nage);
 }
-.eau .eventTime {
-  color: var(--hy-eau);
+.nage .eventTime {
+  color: var(--hy-nage);
 }
-
-.montagne {
-  background: var(--hy-montagne-bg);
-  border-left-color: var(--hy-montagne);
+.bivouac {
+  background: var(--hy-bivouac-bg);
+  border-left-color: var(--hy-bivouac);
 }
-.montagne .eventTime {
-  color: var(--hy-montagne);
+.bivouac .eventTime {
+  color: var(--hy-bivouac);
 }
-
-.collectif {
-  background: var(--hy-collectif-bg);
-  border-left-color: var(--hy-collectif);
+.soirees {
+  background: var(--hy-soirees-bg);
+  border-left-color: var(--hy-soirees);
 }
-.collectif .eventTime {
-  color: var(--hy-collectif);
+.soirees .eventTime {
+  color: var(--hy-soirees);
+}
+.communautaire {
+  background: var(--hy-communautaire-bg);
+  border-left-color: var(--hy-communautaire);
+}
+.communautaire .eventTime {
+  color: var(--hy-communautaire);
 }
 
 /*
