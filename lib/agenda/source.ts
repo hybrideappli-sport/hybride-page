@@ -16,6 +16,13 @@ const REVALIDATE_SECONDS = 300;
 export interface AgendaEvent {
   id: string;
   title: string | null;
+  /**
+   * Nom affiché dans une case du calendrier, où la colonne fait une cinquantaine
+   * de pixels sur un téléphone. Colonne « Nom court » du tableur, facultative :
+   * absente ou vide, on retombe sur `title`. Viser 12 caractères — au-delà, le
+   * nom est coupé dans la case (jamais dans la fiche, qui garde `title` entier).
+   */
+  shortTitle: string | null;
   /** Une seule activité par sortie depuis le 2026-08-28 — voir ACTIVITY_BY_SHEET_VALUE. */
   activity: Activity;
   activityLabelText: string;
@@ -247,6 +254,7 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   return {
     id: `${row["Date"]}-${row["Heure"]}-${(title ?? location).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
     title,
+    shortTitle: row["Nom court"]?.trim() || null,
     activity,
     activityLabelText: activityLabel[activity],
     format: row["Format"]?.trim() || null,

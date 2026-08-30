@@ -113,28 +113,9 @@ export interface CalendarCell {
 /** Lundi → dimanche, comme un calendrier papier français (et comme la norme ISO 8601). */
 export const WEEKDAY_LABELS = ["L", "M", "M", "J", "V", "S", "D"] as const;
 
-/** Abrégés affichés dans la carte de chaque sortie sur mobile, où la colonne ne porte plus le jour. */
-export const WEEKDAY_SHORT = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"] as const;
-
 export interface CalendarWeek {
   key: string;
-  /** "Semaine du 7 au 13 septembre" — n'apparaît que sur mobile, où la grille devient une liste. */
-  label: string;
   cells: CalendarCell[];
-  /** Une semaine sans aucune sortie est masquée sur mobile : rien à y lire. */
-  hasEvents: boolean;
-}
-
-function formatWeekLabel(mondayKey: string): string {
-  const [y, m, d] = mondayKey.split("-").map(Number);
-  const monday = new Date(Date.UTC(y, m - 1, d));
-  const sunday = new Date(Date.UTC(y, m - 1, d + 6));
-  const dayFmt = new Intl.DateTimeFormat("fr-FR", { day: "numeric", timeZone: "UTC" });
-  const monthFmt = new Intl.DateTimeFormat("fr-FR", { month: "long", timeZone: "UTC" });
-  if (monday.getUTCMonth() === sunday.getUTCMonth()) {
-    return `Semaine du ${dayFmt.format(monday)} au ${dayFmt.format(sunday)} ${monthFmt.format(sunday)}`;
-  }
-  return `Semaine du ${dayFmt.format(monday)} ${monthFmt.format(monday)} au ${dayFmt.format(sunday)} ${monthFmt.format(sunday)}`;
 }
 
 /**
@@ -143,10 +124,10 @@ function formatWeekLabel(mondayKey: string): string {
  * dates déjà ramenées au fuseau Paris (getParisDayKey), jamais sur des instants
  * bruts : c'est ce qui évite qu'un événement de 23h bascule d'un jour.
  *
- * Chaque semaine porte aussi son libellé et un drapeau hasEvents : le même
- * balisage sert de grille 7 colonnes sur grand écran et de liste de cartes
- * groupée par semaine sur mobile (voir PlanningCalendar.module.css) — une seule
- * structure de données, pas deux rendus à tenir synchronisés.
+ * Le même balisage sert à toutes les largeurs : la grille reste une grille sur
+ * mobile, seule sa densité change (voir PlanningCalendar.module.css). Le libellé
+ * de semaine et le drapeau hasEvents ont disparu avec la liste mobile qu'ils
+ * servaient (2026-08-30).
  */
 export function buildMonthGrid(monthKey: string, events: AgendaEvent[]): CalendarWeek[] {
   const eventsByDay = new Map<string, AgendaEvent[]>();
@@ -181,12 +162,7 @@ export function buildMonthGrid(monthKey: string, events: AgendaEvent[]): Calenda
       });
       cursor.setUTCDate(cursor.getUTCDate() + 1);
     }
-    weeks.push({
-      key: mondayKey,
-      label: formatWeekLabel(mondayKey),
-      cells,
-      hasEvents: cells.some((c) => c.events.length > 0),
-    });
+    weeks.push({ key: mondayKey, cells });
   } while (cursor.getUTCMonth() === month - 1 && cursor.getUTCFullYear() === year);
 
   return weeks;

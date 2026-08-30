@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { activityLabel, type Activity } from "@/components/ui/Tag";
-import { buildMonthGrid, getTodayParisKey, WEEKDAY_LABELS, WEEKDAY_SHORT, type CalendarCell } from "@/lib/agenda/planning";
+import { buildMonthGrid, getTodayParisKey, WEEKDAY_LABELS, type CalendarCell } from "@/lib/agenda/planning";
 import type { AgendaEvent } from "@/lib/agenda/source";
 import { formatEventDateLong, formatEventTime } from "@/lib/format";
 import { EventSheet } from "./EventSheet";
@@ -95,10 +95,9 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
         </div>
 
         {weeks.map((week) => (
-          <div key={week.key} className={`${styles.week} ${week.hasEvents ? "" : styles.weekEmpty}`}>
-            <p className={styles.weekLabel}>{week.label}</p>
-            {week.cells.map((cell, i) => (
-              <Cell key={cell.key} cell={cell} weekdayIndex={i} isToday={cell.key === todayKey} onOpen={() => setOpenDay(cell.events)} />
+          <div key={week.key} className={styles.week}>
+            {week.cells.map((cell) => (
+              <Cell key={cell.key} cell={cell} isToday={cell.key === todayKey} onOpen={() => setOpenDay(cell.events)} />
             ))}
           </div>
         ))}
@@ -121,22 +120,12 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
   );
 }
 
-function Cell({
-  cell,
-  weekdayIndex,
-  isToday,
-  onOpen,
-}: {
-  cell: CalendarCell;
-  weekdayIndex: number;
-  isToday: boolean;
-  onOpen: () => void;
-}) {
+function Cell({ cell, isToday, onOpen }: { cell: CalendarCell; isToday: boolean; onOpen: () => void }) {
   const classes = [styles.cell, cell.inMonth ? "" : styles.cellOut, isToday ? styles.cellToday : ""].filter(Boolean).join(" ");
 
   if (cell.events.length === 0) {
     return (
-      <div className={`${classes} ${styles.cellEmpty}`}>
+      <div className={classes}>
         <span className={styles.dayNumber}>{cell.dayNumber}</span>
       </div>
     );
@@ -148,17 +137,15 @@ function Cell({
 
   return (
     <button type="button" className={`${classes} ${styles.cellHasEvents}`} onClick={onOpen} aria-label={label}>
-      <span className={styles.dayNumber}>
-        {/* L'abrégé du jour n'a de sens que sur mobile : en grille, c'est l'en-tête de colonne qui le porte. */}
-        <span className={styles.weekdayShort}>{WEEKDAY_SHORT[weekdayIndex]} </span>
-        {cell.dayNumber}
-      </span>
+      <span className={styles.dayNumber}>{cell.dayNumber}</span>
 
       <span className={styles.events}>
         {cell.events.map((event) => (
           <span key={event.id} className={`${styles.event} ${styles[ACTIVITY_CLASS[event.activity]]}`}>
             <span className={styles.eventTime}>{formatEventTime(event.startsAtIso)}</span>
-            <span className={styles.eventName}>{event.title ?? event.activityLabelText}</span>
+            {/* Nom court en priorité : dans une case de ~47px, « Soirée d'hybride au
+                mini-golf » ne rentre pas. Le titre complet reste dans la fiche. */}
+            <span className={styles.eventName}>{event.shortTitle ?? event.title ?? event.activityLabelText}</span>
           </span>
         ))}
       </span>

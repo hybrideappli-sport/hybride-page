@@ -66,12 +66,6 @@
   padding-bottom: 4px;
 }
 
-/* Le libellé de semaine ne sert qu'à la liste mobile : en grille il n'aurait pas
-   de colonne où se poser. */
-.weekLabel {
-  display: none;
-}
-
 .cell {
   /* min-width: 0 en plus de minmax(0, 1fr) : la case est elle-même un conteneur
      flex, et ses enfants ne doivent pas non plus l'empêcher de rétrécir. */
@@ -127,12 +121,6 @@
   flex: 0 0 auto;
 }
 
-/* Redondant en grille (l'en-tête de colonne porte déjà le jour), indispensable
-   dans la liste mobile où les colonnes disparaissent. */
-.weekdayShort {
-  display: none;
-}
-
 .events {
   display: flex;
   flex-direction: column;
@@ -163,9 +151,9 @@
   line-height: 1.2;
 }
 
-/* Jamais de troncature à l'illisible : le nom passe à la ligne et se borne à
-   deux lignes en grille (largement de quoi loger un titre de sortie dans une
-   case de ~150px) ; en liste mobile la contrainte saute, la largeur suffit. */
+/* Le nom passe à la ligne et se borne à deux lignes : largement de quoi loger un
+   titre dans une case de ~150px. Sur mobile la case fait le tiers de ça, et la
+   contrainte passe à trois lignes sur un texte plus petit (voir plus bas). */
 .eventName {
   font-size: 12px;
   line-height: 1.25;
@@ -236,68 +224,119 @@
 }
 
 /*
- * Bascule mobile : la grille devient une liste de cartes groupée par semaine.
- * Même point de rupture (860px) que le reste du site. Rien n'est retiré du DOM —
- * les jours et semaines sans sortie sont masqués, ce qui garde une seule source
- * de balisage pour les deux mises en page.
+ * MOBILE — ça reste une grille (2026-08-30).
+ *
+ * La bascule en liste groupée par semaine a été retirée : on veut voir le mois
+ * d'un coup d'œil, et comprendre une case sans cliquer. Tout le travail
+ * consiste donc à récupérer de la largeur de colonne, parce que c'est elle qui
+ * décide si un nom est lisible.
+ *
+ * L'arithmétique à 375px, dans l'ordre où chaque pixel est gagné :
+ *   375              largeur d'écran
+ *   -32   → 343      pleine largeur : les 24px de padding de .wrap sont annulés
+ *                    et remplacés par 8px (margin-inline négatif ci-dessous)
+ *   -12   → 331      six gouttières de 2px au lieu de 4
+ *   /7    → 47,3     largeur de colonne
+ *   -6    → 41,3     padding de la case (3px de chaque côté)
+ *   -6    → 35,3     padding de la sortie
+ * Soit ~35px de texte utile, environ 8 caractères par ligne à 9px. « Run chill »
+ * tient sur une ligne, « Mourillon » sur la suivante.
+ *
+ * La bordure gauche colorée saute ici : 3px de large plus son padding, c'est un
+ * caractère par ligne. Le fond teinté et l'heure colorée portent la couleur, et
+ * le nom reste écrit en toutes lettres — l'information ne repose jamais sur la
+ * seule couleur.
+ *
+ * Les noms trop longs sont raccourcis en amont par la colonne « Nom court » du
+ * tableur (voir AgendaEvent.shortTitle) : c'est la vraie réponse à
+ * « Soirée d'hybride au mini-golf », qu'aucune largeur de colonne ne fera tenir.
  */
 @media (max-width: 860px) {
-  .weekdays {
-    display: none;
+  /* Pleine largeur : annule les 24px de padding horizontal de la page pour n'en
+     laisser que 8. C'est le plus gros gain de tout le bloc — 32px, soit 14% de
+     largeur de colonne en plus. */
+  .grid {
+    margin-inline: -16px;
+    gap: 2px;
   }
 
+  .weekdays,
   .week {
-    display: flex;
-    flex-direction: column;
-    gap: var(--hy-space-2);
-    margin-bottom: var(--hy-space-4);
+    gap: 2px;
   }
 
-  .weekEmpty,
-  .cellEmpty {
-    display: none;
+  .weekday {
+    font-size: 10px;
+    padding-bottom: 2px;
   }
 
-  .weekLabel {
-    display: block;
-    font-family: var(--hy-font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--hy-text-3);
-    margin: 0 0 var(--hy-space-1);
+  /* Les filtres passent de quatre lignes à deux : à 375px ils repoussaient
+     sinon la grille sous le pli, ce qui vidait de son sens l'idée de voir le
+     mois d'un coup d'œil. Zone tactile conservée au-dessus de 30px de haut. */
+  .filters {
+    gap: 6px;
+    padding-bottom: var(--hy-space-3);
+  }
+
+  .chip {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding: 7px 10px;
   }
 
   .cell {
-    min-height: 0;
-    padding: var(--hy-space-3);
-    gap: var(--hy-space-2);
+    min-height: 58px;
+    /* padding horizontal à 1px : à 375px, ces 2 pixels sont exactement ce qui
+       sépare « Mourillon » écrit en entier de « Mourillo / n » coupé au milieu. */
+    padding: 3px 1px;
+    gap: 2px;
+    border-radius: 6px;
   }
 
   .dayNumber {
-    font-size: 13px;
-    color: var(--hy-text-2);
+    font-size: 10px;
+    color: var(--hy-text-3);
   }
 
-  .weekdayShort {
-    display: inline;
+  .events {
+    gap: 2px;
   }
 
   .event {
-    padding: var(--hy-space-2) var(--hy-space-3);
-    border-left-width: 5px;
-    gap: 3px;
+    padding: 2px;
+    border-left: none;
+    border-radius: 4px;
+    gap: 0;
   }
 
   .eventTime {
-    font-size: 12px;
+    font-size: 9px;
   }
 
-  /* Pleine largeur : plus de raison de borner le nom à deux lignes. */
+  /* 9px : c'est petit, et c'est assumé — même parti pris que l'agenda publié sur
+     Instagram. Trois lignes plutôt que deux, la place gagnée en hauteur ne coûte
+     rien ici (une case vide n'occupe que son numéro de jour). */
   .eventName {
-    font-size: 16px;
-    -webkit-line-clamp: none;
-    display: block;
+    font-size: 9px;
+    line-height: 1.15;
+    font-weight: 500;
+    -webkit-line-clamp: 3;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Écrans très étroits (iPhone SE) : un cran de plus sur les mêmes leviers. */
+@media (max-width: 340px) {
+  .cell {
+    padding: 2px 1px;
+  }
+
+  .event {
+    padding: 2px;
+  }
+
+  .eventName {
+    font-size: 8px;
   }
 }
 
