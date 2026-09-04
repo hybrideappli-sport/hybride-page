@@ -4,6 +4,16 @@
   padding: 0 var(--hy-space-4);
 }
 
+/* Espace réservé sous la barre d'inscription fixe : sans lui, elle masquerait la
+   fin du pied de page, qu'on ne pourrait plus faire défiler pour la dégager.
+   Hauteur de la barre (bouton 44px + 2×16px de padding) plus une marge — même
+   valeur que la page d'adhésion, qui porte le même dispositif. */
+@media (max-width: 860px) {
+  .wrap {
+    padding-bottom: 96px;
+  }
+}
+
 /* Même traitement que BackToClub, mais vers le planning : depuis une sortie,
    c'est là qu'on veut revenir, pas à l'accueil du club. */
 .back {
@@ -25,6 +35,8 @@
   border-radius: 4px;
 }
 
+/* Sortie sans rituel : l'en-tête est autonome. Avec un rituel, le même balisage
+   est passé en `heading` à RitualBody, qui le pose dans sa colonne de texte. */
 .hero {
   display: flex;
   flex-direction: column;
@@ -35,7 +47,18 @@
 }
 
 .title {
-  margin: 0;
+  margin: var(--hy-space-2) 0 0;
+}
+
+/* Date et heure : les seules informations propres à l'occurrence quand le reste
+   de la page est le rituel. Traitées comme une ligne de fait, pas comme du corps
+   de texte. */
+.when {
+  font-family: var(--hy-font-mono);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--hy-text-2);
+  margin: var(--hy-space-2) 0 0;
 }
 
 /* Deux colonnes sur grand écran, une seule dès qu'on manque de place : les
@@ -81,33 +104,27 @@
 }
 
 .cta {
-  padding-bottom: var(--hy-space-6);
+  padding-bottom: var(--hy-space-5);
 }
 
-.ritual {
-  border-top: 1px solid var(--hy-line);
-  padding: var(--hy-space-5) 0 var(--hy-space-6);
-  max-width: 62ch;
-}
-
-.ritualLead {
-  margin: 0 0 var(--hy-space-2);
-  font-size: 15px;
-  color: var(--hy-text-2);
-}
-
+/* Complément, plus moyen d'accès : le contenu du rituel est déjà sur la page. */
 .ritualLink {
-  font-size: 18px;
-  font-weight: 600;
+  margin: 0;
+  padding-bottom: var(--hy-space-6);
+  max-width: 62ch;
+  font-size: 15px;
+}
+
+.ritualLink a {
   color: var(--hy-violet);
   text-decoration: none;
 }
 
-.ritualLink:hover {
+.ritualLink a:hover {
   filter: brightness(1.2);
 }
 
-.ritualLink:focus-visible {
+.ritualLink a:focus-visible {
   outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
   outline-offset: var(--hy-focus-ring-offset);
 }

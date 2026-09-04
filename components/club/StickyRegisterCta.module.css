@@ -1,0 +1,50 @@
+/*
+ * Mobile uniquement : au-dessus de 860px la page tient sans barre fixe.
+ * `display: none` par défaut plutôt qu'une bascule inverse — sur grand écran
+ * l'élément n'existe pas visuellement, sans dépendre d'un media query pour
+ * l'effacer.
+ */
+.bar {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: var(--hy-space-3) var(--hy-space-4);
+    /*
+     * Zone sûre iOS : viewport-fit=cover n'est volontairement PAS activé sur ce
+     * site (il étendrait la page sous l'encoche partout, où les marges de 24px
+     * des conteneurs ne suffiraient pas en paysage). Dans ce mode, iOS exclut
+     * déjà les zones sûres du viewport, donc `bottom: 0` tombe au-dessus de la
+     * barre d'accueil et env() vaut 0. Le max() ne coûte rien et couvre le cas
+     * où viewport-fit passerait à cover un jour.
+     */
+    padding-bottom: max(var(--hy-space-3), env(safe-area-inset-bottom));
+    /* Fond plein, pas translucide : le texte de la page passe dessous en
+       défilant et resterait lisible à travers un fond semi-transparent. */
+    background: var(--hy-bg);
+    border-top: 1px solid var(--hy-line);
+    transition:
+      transform var(--hy-dur) var(--hy-ease),
+      opacity var(--hy-dur) var(--hy-ease);
+  }
+
+  /* Escamotée vers le bas plutôt que display:none : le retrait reste doux, et
+     l'élément garde une taille mesurable pour l'observateur. */
+  .barHidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
+import { RitualBody } from "@/components/club/RitualBody";
+import { StickyRegisterCta } from "@/components/club/StickyRegisterCta";
 import { RegistrationCta } from "@/components/ui/RegistrationCta";
 import { Tag } from "@/components/ui/Tag";
 import { getAgendaEvents } from "@/lib/agenda/source";
@@ -13,18 +15,25 @@ import { findRitualForEvent } from "@/lib/rituals/content";
 import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
+/** Cible observée par la barre fixe : elle s'efface dès que le vrai bouton entre dans le champ. */
+const REAL_CTA_ID = "inscription-sortie";
+
 /**
  * Page d'une sortie — remplace la fenêtre modale du planning (2026-09-04).
  *
- * Une seule route au lieu de deux chemins vers le même contenu : une sortie a
- * une adresse, elle se partage, s'ouvre dans un onglet, et son aperçu de lien
- * porte SON titre et non celui du site (voir generateMetadata plus bas — ces
- * pages vont circuler plus que les autres).
+ * DEUX FORMES, selon qu'un rituel se trouve derrière la sortie (2026-09-11) :
  *
- * Le contenu vient du tableur, sauf la description : elle n'y est pas, et n'y
- * sera pas. Une sortie récurrente renvoie vers son rituel, où le texte est écrit
- * une fois pour toutes (findRitualForEvent) ; une sortie unique porte la colonne
- * `Détails`, facultative, à remplir seulement quand il y a quelque chose à dire.
+ * - Sortie rattachée à un rituel (piste du lundi, run chill du mercredi, soirées).
+ *   L'en-tête ne porte que ce qui appartient à l'occurrence — sa date et son
+ *   heure — et tout le reste de la page EST le rituel : texte complet, photos,
+ *   niveau, point de rendez-vous. Pas un lien vers le rituel, son contenu.
+ *   Quelqu'un qui ouvre « Run chill Mourillon du 16 septembre » comprend tout
+ *   sans naviguer ailleurs. Le texte n'est pas dupliqué pour autant : les deux
+ *   pages rendent le même composant RitualBody, sur le même fichier Markdown.
+ *
+ * - Sortie sans rituel (trail, bivouac, nage, vélo, danse fit, volley). Inchangée :
+ *   ses informations pratiques venues du tableur, et la colonne `Détails` quand
+ *   elle est remplie.
  *
  * Sortie introuvable = vrai 404 (not-found.tsx), jamais une page en 200 qui
  * ferait croire à un contenu existant.
@@ -61,14 +70,23 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const ritual = findRitualForEvent(event);
   const monthKey = getMonthKey(event.startsAtIso);
 
-  const facts: { label: string; value: string }[] = [
-    { label: "Date", value: formatEventDateLong(event.startsAtIso) },
-    { label: "Heure", value: formatEventTime(event.startsAtIso) },
-    { label: "Durée", value: event.duration },
-    { label: "Lieu", value: event.location },
-  ];
-  if (event.format) facts.push({ label: "Format", value: event.format });
-  if (event.level) facts.push({ label: "Niveau", value: event.level });
+  const heading = (
+    <>
+      <Tag variant={event.activity}>{event.activityLabelText}</Tag>
+      <h1 className={styles.title}>{title}</h1>
+      <p className={styles.when}>
+        {formatEventDateLong(event.startsAtIso)} · {formatEventTime(event.startsAtIso)}
+      </p>
+    </>
+  );
+
+  const registration = (
+    <div className={styles.cta} id={REAL_CTA_ID}>
+      <RegistrationCta opensAtIso={event.opensAtIso} lumaUrl={event.lumaUrl} startsAtIso={event.startsAtIso} />
+    </div>
+  );
+
+  const details = event.details ? <p className={styles.details}>{event.details}</p> : null;
 
   return (
     <div className={styles.wrap}>
@@ -80,34 +98,49 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         ← Retour au planning
       </Link>
 
-      <div className={styles.hero}>
-        <Tag variant={event.activity}>{event.activityLabelText}</Tag>
-        <h1 className={styles.title}>{title}</h1>
-      </div>
-
-      <dl className={styles.facts}>
-        {facts.map((fact) => (
-          <div key={fact.label} className={styles.fact}>
-            <dt>{fact.label}</dt>
-            <dd>{fact.value}</dd>
-          </div>
-        ))}
-      </dl>
-
-      {event.details ? <p className={styles.details}>{event.details}</p> : null}
-
-      <div className={styles.cta}>
-        <RegistrationCta opensAtIso={event.opensAtIso} lumaUrl={event.lumaUrl} startsAtIso={event.startsAtIso} />
-      </div>
-
       {ritual ? (
-        <section className={styles.ritual}>
-          <p className={styles.ritualLead}>Ce rendez-vous fait partie d&rsquo;un rituel du club.</p>
-          <Link href={`/club/${CLUB.slug}/rituels/${ritual.frontmatter.slug}`} className={styles.ritualLink}>
-            En savoir plus sur {ritual.frontmatter.title} →
-          </Link>
-        </section>
-      ) : null}
+        <>
+          {/* Le point de rendez-vous du tableur l'emporte sur celui du rituel : il est
+              saisi par sortie et souvent plus précis (« Parking du Yacht club, plage
+              du Mourillon » contre « Le Mourillon »). */}
+          <RitualBody ritual={ritual} heading={heading} meetingPoint={event.location} photoFirstOnMobile={false} />
+
+          {details}
+          {registration}
+
+          {/* Le lien reste, en complément et non plus comme moyen d'accès : il mène à
+              la page du rituel, sans date — celle qu'on partage quand on parle du
+              rendez-vous en général plutôt que d'une occurrence. */}
+          <p className={styles.ritualLink}>
+            <Link href={`/club/${CLUB.slug}/rituels/${ritual.frontmatter.slug}`}>
+              Voir la page du rituel : {ritual.frontmatter.title} →
+            </Link>
+          </p>
+        </>
+      ) : (
+        <>
+          <div className={styles.hero}>{heading}</div>
+
+          <dl className={styles.facts}>
+            {[
+              { label: "Durée", value: event.duration },
+              { label: "Lieu", value: event.location },
+              ...(event.format ? [{ label: "Format", value: event.format }] : []),
+              ...(event.level ? [{ label: "Niveau", value: event.level }] : []),
+            ].map((fact) => (
+              <div key={fact.label} className={styles.fact}>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {details}
+          {registration}
+        </>
+      )}
+
+      <StickyRegisterCta lumaUrl={event.lumaUrl} startsAtIso={event.startsAtIso} watchId={REAL_CTA_ID} />
 
       <ClubFooter
         clubSlug={CLUB.slug}
