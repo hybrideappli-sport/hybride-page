@@ -100,19 +100,9 @@
   color: var(--hy-violet);
 }
 
-.cellHasEvents {
-  cursor: pointer;
-  transition: border-color var(--hy-dur) var(--hy-ease);
-}
-
-.cellHasEvents:hover {
-  border-color: var(--hy-violet);
-}
-
-.cellHasEvents:focus-visible {
-  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
-  outline-offset: var(--hy-focus-ring-offset);
-}
+/* L'interactivité est portée par la SORTIE, plus par la case (2026-09-04) :
+   c'est chaque sortie qui est un lien vers sa page, et une case peut en porter
+   deux. */
 
 .dayNumber {
   font-family: var(--hy-font-mono);
@@ -143,6 +133,20 @@
   padding: 4px 6px;
   border-left: 4px solid;
   border-radius: 0 6px 6px 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    filter var(--hy-dur) var(--hy-ease),
+    outline-color var(--hy-dur) var(--hy-ease);
+}
+
+.event:hover {
+  filter: brightness(1.45);
+}
+
+.event:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: 2px;
 }
 
 .eventTime {

@@ -1,0 +1,95 @@
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+.body {
+  padding: var(--hy-space-5) 0 var(--hy-space-7);
+  max-width: 62ch;
+}
+
+.eyebrow {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-2);
+}
+
+.title {
+  margin: 0 0 var(--hy-space-3);
+}
+
+.lead {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+  margin: 0 0 var(--hy-space-5);
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--hy-violet);
+  text-decoration: none;
+}
+
+.primary:hover {
+  filter: brightness(1.2);
+}
+
+.primary:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+.ritualsLead {
+  font-size: 15px;
+  color: var(--hy-text-2);
+  margin: var(--hy-space-5) 0 var(--hy-space-3);
+}
+
+.rituals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-3);
+}
+
+.rituals li {
+  padding-bottom: var(--hy-space-3);
+  border-bottom: 1px solid var(--hy-line);
+}
+
+.rituals li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.rituals a {
+  color: var(--hy-text-1);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.rituals a:hover {
+  color: var(--hy-violet);
+}
+
+.day {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  display: block;
+  margin-top: 2px;
+}

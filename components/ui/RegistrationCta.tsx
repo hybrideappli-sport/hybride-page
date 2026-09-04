@@ -30,7 +30,20 @@ function formatCountdown(msRemaining: number): string {
  * pattern que `PhotoSlot.tsx`) pour ne jamais afficher un état potentiellement
  * faux avant que le calcul réel n'ait eu lieu.
  */
-export function RegistrationCta({ opensAtIso, lumaUrl }: { opensAtIso: string | null; lumaUrl: string | null }) {
+export function RegistrationCta({
+  opensAtIso,
+  lumaUrl,
+  startsAtIso,
+}: {
+  opensAtIso: string | null;
+  lumaUrl: string | null;
+  /**
+   * Début de la sortie. Passé, aucun bouton d'inscription n'a plus de sens — pas
+   * même un lien Luma valide, qui mènerait à un événement terminé. Facultatif :
+   * sans lui, le comportement d'avant (trois états) est inchangé.
+   */
+  startsAtIso?: string;
+}) {
   const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
@@ -47,6 +60,12 @@ export function RegistrationCta({ opensAtIso, lumaUrl }: { opensAtIso: string | 
   }, []);
 
   if (now === null) return <div className={styles.cta} aria-hidden="true" />;
+
+  // Sortie passée : mention neutre, jamais un bouton. Calculé côté client comme
+  // le reste — le serveur figerait « passée » à l'heure de génération de la page.
+  if (startsAtIso !== undefined && now >= new Date(startsAtIso).getTime()) {
+    return <p className={styles.pending}>Cette sortie a eu lieu</p>;
+  }
 
   if (opensAtIso !== null) {
     const opensAtMs = new Date(opensAtIso).getTime();

@@ -1,0 +1,113 @@
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+/* Même traitement que BackToClub, mais vers le planning : depuis une sortie,
+   c'est là qu'on veut revenir, pas à l'accueil du club. */
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--hy-text-2);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back:hover {
+  color: var(--hy-violet);
+}
+
+.back:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+  border-radius: 4px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hy-space-3);
+  padding-bottom: var(--hy-space-5);
+  max-width: 62ch;
+}
+
+.title {
+  margin: 0;
+}
+
+/* Deux colonnes sur grand écran, une seule dès qu'on manque de place : les
+   valeurs (« Piste du stade Léo Lagrange, Toulon ») sont longues et ne doivent
+   jamais être coupées. */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: var(--hy-space-3) var(--hy-space-5);
+  margin: 0;
+  padding-bottom: var(--hy-space-5);
+  max-width: 62ch;
+}
+
+.fact {
+  min-width: 0;
+  border-top: 1px solid var(--hy-line);
+  padding-top: var(--hy-space-2);
+}
+
+.fact dt {
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin-bottom: 4px;
+}
+
+.fact dd {
+  margin: 0;
+  font-size: 16px;
+  color: var(--hy-text-1);
+  overflow-wrap: break-word;
+}
+
+.details {
+  max-width: 62ch;
+  margin: 0 0 var(--hy-space-5);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+}
+
+.cta {
+  padding-bottom: var(--hy-space-6);
+}
+
+.ritual {
+  border-top: 1px solid var(--hy-line);
+  padding: var(--hy-space-5) 0 var(--hy-space-6);
+  max-width: 62ch;
+}
+
+.ritualLead {
+  margin: 0 0 var(--hy-space-2);
+  font-size: 15px;
+  color: var(--hy-text-2);
+}
+
+.ritualLink {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--hy-violet);
+  text-decoration: none;
+}
+
+.ritualLink:hover {
+  filter: brightness(1.2);
+}
+
+.ritualLink:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}

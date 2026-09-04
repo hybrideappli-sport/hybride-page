@@ -14,7 +14,20 @@ const SHEET_CSV_URL =
 const REVALIDATE_SECONDS = 300;
 
 export interface AgendaEvent {
-  id: string;
+  /**
+   * Identifiant ET adresse de la page de la sortie : « 2026-09-02-run-chill-mourillon »,
+   * servi sur /club/[slug]/sorties/[eventSlug].
+   *
+   * La date d'abord, parce que c'est l'attribut le plus stable d'une sortie et que
+   * l'URL se lit telle quelle. Construit depuis `Titre`, jamais depuis `Nom court` :
+   * sinon toutes les adresses changeraient le jour où cette colonne se remplit.
+   *
+   * CES ADRESSES CIRCULENT DANS DES CONVERSATIONS bien après la sortie. Elles ne
+   * survivent que tant que la ligne reste dans le tableur AVEC le statut « publiée » :
+   * supprimer la ligne ou changer son statut casse le lien aussi sûrement l'un que
+   * l'autre (décision du 2026-09-04 : on ne touche plus aux lignes passées).
+   */
+  slug: string;
   title: string | null;
   /**
    * Nom affiché dans une case du calendrier, où la colonne fait une cinquantaine
@@ -198,6 +211,17 @@ function parisWallClockToIso(dateStr: string | undefined, timeStr: string | unde
   return new Date(guessUtc - offset).toISOString();
 }
 
+/** Texte libre → segment d'URL : minuscules, sans accent, sans ponctuation. */
+function slugify(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: string) => void): AgendaEvent | null {
   // Statut sur liste blanche ("publiée" seul) — pas de liste noire : une valeur vide (lignes non
   // remplies du gabarit Sheets), "brouillon" ou une faute de frappe dessus sont exclues pareil,
@@ -252,7 +276,9 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   const title = row["Titre"]?.trim() || null;
 
   return {
-    id: `${row["Date"]}-${row["Heure"]}-${(title ?? location).toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+    // `row["Date"]` est déjà le jour en heure de Paris (c'est ce que parisWallClockToIso
+    // interprète), donc pas de reconversion de fuseau à faire ici.
+    slug: `${row["Date"]?.trim()}-${slugify(title ?? location)}`,
     title,
     shortTitle: row["Nom court"]?.trim() || null,
     activity,
@@ -282,6 +308,18 @@ function parseSheet(csvText: string): AgendaEvent[] {
     const parsed = parseRow(row, i + 2, (msg) => console.warn(`[agenda] ${msg}`)); // +2 : ligne 1 = en-tête, index 0-based
     if (parsed) events.push(parsed);
   });
+
+  // Deux sorties du même jour au même titre donneraient la même adresse et la
+  // seconde serait inatteignable. Suffixe « -2 », « -3 » dans l'ordre du tableur.
+  // Cas rare et volontairement traité sans horaire dans l'adresse : l'heure d'une
+  // sortie bouge (le run chill est passé de 19h à 19h30 en cours de mois), le
+  // lien partagé, lui, ne doit pas bouger.
+  const seen = new Map<string, number>();
+  for (const event of events) {
+    const count = (seen.get(event.slug) ?? 0) + 1;
+    seen.set(event.slug, count);
+    if (count > 1) event.slug = `${event.slug}-${count}`;
+  }
 
   events.sort((a, b) => a.startsAtIso.localeCompare(b.startsAtIso));
   return events;

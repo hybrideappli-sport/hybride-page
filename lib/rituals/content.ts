@@ -156,3 +156,37 @@ export function getRitualBySlug(slug: string): RitualContent | null {
     return null;
   }
 }
+
+const WEEKDAYS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+
+/**
+ * Le rituel dont une sortie du tableur est une occurrence — ou null.
+ *
+ * C'est ce qui donne une description à une sortie récurrente SANS RIEN SAISIR :
+ * la séance de piste du lundi 7 septembre affiche les infos pratiques du tableur
+ * et renvoie vers « La piste du lundi », écrite une fois pour toutes (décision du
+ * 2026-09-04 — la colonne Détails du tableur est restée vide un mois entier,
+ * taper de la prose sur un téléphone ne se fait pas).
+ *
+ * Correspondance sur l'activité ET le jour de la semaine, jamais sur l'activité
+ * seule : une séance de piste un jeudi n'est pas « la piste du lundi », et mieux
+ * vaut ne rien afficher qu'un lien faux. Le jour vient du champ `day:` du rituel,
+ * du texte libre — quand il ne nomme pas un jour de la semaine (« Dernier
+ * week-end du mois », pour les soirées), l'activité suffit à trancher, ce rituel
+ * n'ayant de toute façon pas de jour fixe.
+ */
+export function findRitualForEvent(event: { activity: Activity; startsAtIso: string }): RitualContent | null {
+  // Jour calculé en heure de Paris : une sortie à 23h ne doit pas basculer sur le
+  // jour suivant, ce qui la ferait rater « son » rituel.
+  const parisWeekday = new Intl.DateTimeFormat("fr-FR", { weekday: "long", timeZone: "Europe/Paris" })
+    .format(new Date(event.startsAtIso))
+    .toLowerCase();
+
+  for (const ritual of getAllRituals()) {
+    if (ritual.frontmatter.activity !== event.activity) continue;
+    const ritualDay = ritual.frontmatter.day.toLowerCase();
+    const namedDay = WEEKDAYS.find((d) => ritualDay.includes(d));
+    if (!namedDay || namedDay === parisWeekday) return ritual;
+  }
+  return null;
+}
