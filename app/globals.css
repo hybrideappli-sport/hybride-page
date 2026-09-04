@@ -160,30 +160,6 @@
      là-bas non plus, une seule reprise ici, dans RegistrationStatusBadge). */
 }
 
-/*
- * Encre posée SUR un aplat d'activité (grille du planning, 2026-09-08 —
- * rapprochement de l'agenda Canva publié sur Instagram, où une case avec sortie
- * est un bloc de couleur franc).
- *
- * Les huit couleurs d'activité ont été choisies pour être lisibles SUR du noir :
- * elles sont donc toutes claires, et prennent toutes une encre sombre quand on
- * inverse le rapport. Vérifié par calcul, aucune exception — la plus serrée est
- * `soirees` à 5,23:1, la plus large `piste` à 16,26:1, toutes au-dessus du seuil
- * AA de 4,5. Le texte blanc ne passe sur AUCUNE (2,08:1 au mieux) : c'est le seul
- * écart assumé avec le Canva, où quelques cases l'utilisent.
- *
- * Pas du noir pur, même raison que --hy-text-1 n'est pas du blanc pur.
- *
- * HORS de @theme, contrairement aux autres tokens : Tailwind élague les variables
- * de @theme qu'il ne voit référencées dans aucun fichier qu'il scanne, et
- * celle-ci n'est utilisée que depuis un module CSS. Elle sortait vide, la
- * déclaration `color` était invalidée, et le texte restait clair sur l'aplat
- * clair — 1,08:1, trouvé en mesurant le rendu et non en relisant le code.
- */
-:root {
-  --hy-on-activity: #0b0c0e;
-}
-
 /* =============================================================================
  * Base — reset global, pas de style de composant ici (voir components/ui/)
  * ========================================================================= */

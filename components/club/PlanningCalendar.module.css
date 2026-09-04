@@ -43,21 +43,13 @@
   gap: var(--hy-space-2);
 }
 
-/*
- * Le cadre réglé (2026-09-08) : le fond du conteneur est la couleur du filet, et
- * les gouttières de 1px le laissent apparaître entre des cases opaques. Un seul
- * trait par séparation, contrairement à une bordure par case qui en dessinerait
- * deux côte à côte. L'en-tête des jours reste HORS du cadre, comme sur l'agenda
- * Canva où les lettres flottent au-dessus de la boîte.
- */
+/* Conteneur des semaines. Le cadre réglé plein cadre a été retiré le 2026-09-09
+   avec les aplats : sur fond noir, des cases arrondies détachées sont le langage
+   du reste du site. */
 .sheet {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  background: var(--hy-line-2);
-  border: 1px solid var(--hy-line-2);
-  border-radius: 10px;
-  overflow: hidden;
+  gap: 4px;
 }
 
 /*
@@ -71,11 +63,7 @@
 .week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 1px;
-}
-
-.weekdays {
-  padding: 0 1px;
+  gap: 4px;
 }
 
 .weekday {
@@ -98,17 +86,19 @@
   gap: 4px;
   padding: 6px;
   text-align: left;
-  /* Ni bordure ni arrondi : le filet est dessiné par la gouttière du cadre, et
-     des cases carrées jointives font le calendrier papier. */
+  /* border-top réservé même transparent : sinon une case avec sortie, qui le
+     colore, serait 2px plus haute que ses voisines. */
+  border-top: 2px solid transparent;
+  border-radius: 10px;
   background: var(--hy-surface-1);
   color: var(--hy-text-2);
   font: inherit;
 }
 
 /*
- * Case portant UNE sortie : l'aplat est sur la case entière, numéro du jour
- * compris. `position: relative` sert au lien étiré ci-dessous — toute la surface
- * colorée est cliquable, alors que le numéro reste du texte et non un lien.
+ * Case portant UNE sortie. `position: relative` sert au lien étiré ci-dessous :
+ * toute la case est cliquable, alors que le numéro du jour reste du texte et non
+ * un lien.
  */
 .cellFilled {
   position: relative;
@@ -116,9 +106,7 @@
 }
 
 .cellFilled:hover {
-  /* Assombrir, pas éclaircir : sur un aplat clair, un coup de luminosité délave
-     la couleur au lieu de la souligner. */
-  filter: brightness(0.93);
+  filter: brightness(1.3);
 }
 
 .cellFilled .event::after {
@@ -128,19 +116,17 @@
 }
 
 /* Jours de complément (mois précédent / suivant) : présents pour que la ligne soit
-   pleine, mais visiblement en retrait. Pas d'`opacity` : elle délaverait aussi
-   l'aplat d'une sortie qui tomberait là, et fausserait le contraste calculé entre
-   l'encre et son fond. On assombrit le fond, l'aplat reprend la main par-dessus. */
+   pleine, mais visiblement en retrait. Pas d'`opacity` : elle délaverait aussi la
+   teinte d'une sortie tombant là, et fausserait les contrastes calculés. */
 .cellOut {
-  background: #0a0b0c;
+  background: transparent;
 }
 
 .cellOut .dayNumber {
   color: var(--hy-text-3);
 }
 
-/* Anneau intérieur plutôt qu'une bordure : une bordure déplacerait le contenu et
-   grignoterait l'aplat d'un pixel sur chaque côté. */
+/* Anneau intérieur plutôt qu'une bordure : une bordure déplacerait le contenu. */
 .cellToday {
   box-shadow: inset 0 0 0 2px var(--hy-violet);
 }
@@ -183,12 +169,13 @@
 
 .eventBand {
   padding: 4px 6px;
-  border-radius: 4px;
+  border-top: 2px solid;
+  border-radius: 6px;
   flex: 0 0 auto;
 }
 
 .eventBand:hover {
-  filter: brightness(0.93);
+  filter: brightness(1.3);
 }
 
 .event:focus-visible {
@@ -197,14 +184,13 @@
   border-radius: 3px;
 }
 
-/* Opacité 0,88 et non 0,8 : c'est ce qui garde l'heure au-dessus du seuil AA sur
-   l'aplat le plus sombre de la palette (soirées, 4,70:1 à 0,88 contre 4,20:1 à
-   0,80). Vérifié par calcul sur les huit couleurs. */
+/* La couleur de l'activité est portée ici, pas par le fond. Teinte éclaircie et
+   non brute : sur son propre fond teinté, la couleur pleine tombe à 3,99:1 pour
+   les soirées. Voir le bloc des huit teintes plus bas. */
 .eventTime {
   font-family: var(--hy-font-mono);
   font-size: 10px;
   line-height: 1.2;
-  opacity: 0.88;
 }
 
 /* Le nom passe à la ligne et se borne à deux lignes : largement de quoi loger un
@@ -213,7 +199,9 @@
 .eventName {
   font-size: 12px;
   line-height: 1.25;
-  color: inherit;
+  /* Blanc chaud sur TOUTES les cases, quelle que soit l'activité : un texte qui
+     change de couleur d'une case à l'autre est ce qui faisait bon marché. */
+  color: var(--hy-text-1);
   font-weight: 600;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -223,49 +211,86 @@
 }
 
 /*
- * LES HUIT APLATS (2026-09-08).
+ * LES HUIT TEINTES (2026-09-09).
  *
- * Mêmes couleurs qu'avant — celles des pastilles et des filtres, la palette ne
- * bouge pas — mais en REMPLISSAGE plein au lieu d'un fond très sombre teinté
- * avec une barre latérale. C'est le rapprochement de l'agenda Canva : une case
- * avec sortie est un bloc de couleur franc, une case vide reste sombre.
+ * Troisième version, après un fond très sombre où les cases se distinguaient
+ * trop peu, puis des aplats saturés qui faisaient bon marché. La couleur est
+ * maintenant portée par TROIS éléments plutôt que par le seul fond :
  *
- * Une seule règle par activité, appliquée soit à la case (une sortie), soit à la
- * bande (plusieurs) : dans les deux cas « aplat + encre sombre ». L'encre est
- * héritée par le numéro du jour, l'heure et le nom, qui sont tous en
- * `color: inherit`.
+ *   1. le fond, teinté à 18% de la couleur sur --hy-surface-1 — assez pour
+ *      repérer les jours occupés, assez retenu pour rester sobre ;
+ *   2. le filet de 2px en haut de la case, couleur pleine — c'est lui qui porte
+ *      le repérage au premier coup d'œil, le fond ne fait que le corps ;
+ *   3. l'heure, dans la couleur ÉCLAIRCIE (75% couleur / 25% blanc chaud).
+ *
+ * Le texte, lui, ne change jamais : blanc chaud sur toutes les cases.
+ *
+ * Contrastes calculés puis remesurés sur le rendu — le pire cas de chaque
+ * colonne : texte sur teinte 10,04:1 (piste), heure sur teinte 5,47:1 (soirées),
+ * filet sur teinte 3,99:1 (soirées, au-dessus du seuil de 3:1 des éléments non
+ * textuels). L'heure en couleur PLEINE tombait à 3,99:1 sur son propre fond :
+ * c'est pourquoi elle est éclaircie, et pas seulement reprise telle quelle.
+ *
+ * color-mix() plutôt que seize valeurs figées : la teinte et l'heure restent
+ * dérivées de la couleur d'activité, donc justes si une couleur change un jour.
+ * Sans support, le fond retombe sur --hy-surface-1 et le filet coloré suffit à
+ * distinguer la case.
  */
 .piste {
-  background: var(--hy-piste);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-piste) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-piste);
+}
+.piste .eventTime {
+  color: color-mix(in srgb, var(--hy-piste) 75%, var(--hy-text-1));
 }
 .socialRun {
-  background: var(--hy-social-run);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-social-run) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-social-run);
+}
+.socialRun .eventTime {
+  color: color-mix(in srgb, var(--hy-social-run) 75%, var(--hy-text-1));
 }
 .trail {
-  background: var(--hy-trail);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-trail) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-trail);
+}
+.trail .eventTime {
+  color: color-mix(in srgb, var(--hy-trail) 75%, var(--hy-text-1));
 }
 .velo {
-  background: var(--hy-velo);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-velo) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-velo);
+}
+.velo .eventTime {
+  color: color-mix(in srgb, var(--hy-velo) 75%, var(--hy-text-1));
 }
 .nage {
-  background: var(--hy-nage);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-nage) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-nage);
+}
+.nage .eventTime {
+  color: color-mix(in srgb, var(--hy-nage) 75%, var(--hy-text-1));
 }
 .bivouac {
-  background: var(--hy-bivouac);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-bivouac) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-bivouac);
+}
+.bivouac .eventTime {
+  color: color-mix(in srgb, var(--hy-bivouac) 75%, var(--hy-text-1));
 }
 .soirees {
-  background: var(--hy-soirees);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-soirees) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-soirees);
+}
+.soirees .eventTime {
+  color: color-mix(in srgb, var(--hy-soirees) 75%, var(--hy-text-1));
 }
 .communautaire {
-  background: var(--hy-communautaire);
-  color: var(--hy-on-activity);
+  background: color-mix(in srgb, var(--hy-communautaire) 18%, var(--hy-surface-1));
+  border-top-color: var(--hy-communautaire);
+}
+.communautaire .eventTime {
+  color: color-mix(in srgb, var(--hy-communautaire) 75%, var(--hy-text-1));
 }
 
 /*
@@ -304,7 +329,12 @@
   }
 
   .sheet {
-    border-radius: 8px;
+    gap: 3px;
+  }
+
+  .weekdays,
+  .week {
+    gap: 3px;
   }
 
   .weekday {
@@ -332,6 +362,7 @@
        sépare « Mourillon » écrit en entier de « Mourillo / n » coupé au milieu. */
     padding: 3px 1px;
     gap: 2px;
+    border-radius: 6px;
   }
 
   /* Pas de couleur ici : le numéro hérite de l'encre de la case, sombre sur un
