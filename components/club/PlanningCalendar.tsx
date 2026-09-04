@@ -89,13 +89,15 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
           ))}
         </div>
 
-        {weeks.map((week) => (
-          <div key={week.key} className={styles.week}>
-            {week.cells.map((cell) => (
-              <Cell key={cell.key} cell={cell} isToday={cell.key === todayKey} clubSlug={clubSlug} />
-            ))}
-          </div>
-        ))}
+        <div className={styles.sheet}>
+          {weeks.map((week) => (
+            <div key={week.key} className={styles.week}>
+              {week.cells.map((cell) => (
+                <Cell key={cell.key} cell={cell} isToday={cell.key === todayKey} clubSlug={clubSlug} />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 ? (
@@ -114,7 +116,21 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
 }
 
 function Cell({ cell, isToday, clubSlug }: { cell: CalendarCell; isToday: boolean; clubSlug: string }) {
-  const classes = [styles.cell, cell.inMonth ? "" : styles.cellOut, isToday ? styles.cellToday : ""].filter(Boolean).join(" ");
+  // Une case ne peut porter qu'une couleur. Avec une seule sortie — le cas de
+  // toutes les journées de septembre — l'aplat est porté par la CASE, numéro du
+  // jour compris, comme sur l'agenda Canva. Avec deux sorties d'activités
+  // différentes, aucune couleur unique ne serait honnête : la case reste neutre
+  // et chaque sortie devient une bande colorée.
+  const single = cell.events.length === 1 ? cell.events[0] : null;
+
+  const classes = [
+    styles.cell,
+    cell.inMonth ? "" : styles.cellOut,
+    isToday ? styles.cellToday : "",
+    single ? `${styles.cellFilled} ${styles[ACTIVITY_CLASS[single.activity]]}` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={classes}>
@@ -126,14 +142,14 @@ function Cell({ cell, isToday, clubSlug }: { cell: CalendarCell; isToday: boolea
             <Link
               key={event.slug}
               href={`/club/${clubSlug}/sorties/${event.slug}`}
-              className={`${styles.event} ${styles[ACTIVITY_CLASS[event.activity]]}`}
+              className={`${styles.event} ${single ? "" : `${styles.eventBand} ${styles[ACTIVITY_CLASS[event.activity]]}`}`}
               /* Le nom affiché est volontairement court et peut être tronqué dans une
-                 case de 47px : l'intitulé complet et la date passent par aria-label,
+                 case de ~48px : l'intitulé complet et la date passent par aria-label,
                  pour qu'un lecteur d'écran annonce le lien en entier. */
               aria-label={`${event.title ?? event.activityLabelText} — ${formatEventDateLong(event.startsAtIso)}`}
             >
               <span className={styles.eventTime}>{formatEventTime(event.startsAtIso)}</span>
-              {/* Nom court en priorité : dans une case de ~47px, « Soirée d'hybride au
+              {/* Nom court en priorité : dans une case de ~48px, « Soirée d'hybride au
                   mini-golf » ne rentre pas. Le titre complet est sur la page de la sortie. */}
               <span className={styles.eventName}>{event.shortTitle ?? event.title ?? event.activityLabelText}</span>
             </Link>

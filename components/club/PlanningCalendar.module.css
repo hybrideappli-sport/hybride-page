@@ -40,7 +40,24 @@
 .grid {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--hy-space-2);
+}
+
+/*
+ * Le cadre réglé (2026-09-08) : le fond du conteneur est la couleur du filet, et
+ * les gouttières de 1px le laissent apparaître entre des cases opaques. Un seul
+ * trait par séparation, contrairement à une bordure par case qui en dessinerait
+ * deux côte à côte. L'en-tête des jours reste HORS du cadre, comme sur l'agenda
+ * Canva où les lettres flottent au-dessus de la boîte.
+ */
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--hy-line-2);
+  border: 1px solid var(--hy-line-2);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 /*
@@ -54,7 +71,11 @@
 .week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 4px;
+  gap: 1px;
+}
+
+.weekdays {
+  padding: 0 1px;
 }
 
 .weekday {
@@ -77,27 +98,51 @@
   gap: 4px;
   padding: 6px;
   text-align: left;
-  border: 1px solid transparent;
-  border-radius: var(--hy-radius);
+  /* Ni bordure ni arrondi : le filet est dessiné par la gouttière du cadre, et
+     des cases carrées jointives font le calendrier papier. */
   background: var(--hy-surface-1);
   color: var(--hy-text-2);
   font: inherit;
 }
 
+/*
+ * Case portant UNE sortie : l'aplat est sur la case entière, numéro du jour
+ * compris. `position: relative` sert au lien étiré ci-dessous — toute la surface
+ * colorée est cliquable, alors que le numéro reste du texte et non un lien.
+ */
+.cellFilled {
+  position: relative;
+  transition: filter var(--hy-dur) var(--hy-ease);
+}
+
+.cellFilled:hover {
+  /* Assombrir, pas éclaircir : sur un aplat clair, un coup de luminosité délave
+     la couleur au lieu de la souligner. */
+  filter: brightness(0.93);
+}
+
+.cellFilled .event::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
 /* Jours de complément (mois précédent / suivant) : présents pour que la ligne soit
-   pleine, mais visiblement en retrait. */
+   pleine, mais visiblement en retrait. Pas d'`opacity` : elle délaverait aussi
+   l'aplat d'une sortie qui tomberait là, et fausserait le contraste calculé entre
+   l'encre et son fond. On assombrit le fond, l'aplat reprend la main par-dessus. */
 .cellOut {
-  background: transparent;
+  background: #0a0b0c;
+}
+
+.cellOut .dayNumber {
   color: var(--hy-text-3);
-  opacity: 0.4;
 }
 
+/* Anneau intérieur plutôt qu'une bordure : une bordure déplacerait le contenu et
+   grignoterait l'aplat d'un pixel sur chaque côté. */
 .cellToday {
-  border-color: var(--hy-violet);
-}
-
-.cellToday .dayNumber {
-  color: var(--hy-violet);
+  box-shadow: inset 0 0 0 2px var(--hy-violet);
 }
 
 /* L'interactivité est portée par la SORTIE, plus par la case (2026-09-04) :
@@ -119,40 +164,47 @@
 }
 
 /*
- * La sortie porte la couleur de sa discipline en fond teinté ET en bordure
- * gauche marquée (2026-08-26) — un point de couleur ne disait pas de quelle
- * sortie il s'agissait. Le nom est en --hy-text-1 plutôt que dans la teinte de
- * la discipline : c'est l'information à lire sans effort, la couleur est portée
- * par la bordure et l'heure.
+ * La sortie n'a plus de fond à elle quand la case en porte une seule : c'est la
+ * case qui est l'aplat (voir .cellFilled), et le lien s'étire dessus. Le fond
+ * revient sous forme de bande — .eventBand — dans le seul cas où une case porte
+ * plusieurs sorties et ne peut donc pas prendre une couleur unique.
  */
 .event {
   display: flex;
   flex-direction: column;
   gap: 1px;
   min-width: 0;
-  padding: 4px 6px;
-  border-left: 4px solid;
-  border-radius: 0 6px 6px 0;
+  flex: 1 1 auto;
+  color: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition:
-    filter var(--hy-dur) var(--hy-ease),
-    outline-color var(--hy-dur) var(--hy-ease);
+  transition: filter var(--hy-dur) var(--hy-ease);
 }
 
-.event:hover {
-  filter: brightness(1.45);
+.eventBand {
+  padding: 4px 6px;
+  border-radius: 4px;
+  flex: 0 0 auto;
+}
+
+.eventBand:hover {
+  filter: brightness(0.93);
 }
 
 .event:focus-visible {
   outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
   outline-offset: 2px;
+  border-radius: 3px;
 }
 
+/* Opacité 0,88 et non 0,8 : c'est ce qui garde l'heure au-dessus du seuil AA sur
+   l'aplat le plus sombre de la palette (soirées, 4,70:1 à 0,88 contre 4,20:1 à
+   0,80). Vérifié par calcul sur les huit couleurs. */
 .eventTime {
   font-family: var(--hy-font-mono);
   font-size: 10px;
   line-height: 1.2;
+  opacity: 0.88;
 }
 
 /* Le nom passe à la ligne et se borne à deux lignes : largement de quoi loger un
@@ -161,7 +213,7 @@
 .eventName {
   font-size: 12px;
   line-height: 1.25;
-  color: var(--hy-text-1);
+  color: inherit;
   font-weight: 600;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -170,61 +222,50 @@
   overflow-wrap: anywhere;
 }
 
+/*
+ * LES HUIT APLATS (2026-09-08).
+ *
+ * Mêmes couleurs qu'avant — celles des pastilles et des filtres, la palette ne
+ * bouge pas — mais en REMPLISSAGE plein au lieu d'un fond très sombre teinté
+ * avec une barre latérale. C'est le rapprochement de l'agenda Canva : une case
+ * avec sortie est un bloc de couleur franc, une case vide reste sombre.
+ *
+ * Une seule règle par activité, appliquée soit à la case (une sortie), soit à la
+ * bande (plusieurs) : dans les deux cas « aplat + encre sombre ». L'encre est
+ * héritée par le numéro du jour, l'heure et le nom, qui sont tous en
+ * `color: inherit`.
+ */
 .piste {
-  background: var(--hy-piste-bg);
-  border-left-color: var(--hy-piste);
-}
-.piste .eventTime {
-  color: var(--hy-piste);
+  background: var(--hy-piste);
+  color: var(--hy-on-activity);
 }
 .socialRun {
-  background: var(--hy-social-run-bg);
-  border-left-color: var(--hy-social-run);
-}
-.socialRun .eventTime {
-  color: var(--hy-social-run);
+  background: var(--hy-social-run);
+  color: var(--hy-on-activity);
 }
 .trail {
-  background: var(--hy-trail-bg);
-  border-left-color: var(--hy-trail);
-}
-.trail .eventTime {
-  color: var(--hy-trail);
+  background: var(--hy-trail);
+  color: var(--hy-on-activity);
 }
 .velo {
-  background: var(--hy-velo-bg);
-  border-left-color: var(--hy-velo);
-}
-.velo .eventTime {
-  color: var(--hy-velo);
+  background: var(--hy-velo);
+  color: var(--hy-on-activity);
 }
 .nage {
-  background: var(--hy-nage-bg);
-  border-left-color: var(--hy-nage);
-}
-.nage .eventTime {
-  color: var(--hy-nage);
+  background: var(--hy-nage);
+  color: var(--hy-on-activity);
 }
 .bivouac {
-  background: var(--hy-bivouac-bg);
-  border-left-color: var(--hy-bivouac);
-}
-.bivouac .eventTime {
-  color: var(--hy-bivouac);
+  background: var(--hy-bivouac);
+  color: var(--hy-on-activity);
 }
 .soirees {
-  background: var(--hy-soirees-bg);
-  border-left-color: var(--hy-soirees);
-}
-.soirees .eventTime {
-  color: var(--hy-soirees);
+  background: var(--hy-soirees);
+  color: var(--hy-on-activity);
 }
 .communautaire {
-  background: var(--hy-communautaire-bg);
-  border-left-color: var(--hy-communautaire);
-}
-.communautaire .eventTime {
-  color: var(--hy-communautaire);
+  background: var(--hy-communautaire);
+  color: var(--hy-on-activity);
 }
 
 /*
@@ -239,17 +280,15 @@
  *   375              largeur d'écran
  *   -32   → 343      pleine largeur : les 24px de padding de .wrap sont annulés
  *                    et remplacés par 8px (margin-inline négatif ci-dessous)
- *   -12   → 331      six gouttières de 2px au lieu de 4
- *   /7    → 47,3     largeur de colonne
- *   -6    → 41,3     padding de la case (3px de chaque côté)
- *   -6    → 35,3     padding de la sortie
- * Soit ~35px de texte utile, environ 8 caractères par ligne à 9px. « Run chill »
- * tient sur une ligne, « Mourillon » sur la suivante.
+ *   -2    → 341      bordure du cadre réglé
+ *   -6    → 335      six filets de 1px
+ *   /7    → 47,9     largeur de colonne
+ *   -2    → 45,9     padding de la case (1px de chaque côté)
+ * Soit ~46px de texte utile, la sortie n'ayant plus de padding à elle depuis que
+ * l'aplat est porté par la case (2026-09-08) — trois pixels de mieux qu'avant.
  *
- * La bordure gauche colorée saute ici : 3px de large plus son padding, c'est un
- * caractère par ligne. Le fond teinté et l'heure colorée portent la couleur, et
- * le nom reste écrit en toutes lettres — l'information ne repose jamais sur la
- * seule couleur.
+ * L'information ne repose jamais sur la seule couleur : le nom est écrit en
+ * toutes lettres sur l'aplat, en encre sombre.
  *
  * Les noms trop longs sont raccourcis en amont par la colonne « Nom court » du
  * tableur (voir AgendaEvent.shortTitle) : c'est la vraie réponse à
@@ -261,12 +300,11 @@
      largeur de colonne en plus. */
   .grid {
     margin-inline: -16px;
-    gap: 2px;
+    gap: var(--hy-space-1);
   }
 
-  .weekdays,
-  .week {
-    gap: 2px;
+  .sheet {
+    border-radius: 8px;
   }
 
   .weekday {
@@ -294,12 +332,12 @@
        sépare « Mourillon » écrit en entier de « Mourillo / n » coupé au milieu. */
     padding: 3px 1px;
     gap: 2px;
-    border-radius: 6px;
   }
 
+  /* Pas de couleur ici : le numéro hérite de l'encre de la case, sombre sur un
+     aplat, claire sur une case vide (où .cell et .cellOut la fixent). */
   .dayNumber {
     font-size: 10px;
-    color: var(--hy-text-3);
   }
 
   .events {
@@ -307,10 +345,11 @@
   }
 
   .event {
-    padding: 2px;
-    border-left: none;
-    border-radius: 4px;
     gap: 0;
+  }
+
+  .eventBand {
+    padding: 2px;
   }
 
   .eventTime {
@@ -335,8 +374,8 @@
     padding: 2px 1px;
   }
 
-  .event {
-    padding: 2px;
+  .eventBand {
+    padding: 1px 2px;
   }
 
   .eventName {
