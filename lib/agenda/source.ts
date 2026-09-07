@@ -112,43 +112,74 @@ function normalizeActivity(raw: string): string {
 }
 
 /**
- * CSV minimal (RFC 4180 : champs entre guillemets, virgules et guillemets
- * échappés `""` à l'intérieur) — suffisant pour un export Google Sheets propre.
- * Ne gère pas un retour à la ligne à l'intérieur d'un champ : absent de nos
- * colonnes (tout est du texte court sur une ligne), non nécessaire ici.
+ * CSV conforme RFC 4180 : champs entre guillemets, virgules, guillemets
+ * échappés `""`, ET retours à la ligne à l'intérieur d'un champ.
+ *
+ * Ce dernier point a coûté une sortie. La version précédente découpait le texte
+ * par `\n` AVANT de traiter les guillemets, en assumant que nos colonnes ne
+ * contiennent que du texte court sur une ligne. Le 2026-09-07, la cellule
+ * « Détails » de la sortie vélo du 13 septembre a été saisie sur plusieurs
+ * lignes : la ligne du tableur s'est retrouvée coupée en morceaux, toutes les
+ * colonnes situées APRÈS « Détails » sont arrivées vides (« Lieu », « Activité »),
+ * et parseRow a écarté la sortie sur son contrôle d'activité manquante. Elle a
+ * disparu du planning et sa page est tombée en 404 — sans erreur, juste un
+ * avertissement dans les logs, et avec cinq minutes de cache pour retarder le
+ * symptôme. Le tableur est saisi depuis un téléphone : une cellule sur plusieurs
+ * lignes est une saisie normale, pas une anomalie à corriger à la main.
+ *
+ * On parcourt donc le texte caractère par caractère : hors guillemets, `\n`
+ * termine la ligne ; à l'intérieur, il fait partie de la valeur.
+ *
+ * Effet de bord bienvenu : le numéro de ligne des avertissements de parseSheet
+ * redevient exact. Il compte les lignes du TABLEUR, ce qu'une cellule
+ * multiligne faisait auparavant diverger des lignes du fichier.
  */
 function parseCsv(text: string): string[][] {
+  // Fins de ligne normalisées en amont (CRLF et CR isolé), y compris dans les
+  // champs : une valeur multiligne ne doit pas trimballer les `\r` de l'export.
+  const normalized = text.replace(/\r\n?/g, "\n");
+
   const rows: string[][] = [];
-  for (const line of text.split(/\r\n|\n/)) {
-    if (line.length === 0) continue;
-    const cells: string[] = [];
-    let cur = "";
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (inQuotes) {
-        if (ch === '"') {
-          if (line[i + 1] === '"') {
-            cur += '"';
-            i++;
-          } else {
-            inQuotes = false;
-          }
+  let cells: string[] = [];
+  let cur = "";
+  let inQuotes = false;
+
+  const endLine = () => {
+    cells.push(cur);
+    cur = "";
+    // Ligne vide (le `\n` final du fichier, notamment) : ignorée, comme avant.
+    if (!(cells.length === 1 && cells[0] === "")) rows.push(cells);
+    cells = [];
+  };
+
+  for (let i = 0; i < normalized.length; i++) {
+    const ch = normalized[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (normalized[i + 1] === '"') {
+          cur += '"';
+          i++;
         } else {
-          cur += ch;
+          inQuotes = false;
         }
-      } else if (ch === '"') {
-        inQuotes = true;
-      } else if (ch === ",") {
-        cells.push(cur);
-        cur = "";
       } else {
+        // `\n` compris : c'est ce qui distingue cette version de la précédente.
         cur += ch;
       }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ",") {
+      cells.push(cur);
+      cur = "";
+    } else if (ch === "\n") {
+      endLine();
+    } else {
+      cur += ch;
     }
-    cells.push(cur);
-    rows.push(cells);
   }
+  // Dernière ligne quand le fichier ne finit pas par un saut de ligne.
+  if (cur !== "" || cells.length > 0) endLine();
+
   return rows;
 }
 
