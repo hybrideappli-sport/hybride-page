@@ -64,20 +64,27 @@
   outline-offset: var(--hy-focus-ring-offset);
 }
 
-/* Information de service, pas encadré : ni fond, ni bordure, ni couleur
-   d'accent — le même gris de texte secondaire que les autres mentions
-   pratiques du site. Ce qui la fait remarquer est sa place (sous le titre du
-   mois, au-dessus de la grille), pas un traitement graphique. */
-/* Bloc tenu bas dans l'en-tête : il doit informer sans repousser la grille.
-   Trois lignes au lieu de quatre à 375px (phrase raccourcie), interligne à
-   1.4 plutôt que 1.5 et marge haute réduite d'un cran — 75px occupés contre
-   106px auparavant, sans descendre sous 15px de corps, qui resterait lisible
-   mais commencerait à ressembler à une note de bas de page.
-   62ch comme les autres blocs de lecture du site : sur un téléphone la
-   colonne borne déjà la ligne, cette valeur n'agit qu'en grand écran. */
+/* Bloc descendu sous la grille le 2026-09-09 (voir page.tsx). Il n'est plus
+   dans l'en-tête : c'est lui, et non plus le hero, qui porte l'écart avec ce qui
+   précède. --hy-space-5 pour qu'on lise une séparation franche d'avec la grille
+   et les filtres, pas la suite du même bloc. */
+.inscriptionsBlock {
+  padding: var(--hy-space-5) 0 var(--hy-space-6);
+}
+
+/* Information de service, pas encadrée : ni fond, ni bordure, ni couleur
+   d'accent — le même gris de texte secondaire que les autres mentions pratiques
+   du site.
+   Le corps à 15px et l'interligne à 1.4 datent de l'époque où le bloc était
+   dans l'en-tête et devait tenir en trois lignes sans repousser la grille. La
+   contrainte a disparu avec la descente sous la grille ; les valeurs restent,
+   parce qu'elles conviennent à ce qu'est ce bloc — une mention pratique, pas un
+   paragraphe de lecture.
+   62ch comme les autres blocs de lecture du site : sur un téléphone la colonne
+   borne déjà la ligne, cette valeur n'agit qu'en grand écran. */
 .inscriptions {
   max-width: 62ch;
-  margin: var(--hy-space-2) 0 0;
+  margin: 0;
   font-size: 15px;
   line-height: 1.4;
   color: var(--hy-text-2);
@@ -148,4 +155,56 @@
   color: var(--hy-text-3);
   display: block;
   margin-top: 2px;
+}
+
+/* Rappel .ics — variante "line" du bouton du site (components/ui/Button),
+   reprise ici plutôt qu'importée : le composant Button rend un <Link>, or la
+   cible est un fichier et doit rester une balise <a> native (voir page.tsx).
+   Corps et rayon identiques à .btn.mini, pour que ce soit visiblement le même
+   bouton que partout ailleurs.
+   min-height 44px : c'est déjà la hauteur obtenue (14px de corps, 9px de
+   padding vertical), posée explicitement pour que la cible tactile ne puisse
+   pas passer sous le seuil si le padding bouge un jour. */
+.reminderLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: var(--hy-space-3);
+  padding: 9px 18px;
+  border: 1.5px solid var(--hy-line-2);
+  border-radius: var(--hy-radius-pill);
+  background: transparent;
+  color: var(--hy-text-1);
+  font-family: var(--hy-font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    transform var(--hy-dur) var(--hy-ease),
+    background var(--hy-dur) var(--hy-ease);
+}
+
+.reminderLink:hover {
+  transform: translateY(-2px);
+  background: var(--hy-surface-1);
+}
+
+.reminderLink:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+/* Ce que fait le bouton, en toutes lettres : "récurrent" et "fichier .ics" ne
+   veulent rien dire pour l'adhérent, "revient toutes les semaines" si. En
+   text-3 et 13px — c'est une aide, elle ne doit pas concurrencer la phrase des
+   horaires juste au-dessus, qui est l'information principale du bloc. */
+.reminderHint {
+  max-width: 42ch;
+  margin: var(--hy-space-1) 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--hy-text-3);
 }

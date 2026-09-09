@@ -11,6 +11,10 @@ import styles from "./PlanningCalendar.module.css";
 
 const ALL_ACTIVITIES = Object.keys(activityLabel) as Activity[];
 
+/** Cible d'`aria-controls` : les filtres étant rendus APRÈS la grille, c'est le
+    seul lien qui rattache encore les pastilles à ce qu'elles modifient. */
+const GRID_ID = "planning-grille";
+
 /** `social-run` porte un tiret, illégal comme nom de classe de module CSS — d'où cette table. */
 const ACTIVITY_CLASS: Record<Activity, string> = {
   piste: "piste",
@@ -66,21 +70,7 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
 
   return (
     <div>
-      <div className={styles.filters} role="group" aria-label="Filtrer par activité">
-        {ALL_ACTIVITIES.map((code) => (
-          <button
-            key={code}
-            type="button"
-            className={`${styles.chip} ${selected.has(code) ? styles.chipActive : ""}`}
-            aria-pressed={selected.has(code)}
-            onClick={() => toggle(code)}
-          >
-            {activityLabel[code]}
-          </button>
-        ))}
-      </div>
-
-      <div className={styles.grid}>
+      <div className={styles.grid} id={GRID_ID}>
         <div className={styles.weekdays} aria-hidden="true">
           {WEEKDAY_LABELS.map((label, i) => (
             <div key={i} className={styles.weekday}>
@@ -111,6 +101,31 @@ export function PlanningCalendar({ events, monthKey, clubSlug }: { events: Agend
           </p>
         </div>
       ) : null}
+
+      {/* APRÈS la grille depuis le 2026-09-09. Un contrôle placé après ce qu'il
+          modifie n'est pas la disposition la plus naturelle, et c'est assumé :
+          les huit pastilles occupent 124px sur trois lignes à 375px, soit un peu
+          plus de deux semaines de grille. Les garder au-dessus revenait à
+          repousser la grille sous le pli sur un iPhone SE — or filtrer est une
+          action seconde, on ouvre le planning pour voir la semaine, pas pour
+          trier.
+          Deux choses compensent le déplacement : `aria-controls` nomme la grille
+          pilotée, et le message « aucune sortie de cette activité » ci-dessus
+          reste immédiatement au-dessus des pastilles — c'est lui qu'on voit
+          quand un filtre ne donne rien, sans avoir à remonter. */}
+      <div className={styles.filters} role="group" aria-label="Filtrer par activité" aria-controls={GRID_ID}>
+        {ALL_ACTIVITIES.map((code) => (
+          <button
+            key={code}
+            type="button"
+            className={`${styles.chip} ${selected.has(code) ? styles.chipActive : ""}`}
+            aria-pressed={selected.has(code)}
+            onClick={() => toggle(code)}
+          >
+            {activityLabel[code]}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

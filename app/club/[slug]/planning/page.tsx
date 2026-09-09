@@ -80,17 +80,39 @@ export default async function PlanningPage({
             →
           </Link>
         </div>
-        {/* Dans l'en-tête, donc au-dessus du pli sur un téléphone, et pas en bas
-            de page : c'est la question qui revient le plus en message privé, elle
-            doit se lire en arrivant. Posée dans cet en-tête-ci et pas dans
-            `plainHeading` — pendant un décompte ou un message d'attente, il n'y a
-            pas de grille et la phrase parlerait d'inscriptions invisibles. */}
+      </div>
+      <PlanningCalendar events={events} monthKey={monthKey} clubSlug={CLUB.slug} />
+      {/* SOUS la grille depuis le 2026-09-09, et plus dans l'en-tête. L'arbitrage
+          s'est inversé : cette phrase est bien la question qui revient le plus en
+          message privé, mais la faire lire en arrivant coûtait 178px avant la
+          grille — à 375px il ne restait que 1,7 semaine visible contre 3,8 une
+          fois le bloc descendu. Le planning doit d'abord montrer le planning ;
+          celui qui cherche l'heure d'ouverture scrolle, celui qui vient voir la
+          semaine ne scrolle plus.
+          Reste dans `calendar` et pas dans `plainHeading` : pendant un décompte
+          ou un message d'attente il n'y a pas de grille, et la phrase parlerait
+          d'inscriptions invisibles. */}
+      <section className={styles.inscriptionsBlock}>
         <p className={styles.inscriptions}>
           Inscriptions le <strong className={styles.inscriptionsKey}>dimanche à 18h</strong> pour la semaine suivante. Soirées et
           événements partenaires : ouverture à l’annonce.
         </p>
-      </div>
-      <PlanningCalendar events={events} monthKey={monthKey} clubSlug={CLUB.slug} />
+        {/* Prolonge la phrase du dessus au lieu de la répéter : elle dit quand
+            ça ouvre, le bouton propose de ne pas avoir à y penser. Balise <a>
+            native et pas <Link> ni <Button href> — la cible est un fichier, pas
+            une page : une navigation client de Next n'a rien à y faire, et son
+            prefetch irait chercher une charge RSC qui n'existe pas.
+            Pas d'attribut `download` non plus : le Content-Type de la route
+            fait déjà télécharger les navigateurs de bureau, et `download`
+            n'apporterait rien sur mobile — Safari iOS enregistre le .ics dans
+            tous les cas. */}
+        <a href={`/club/${CLUB.slug}/planning/rappel-inscriptions.ics`} className={styles.reminderLink}>
+          Me rappeler chaque dimanche à 17h55
+        </a>
+        <p className={styles.reminderHint}>
+          Ajoute un rappel qui revient toutes les semaines dans l’agenda de votre téléphone, cinq minutes avant l’ouverture.
+        </p>
+      </section>
     </>
   );
 
