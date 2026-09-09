@@ -80,6 +80,15 @@ export default async function PlanningPage({
             →
           </Link>
         </div>
+        {/* Dans l'en-tête, donc au-dessus du pli sur un téléphone, et pas en bas
+            de page : c'est la question qui revient le plus en message privé, elle
+            doit se lire en arrivant. Posée dans cet en-tête-ci et pas dans
+            `plainHeading` — pendant un décompte ou un message d'attente, il n'y a
+            pas de grille et la phrase parlerait d'inscriptions invisibles. */}
+        <p className={styles.inscriptions}>
+          Inscriptions le <strong className={styles.inscriptionsKey}>dimanche à 18h</strong> pour la semaine suivante. Soirées et
+          événements partenaires : ouverture à l’annonce.
+        </p>
       </div>
       <PlanningCalendar events={events} monthKey={monthKey} clubSlug={CLUB.slug} />
     </>

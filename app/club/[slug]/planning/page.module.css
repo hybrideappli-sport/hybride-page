@@ -64,6 +64,32 @@
   outline-offset: var(--hy-focus-ring-offset);
 }
 
+/* Information de service, pas encadré : ni fond, ni bordure, ni couleur
+   d'accent — le même gris de texte secondaire que les autres mentions
+   pratiques du site. Ce qui la fait remarquer est sa place (sous le titre du
+   mois, au-dessus de la grille), pas un traitement graphique. */
+/* Bloc tenu bas dans l'en-tête : il doit informer sans repousser la grille.
+   Trois lignes au lieu de quatre à 375px (phrase raccourcie), interligne à
+   1.4 plutôt que 1.5 et marge haute réduite d'un cran — 75px occupés contre
+   106px auparavant, sans descendre sous 15px de corps, qui resterait lisible
+   mais commencerait à ressembler à une note de bas de page.
+   62ch comme les autres blocs de lecture du site : sur un téléphone la
+   colonne borne déjà la ligne, cette valeur n'agit qu'en grand écran. */
+.inscriptions {
+  max-width: 62ch;
+  margin: var(--hy-space-2) 0 0;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--hy-text-2);
+}
+
+/* Le seul repère qu'on vient chercher dans cette phrase. Passe en texte
+   primaire plutôt qu'en couleur d'accent : c'est une mise en relief de
+   lecture, pas une accroche. */
+.inscriptionsKey {
+  color: var(--hy-text-1);
+}
+
 /* Message d'attente : remplace la grille, jamais posé au-dessus d'elle — une
    grille vide sous un message ferait doublon (2026-08-28). */
 .notice {
