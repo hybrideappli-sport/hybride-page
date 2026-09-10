@@ -90,6 +90,27 @@ export const PLANNING_COUNTDOWN_TEXT = "Le programme de septembre arrive.";
 export const PLANNING_NOTICE = "";
 
 /**
+ * Ouverture de la boutique — compte à rebours affiché sur /club/[slug]/shop.
+ *
+ * MÊME FORMAT QUE PLANNING_COUNTDOWN_TO, et pour les mêmes raisons : ISO 8601
+ * avec DÉCALAGE HORAIRE EXPLICITE, jamais un `Z` ni une date nue. `+02:00` =
+ * heure d'été de Paris ; le 15 septembre tombe avant le dernier dimanche
+ * d'octobre, c'est donc bien l'heure d'été qui s'applique. Une date écrite sans
+ * décalage serait lue en UTC par le navigateur, soit deux heures d'écart.
+ *
+ * L'instant est ABSOLU : un visiteur à Montréal voit le même nombre de secondes
+ * restantes qu'un visiteur à Toulon, seule son heure locale diffère.
+ *
+ * Chaîne vide = pas de décompte, la page revient à son panneau d'attente.
+ *
+ * À SAVOIR POUR LA SUITE : à l'échéance, la page bascule sur un simple message
+ * d'ouverture, SANS lien ni catalogue — décision du 2026-09-10, prise parce que
+ * ni PRODUCTS ni HELLOASSO_SHOP_URL n'étaient prêts. Le jour où ils le seront,
+ * c'est l'état « ouvert » de ShopCountdown qu'il faudra enrichir.
+ */
+export const SHOP_OPENING_TO = "2026-09-15T18:00:00+02:00";
+
+/**
  * URL de la boutique merch HelloAsso de l'association — PAS ENCORE CONNUE.
  * Ne jamais inventer une URL plausible : `.example` est le domaine réservé
  * (RFC 2606) pour ce genre de placeholder, garanti de ne jamais résoudre.

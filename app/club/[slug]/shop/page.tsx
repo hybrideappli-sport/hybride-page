@@ -6,7 +6,10 @@ import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
-import { CLUB, HELLOASSO_SHOP_URL } from "@/lib/config";
+import { ShopCountdown } from "@/components/club/ShopCountdown";
+import { CLUB, HELLOASSO_SHOP_URL, SHOP_OPENING_TO } from "@/lib/config";
+import { deadlinePassed } from "@/lib/countdown";
+import { formatOpeningLabel } from "@/lib/format";
 import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
@@ -40,7 +43,10 @@ const PRODUCTS: ShopProduct[] = [];
 
 export const metadata = clubMetadata({
   title: "Le merch du club — Hybride Club Toulon",
-  description: "Les premières pièces du merch Hybride Club Toulon sont en préparation. Commande et paiement sur la boutique HelloAsso de l'association.",
+  // Mise à jour le 2026-09-10 avec l'arrivée d'une date ferme : la description
+  // précédente (« les premières pièces sont en préparation ») serait devenue
+  // fausse dans les résultats de recherche le soir de l'ouverture.
+  description: "La boutique du club ouvre le 15 septembre 2026 à 18h. Commande et paiement sur la boutique HelloAsso de l'association.",
   path: "/club/toulon/shop",
 });
 
@@ -49,6 +55,14 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
   if (slug !== CLUB.slug) notFound();
 
   const hasProducts = PRODUCTS.length > 0;
+
+  /*
+   * Horloge SERVEUR : valeur de départ du décompte, rien de plus. Elle évite au
+   * visiteur de voir un décompte s'afficher une fraction de seconde alors que
+   * l'échéance est passée. Elle peut être périmée (page en cache), et c'est
+   * précisément pour cela que ShopCountdown la recalcule au montage.
+   */
+  const openingHasPassed = deadlinePassed(SHOP_OPENING_TO);
 
   return (
     <div className={styles.wrap}>
@@ -59,11 +73,16 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Boutique</p>
         <h1 className={styles.title}>Le merch du club</h1>
-        <p className={styles.lead}>
-          {hasProducts
-            ? "Prix indicatifs, tailles et références sujettes à disponibilité. La commande et le paiement se font entièrement sur la boutique HelloAsso de l’association — rien n’est collecté ni encaissé sur ce site."
-            : "Les premières pièces sont en préparation. Rien n’est encore en vente."}
-        </p>
+        {/* Plus de chapô d'attente quand le décompte est là : « Les premières
+            pièces sont en préparation. Rien n'est encore en vente. » et « La
+            boutique ouvre le 15 septembre à 18h » se contrediraient à trois
+            lignes d'intervalle. Le panneau porte seul le message (2026-09-10). */}
+        {hasProducts ? (
+          <p className={styles.lead}>
+            Prix indicatifs, tailles et références sujettes à disponibilité. La commande et le paiement se font entièrement sur la
+            boutique HelloAsso de l’association — rien n’est collecté ni encaissé sur ce site.
+          </p>
+        ) : null}
       </div>
 
       {hasProducts ? (
@@ -89,36 +108,23 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
         </>
       ) : (
         /*
-         * Composition graphique, PAS un vrai décompte : aucune date ferme côté
-         * club, et un décompte qui expire sans livraison abîme la confiance plus
-         * qu'il ne fait patienter. Les chiffres sont des glyphes de remplissage
-         * floutés — le bloc entier est aria-hidden pour qu'un lecteur d'écran
-         * n'annonce pas un décompte inexistant, et c'est le texte à côté qui
-         * porte le sens. Le jour où une date existe, ce bloc se remplace par un
-         * vrai décompte sans toucher au reste de la page.
+         * Vrai compte à rebours depuis le 2026-09-10. Il remplace la
+         * composition graphique qui tenait cette place — trois blocs de
+         * chiffres floutés et `aria-hidden`, posés faute de date ferme, avec
+         * une note qui prévoyait exactement ce remplacement.
+         *
+         * `initiallyOpen` est le verdict de l'horloge SERVEUR, et seulement une
+         * valeur de départ : le composant recalcule au montage sur l'horloge du
+         * visiteur. C'est ce qui rattrape une page servie depuis le cache — le
+         * décompte lui-même n'est jamais calculé ici, sinon il serait figé à
+         * l'heure de génération de la page.
          *
          * La section « Où sera annoncée la sortie » (WhatsApp + Instagram) qui
          * suivait a été retirée le 2026-08-27 : le teasing dit déjà qu'il se
-         * passe quelque chose, énumérer les canaux d'annonce diluait le message.
-         * Instagram reste atteignable depuis le pied de page, présent ici comme
-         * sur toutes les pages du club.
+         * passe quelque chose, énumérer les canaux d'annonce diluait le
+         * message. Instagram reste atteignable depuis le pied de page.
          */
-        <section className={styles.teaser}>
-          <div className={styles.teaserGlow} aria-hidden="true" />
-
-          <div className={styles.countdown} aria-hidden="true">
-            {/* Chiffres arbitraires et volontairement différents : trois "00"
-                identiques donnaient trois taches jumelles, sans silhouette de
-                décompte. Aucune signification — ils ne sont ni lus ni lisibles. */}
-            {["07", "18", "42"].map((digits, i) => (
-              <span key={i} className={styles.countBlock}>
-                <span className={styles.countDigits}>{digits}</span>
-              </span>
-            ))}
-          </div>
-
-          <p className={styles.teaserLabel}>Bientôt dévoilé</p>
-        </section>
+        <ShopCountdown targetIso={SHOP_OPENING_TO} openingLabel={formatOpeningLabel(SHOP_OPENING_TO)} initiallyOpen={openingHasPassed} />
       )}
 
       <ClubFooter
