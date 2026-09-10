@@ -1,5 +1,6 @@
 "use client";
 
+import { CalendarReminderLink } from "@/components/club/CalendarReminderLink";
 import { unitsRemaining } from "@/lib/countdown";
 import { useCountdown } from "@/lib/use-countdown";
 import styles from "./ShopCountdown.module.css";
@@ -19,6 +20,11 @@ interface ShopCountdownProps {
    * sur deux libellés différents.
    */
   openingLabel: string;
+  /**
+   * Lien vers le fichier .ics d'ouverture. Passé en prop plutôt que construit
+   * ici : ce composant est client, et le slug du club n'a pas à y remonter.
+   */
+  reminderHref: string;
   /**
    * Verdict de l'horloge SERVEUR, valeur de DÉPART uniquement — évite un
    * clignotement du décompte si l'échéance est déjà passée. Le montage
@@ -61,7 +67,7 @@ interface ShopCountdownProps {
  * - LA BASCULE, ELLE, EST ANNONCÉE. C'est un évènement unique et non une
  *   boucle : `aria-live="polite"` est justifié là, et seulement là.
  */
-export function ShopCountdown({ targetIso, openingLabel, initiallyOpen }: ShopCountdownProps) {
+export function ShopCountdown({ targetIso, openingLabel, reminderHref, initiallyOpen }: ShopCountdownProps) {
   const { remaining, open, reducedMotion } = useCountdown(targetIso, initiallyOpen);
 
   if (open) {
@@ -110,6 +116,15 @@ export function ShopCountdown({ targetIso, openingLabel, initiallyOpen }: ShopCo
       </div>
 
       <p className={styles.lead}>Le premier drop du club.</p>
+
+      {/* DANS CETTE BRANCHE SEULEMENT, donc effacé à la bascule en même temps
+          que le décompte : passé l'ouverture, proposer de poser un rappel pour
+          un évènement déjà survenu n'aurait aucun sens. C'est le `if (open)`
+          plus haut qui s'en charge — il n'y a pas de condition à maintenir ici,
+          et c'est voulu : une condition séparée finirait par diverger. */}
+      <p className={styles.reminderLine}>
+        <CalendarReminderLink href={reminderHref}>Me rappeler cinq minutes avant</CalendarReminderLink>
+      </p>
     </section>
   );
 }

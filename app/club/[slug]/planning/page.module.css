@@ -157,45 +157,10 @@
   margin-top: 2px;
 }
 
-/* Rappel .ics — variante "line" du bouton du site (components/ui/Button),
-   reprise ici plutôt qu'importée : le composant Button rend un <Link>, or la
-   cible est un fichier et doit rester une balise <a> native (voir page.tsx).
-   Corps et rayon identiques à .btn.mini, pour que ce soit visiblement le même
-   bouton que partout ailleurs.
-   min-height 44px : c'est déjà la hauteur obtenue (14px de corps, 9px de
-   padding vertical), posée explicitement pour que la cible tactile ne puisse
-   pas passer sous le seuil si le padding bouge un jour. */
-.reminderLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  margin-top: var(--hy-space-3);
-  padding: 9px 18px;
-  border: 1.5px solid var(--hy-line-2);
-  border-radius: var(--hy-radius-pill);
-  background: transparent;
-  color: var(--hy-text-1);
-  font-family: var(--hy-font-sans);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.2;
-  text-align: center;
-  text-decoration: none;
-  transition:
-    transform var(--hy-dur) var(--hy-ease),
-    background var(--hy-dur) var(--hy-ease);
-}
-
-.reminderLink:hover {
-  transform: translateY(-2px);
-  background: var(--hy-surface-1);
-}
-
-.reminderLink:focus-visible {
-  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
-  outline-offset: var(--hy-focus-ring-offset);
-}
+/* Le style du bouton de rappel a été déplacé le 2026-09-10 dans
+   components/club/CalendarReminderLink.module.css, partagé avec le rappel
+   d'ouverture de la boutique. Seule la note d'aide ci-dessous reste ici :
+   elle est propre à cette page. */
 
 /* Ce que fait le bouton, en toutes lettres : "récurrent" et "fichier .ics" ne
    veulent rien dire pour l'adhérent, "revient toutes les semaines" si. En

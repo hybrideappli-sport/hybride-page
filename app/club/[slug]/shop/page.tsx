@@ -124,7 +124,12 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
          * passe quelque chose, énumérer les canaux d'annonce diluait le
          * message. Instagram reste atteignable depuis le pied de page.
          */
-        <ShopCountdown targetIso={SHOP_OPENING_TO} openingLabel={formatOpeningLabel(SHOP_OPENING_TO)} initiallyOpen={openingHasPassed} />
+        <ShopCountdown
+          targetIso={SHOP_OPENING_TO}
+          openingLabel={formatOpeningLabel(SHOP_OPENING_TO)}
+          reminderHref={`/club/${CLUB.slug}/shop/ouverture.ics`}
+          initiallyOpen={openingHasPassed}
+        />
       )}
 
       <ClubFooter

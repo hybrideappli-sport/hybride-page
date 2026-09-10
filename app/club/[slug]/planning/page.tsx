@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BackToClub } from "@/components/club/BackToClub";
+import { CalendarReminderLink } from "@/components/club/CalendarReminderLink";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { PlanningCalendar } from "@/components/club/PlanningCalendar";
@@ -98,17 +99,12 @@ export default async function PlanningPage({
           événements partenaires : ouverture à l’annonce.
         </p>
         {/* Prolonge la phrase du dessus au lieu de la répéter : elle dit quand
-            ça ouvre, le bouton propose de ne pas avoir à y penser. Balise <a>
-            native et pas <Link> ni <Button href> — la cible est un fichier, pas
-            une page : une navigation client de Next n'a rien à y faire, et son
-            prefetch irait chercher une charge RSC qui n'existe pas.
-            Pas d'attribut `download` non plus : le Content-Type de la route
-            fait déjà télécharger les navigateurs de bureau, et `download`
-            n'apporterait rien sur mobile — Safari iOS enregistre le .ics dans
-            tous les cas. */}
-        <a href={`/club/${CLUB.slug}/planning/rappel-inscriptions.ics`} className={styles.reminderLink}>
+            ça ouvre, le bouton propose de ne pas avoir à y penser. Les
+            précautions du lien (balise native, pas de `download`) vivent dans
+            CalendarReminderLink, partagé avec le rappel de la boutique. */}
+        <CalendarReminderLink href={`/club/${CLUB.slug}/planning/rappel-inscriptions.ics`}>
           Me rappeler chaque dimanche à 17h55
-        </a>
+        </CalendarReminderLink>
         <p className={styles.reminderHint}>
           Ajoute un rappel qui revient toutes les semaines dans l’agenda de votre téléphone, cinq minutes avant l’ouverture.
         </p>

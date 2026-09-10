@@ -104,3 +104,9 @@
     gap: var(--hy-space-1);
   }
 }
+
+/* Le bouton respire davantage que la phrase qui le précède : c'est une action,
+   pas la suite du texte. */
+.reminderLine {
+  margin: var(--hy-space-4) 0 0;
+}
