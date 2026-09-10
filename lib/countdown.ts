@@ -30,7 +30,14 @@ function pad(n: number): string {
 
 export interface CountdownUnit {
   value: string;
+  /** Nom entier de l'unité — « minutes ». Destiné à être lu, pas forcément affiché. */
   label: string;
+  /**
+   * Abréviation d'affichage — « MIN ». Elle existe pour les mises en page où le
+   * chiffre domine et où le mot entier ferait du bruit ; ce qu'un lecteur
+   * d'écran annonce doit alors rester `label`, jamais celle-ci.
+   */
+  short: string;
 }
 
 /**
@@ -51,15 +58,15 @@ export function unitsRemaining(msRemaining: number, { withSeconds = true }: { wi
   const seconds = total % 60;
 
   if (total < 3_600) {
-    const lastHour: CountdownUnit[] = [{ value: pad(minutes), label: minutes === 1 ? "minute" : "minutes" }];
-    if (withSeconds) lastHour.push({ value: pad(seconds), label: seconds === 1 ? "seconde" : "secondes" });
+    const lastHour: CountdownUnit[] = [{ value: pad(minutes), label: minutes === 1 ? "minute" : "minutes", short: "MIN" }];
+    if (withSeconds) lastHour.push({ value: pad(seconds), label: seconds === 1 ? "seconde" : "secondes", short: "S" });
     return lastHour;
   }
 
   const units: CountdownUnit[] = [
-    { value: pad(hours), label: hours === 1 ? "heure" : "heures" },
-    { value: pad(minutes), label: minutes === 1 ? "minute" : "minutes" },
+    { value: pad(hours), label: hours === 1 ? "heure" : "heures", short: "H" },
+    { value: pad(minutes), label: minutes === 1 ? "minute" : "minutes", short: "MIN" },
   ];
-  if (days > 0) units.unshift({ value: String(days), label: days === 1 ? "jour" : "jours" });
+  if (days > 0) units.unshift({ value: String(days), label: days === 1 ? "jour" : "jours", short: "J" });
   return units;
 }

@@ -35,10 +35,20 @@ interface ShopCountdownProps {
  * de date ferme. La note qui les accompagnait prévoyait ce remplacement — la
  * date existe désormais (SHOP_OPENING_TO).
  *
- * L'écrin est conservé (cadre, halo violet) : seuls les chiffres changent de
- * nature. En revanche l'animation `hy-teaser-pulse` disparaît — des chiffres
- * qui pulsent ET qui changent chaque seconde, c'est un mouvement de trop, et
- * elle n'avait de sens que sur des glyphes décoratifs.
+ * L'écrin du panneau factice — cadre, halo violet, blocs bordés autour des
+ * chiffres — a été retiré le 2026-09-10 : il avait été hérité tel quel, et il
+ * faisait générique. Il se justifiait tant que le bloc devait AVOIR L'AIR d'un
+ * décompte avec trois glyphes flous ; de vrais chiffres n'ont pas besoin de cet
+ * emballage.
+ *
+ * Le traitement suit désormais celui des autres données du site — heures de la
+ * grille du planning, jour d'un rituel, faits d'une fiche sortie : Geist Mono,
+ * posé à nu sur le noir, sans cadre ni fond. Seule l'échelle change, parce que
+ * le site aime les très grands caractères sur du vide (ses h1 montent à 104px).
+ *
+ * LE VIOLET NE RESTE QUE SUR LA DATE. C'est la seule donnée qui porte une
+ * décision — les chiffres, eux, changent tout seuls et n'ont pas besoin qu'on
+ * les désigne. Ne pas le remettre sur le compteur.
  *
  * ACCESSIBILITÉ — deux traitements opposés, délibérément :
  *
@@ -57,7 +67,6 @@ export function ShopCountdown({ targetIso, openingLabel, initiallyOpen }: ShopCo
   if (open) {
     return (
       <section className={styles.panel}>
-        <div className={styles.glow} aria-hidden="true" />
         {/* Bascule explicite : le décompte disparaît, il ne se fige pas sur
             00:00:00. Pas de lien ni de catalogue ici — ni les produits ni
             l'URL HelloAsso n'existaient au moment d'écrire ceci (2026-09-10),
@@ -66,7 +75,7 @@ export function ShopCountdown({ targetIso, openingLabel, initiallyOpen }: ShopCo
         <p className={styles.openTitle} aria-live="polite">
           La boutique est ouverte.
         </p>
-        <p className={styles.lead}>Les tee-shirts que vous voyez au départ du mercredi, en vrai, à votre taille.</p>
+        <p className={styles.lead}>Le premier drop du club.</p>
       </section>
     );
   }
@@ -77,25 +86,30 @@ export function ShopCountdown({ targetIso, openingLabel, initiallyOpen }: ShopCo
 
   return (
     <section className={styles.panel}>
-      <div className={styles.glow} aria-hidden="true" />
-
       <p className={styles.openTitle}>
         La boutique ouvre le <time dateTime={targetIso}>{openingLabel}</time>.
       </p>
 
       <div className={styles.units} role="timer">
         {(units ?? [
-          { value: "--", label: "heures" },
-          { value: "--", label: "minutes" },
+          { value: "--", label: "heures", short: "H" },
+          { value: "--", label: "minutes", short: "MIN" },
         ]).map((unit) => (
           <span key={unit.label} className={styles.unit}>
             <span className={styles.value}>{unit.value}</span>
-            <span className={styles.label}>{unit.label}</span>
+            {/* L'œil lit « MIN », le lecteur d'écran entend « minutes » : une
+                abréviation épelée lettre à lettre ne veut rien dire à l'oreille.
+                D'où le mot entier, retiré de l'affichage mais laissé dans le
+                DOM — jamais `display: none`, qui l'ôterait aussi de la lecture. */}
+            <span className={styles.short} aria-hidden="true">
+              {unit.short}
+            </span>
+            <span className={styles.srOnly}>{unit.label}</span>
           </span>
         ))}
       </div>
 
-      <p className={styles.lead}>Les tee-shirts que vous voyez au départ du mercredi, en vrai, à votre taille.</p>
+      <p className={styles.lead}>Le premier drop du club.</p>
     </section>
   );
 }
