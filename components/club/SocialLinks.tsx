@@ -6,8 +6,12 @@ import styles from "./SocialLinks.module.css";
 /**
  * Activity (Strava) / Camera (Instagram) : icônes de substitution neutres,
  * pas les logos des marques — voir SocialLink.tsx. Rendu identique partout où
- * ce bloc apparaît (pied de page club, section #nous-trouver) : même
- * composant, pas deux traitements visuels différents pour la même info.
+ * ce bloc apparaît : même composant, pas deux traitements visuels différents
+ * pour la même info.
+ *
+ * La section `#nous-trouver` de /club/[slug], que cette note citait, a été
+ * supprimée le 2026-09-10 avec « Le club en images » — le bloc ne subsiste que
+ * dans le pied de page club.
  */
 export function SocialLinks({ stravaUrl, instagramUrl }: { stravaUrl?: string; instagramUrl?: string }) {
   if (!stravaUrl && !instagramUrl) return null;

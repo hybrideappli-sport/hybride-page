@@ -103,3 +103,20 @@
   margin-top: var(--hy-space-4);
   flex-wrap: wrap;
 }
+
+/* Reprend .section — même respiration que les autres sections de la page — et
+   ajoute un filet de séparation : c'est la dernière avant le pied de page, sans
+   trait elle se collerait visuellement à lui. Le pied de page n'en porte pas
+   lui-même sur cette page-ci. */
+.partners {
+  padding: var(--hy-space-6) 0;
+  border-top: 1px solid var(--hy-line);
+}
+
+/* Mêmes valeurs que .outboundNote de la page « Le club » : la note dit la même
+   chose, elle doit peser pareil. */
+.outboundNote {
+  font-size: 13px;
+  color: var(--hy-text-3);
+  margin-top: var(--hy-space-4);
+}

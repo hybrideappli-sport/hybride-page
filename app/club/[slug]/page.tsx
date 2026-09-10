@@ -6,8 +6,9 @@ import { activityLabel, Tag, type Activity } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
-import { PhotoStrip } from "@/components/club/PhotoStrip";
+import { PartnerList } from "@/components/club/PartnerList";
 import { RitualRow } from "@/components/club/RitualRow";
+import { PARTNERS } from "@/lib/club/partners";
 import { CLUB } from "@/lib/config";
 import { getAllRituals } from "@/lib/rituals/content";
 import { clubMetadata } from "@/lib/seo";
@@ -82,34 +83,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      <section id="nous-trouver" className={styles.section}>
-        <p className={styles.eyebrow}>Le club en images</p>
-        <PhotoStrip
-          photos={[
-            {
-              caption: "photo 1",
-              src: "/photos/bande-1.jpg",
-              alt: "Un membre du club Hybride Toulon avec son vélo sur un circuit, au coucher du soleil",
-            },
-            {
-              caption: "photo 2",
-              src: "/photos/bande-2.jpg",
-              alt: "Le groupe du club partageant des pizzas sur la plage au coucher du soleil",
-            },
-            {
-              caption: "photo 3",
-              src: "/photos/bande-3.jpg",
-              alt: "Une partie de beach-volley entre membres du club au coucher du soleil",
-            },
-            {
-              caption: "photo 4",
-              src: "/photos/bande-4.jpg",
-              alt: "Le groupe du club réuni autour d'un verre après une sortie",
-            },
-          ]}
-        />
-      </section>
-
       <section className={styles.section}>
         <CtaBand
           title={
@@ -119,11 +92,37 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
               La deuxième, si.
             </>
           }
-          lead="La première séance est une découverte : tu viens, tu cours à ton rythme, et tu restes boire un coup si tu veux. Ensuite, l’adhésion est de 1 € pour l’année."
+          lead="La première séance est une découverte : tu viens, tu suis le groupe à ton rythme, et tu restes boire un coup si tu veux. Ensuite, l’adhésion est de 1 € pour l’année."
           ctaLabel="Voir les prochaines sorties"
           ctaHref={`/club/${CLUB.slug}/planning`}
         />
       </section>
+
+      {/*
+       * Dernière section avant le pied de page, et c'est délibéré : ces
+       * avantages s'adressent aux adhérents déjà là, pas aux visiteurs qui
+       * découvrent le club. Placée plus haut — au-dessus du bandeau crème, par
+       * exemple — elle se lirait comme un argument de l'adhésion, alors que
+       * l'argument de l'adhésion est l'assurance, et lui seul. Pour la même
+       * raison, aucun lien vers /adherer ici.
+       *
+       * Seul endroit du site où les partenaires sont listés (arbitrage du
+       * 2026-09-10 : la section avait d'abord été posée sur /le-club, elle en a
+       * été retirée pour ne pas afficher deux fois le même bloc). Ajouter un
+       * partenaire = une entrée dans lib/club/partners.ts, rien d'autre.
+       */}
+      {PARTNERS.length > 0 ? (
+        <section className={styles.partners}>
+          <div className={styles.sectionHead}>
+            <p className={styles.eyebrow}>Nos partenaires</p>
+            <h2>Des lieux qui font un geste</h2>
+          </div>
+          <PartnerList partners={PARTNERS} />
+          {PARTNERS.some((partner) => partner.url) ? (
+            <p className={styles.outboundNote}>↗ Les fiches partenaires ouvrent un autre site, dans un nouvel onglet.</p>
+          ) : null}
+        </section>
+      ) : null}
 
       <ClubFooter
         clubSlug={CLUB.slug}
