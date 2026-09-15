@@ -84,12 +84,28 @@ export const SHOP_PHOTOS: ShopPhoto[] = [
     alt: "Un membre du club assis de dos dans l’herbe, tee-shirt noir floqué Hybride Club Toulon",
   },
   {
-    src: "/photos/stade-duo-face.jpg",
-    alt: "Deux membres du club sur la piste du stade, tee-shirt noir floqué Hybride Club Toulon et tee-shirt bleu au logo H",
+    src: "/photos/shop/dos-herbe-horizon.jpg",
+    alt: "Un membre du club assis de dos dans l’herbe face à la mer, tee-shirt noir floqué Hybride Club Toulon",
   },
   {
-    src: "/photos/stade-duo-debout.jpg",
-    alt: "Deux membres du club debout sur la piste, tee-shirts bleu et noir au logo H, gradins en arrière-plan",
+    src: "/photos/shop/duo-accroupis-herbe.jpg",
+    alt: "Deux membres du club de dos dans l’herbe face à la mer, tee-shirt noir floqué Hybride Club Toulon et tee-shirt beige au logo H",
+  },
+  {
+    src: "/photos/shop/course-duo-bord-de-mer.jpg",
+    alt: "Deux membres du club courant côte à côte au bord de mer au coucher du soleil, en tee-shirts noirs",
+  },
+  {
+    src: "/photos/shop/portant-trois-tees.jpg",
+    alt: "Trois tee-shirts du club sur un portant blanc, de nuit : crème et noir floqués Hot Girls Run, gris floqué Hybride Club Toulon",
+  },
+  {
+    src: "/photos/shop/logo-h-empreinte-piste.jpg",
+    alt: "Empreinte humide d’un tee-shirt du club sur le sol de la piste, le logo H resté en clair",
+  },
+  {
+    src: "/photos/stade-duo-face.jpg",
+    alt: "Deux membres du club sur la piste du stade, tee-shirt noir floqué Hybride Club Toulon et tee-shirt bleu au logo H",
   },
   {
     src: "/photos/stade-dos-collines.jpg",
