@@ -28,10 +28,14 @@ export function ShopGallery({ helloAssoUrl }: { helloAssoUrl: string }) {
       {/* Énoncé comme un fait, au même titre que l'avantage partenaire de
           lib/club/partners.ts : c'est ce à quoi un adhérent a droit, pas une
           raison d'adhérer — l'argument de l'adhésion reste l'assurance. */}
+      {/* Le trait d'union de « tee-shirts » est INSÉCABLE (U+2011) : avec un
+          trait ordinaire, le navigateur a le droit de couper le mot à cet
+          endroit, et c'est précisément là que la ligne tombait à 375px. */}
       <p className={styles.price}>
-        <span className={styles.priceAmount}>30 €</span> les deux tee-shirts, pour les adhérents.*
+        <span className={styles.priceAmount}>30 €</span>
+        les deux tee‑shirts, pour les adhérents.*
       </p>
-      <p className={styles.priceNote}>* Offre valable sur le tee-shirt coton + polyester uniquement.</p>
+      <p className={styles.priceNote}>* Offre valable sur le tee‑shirt coton + polyester uniquement.</p>
 
       <div className={styles.hero}>
         <Image

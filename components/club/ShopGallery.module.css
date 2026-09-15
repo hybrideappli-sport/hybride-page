@@ -22,51 +22,36 @@
   object-fit: cover;
 }
 
-/* Le tarif, posé au-dessus des photos : c'est la première chose qu'on lit en
-   arrivant sur la galerie, avant même de regarder les tee-shirts. */
-/* text-wrap: balance — sans lui, le centrage laissait « adhérents.* » seul sur
-   une deuxième ligne à 375 et 390px, l'étiquette poussant le reste. Le
-   navigateur répartit les mots entre les lignes au lieu de remplir la première.
-   Ignoré par les navigateurs qui ne le connaissent pas : on retombe alors sur
-   le comportement d'avant, pas sur une mise en page cassée. */
+/*
+ * Le tarif, au-dessus des photos. ALIGNÉ À GAUCHE comme tout le texte courant
+ * du site : le centrage, essayé le 2026-09-15, était une exception isolée — les
+ * seuls blocs centrés ailleurs sont le bandeau crème et des éléments
+ * d'interface (en-têtes de jours, légendes de photo, libellés de boutons).
+ */
 .price {
   margin: 0;
-  text-align: center;
-  text-wrap: balance;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--hy-text-2);
 }
 
-/* La réserve, sous le tarif et centrée comme lui. En text-3 et 13px : elle doit
-   pouvoir être lue sans discuter le prix qu'elle précise. */
-.priceNote {
-  margin: 4px 0 var(--hy-space-2);
-  text-align: center;
-  text-wrap: balance;
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--hy-text-3);
-}
-
 /*
- * L'étiquette : l'idée de l'étoile de soldes, relue dans la charte du club.
+ * L'ÉTIQUETTE OCCUPE SA PROPRE LIGNE, et c'est la correction de fond.
  *
- * Ce qu'on en garde : la forme irrégulière et l'aplat franc, qui font l'énergie
- * du motif. Ce qu'on jette : le rouge, les pointes et le vocabulaire générique
- * de la promotion. La couleur est le violet plein du site (celui des boutons),
- * la typographie sa police de titres — aucune teinte, aucune fonte nouvelle.
+ * Posée dans le fil du texte, elle le poussait devant elle et la phrase se
+ * brisait autour — à 375px « tee-shirts » se retrouvait coupé en deux. En
+ * `display: block`, elle sort du flux de la phrase : le texte reprend en
+ * dessous, entier, sur une seule ligne aux trois largeurs de référence. Plus
+ * rien ne peut s'insérer au milieu.
  *
- * `clip-path` plutôt qu'une image : la forme reste nette à tout niveau de zoom,
- * suit la couleur de fond et ne coûte aucune requête.
- *
- * L'inclinaison vit sur la classe ET à la fin de l'animation, à la même valeur.
- * C'est ce qui fait que couper l'animation laisse l'étiquette penchée au lieu
- * de la redresser — voir la note sur prefers-reduced-motion plus bas.
+ * `width: fit-content` pour que le bloc s'arrête au bord de l'étiquette et non
+ * à celui de la colonne — sans quoi la zone inclinée s'étendrait sur toute la
+ * largeur.
  */
 .priceAmount {
-  display: inline-block;
-  margin-right: 4px;
+  display: block;
+  width: fit-content;
+  margin: 0 0 var(--hy-space-2);
   padding: 9px 16px;
   font-family: var(--hy-font-display);
   font-size: 17px;
@@ -80,16 +65,15 @@
 }
 
 /*
- * Elle se pose UNE SEULE FOIS, au montage de la galerie — donc à l'ouverture,
- * ou à l'arrivée sur la page une fois celle-ci passée. Pas de boucle : la page
+ * Elle se pose UNE SEULE FOIS, au montage de la galerie. Pas de boucle : la page
  * porte déjà un mouvement perpétuel avec le carrousel, un second ferait du
  * bruit, et une animation qui ne joue qu'une fois ne pose aucune question de
  * mise en pause.
  *
  * Aucune règle `prefers-reduced-motion` ici : globals.css coupe déjà toutes les
- * animations et transitions du site sous cette préférence. L'étiquette garde
- * alors le `transform` de sa classe et reste inclinée — elle apparaît posée,
- * sans le geste.
+ * animations du site sous cette préférence. L'étiquette garde alors le
+ * `transform` de sa classe et reste inclinée — elle apparaît posée, sans le
+ * geste.
  */
 @keyframes hy-price-stamp {
   from {
@@ -100,6 +84,15 @@
     opacity: 1;
     transform: rotate(-6deg) scale(1);
   }
+}
+
+/* La réserve, sous le tarif. En text-3 et 13px : elle doit pouvoir être lue
+   sans discuter le prix qu'elle précise. */
+.priceNote {
+  margin: 4px 0 var(--hy-space-3);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--hy-text-3);
 }
 
 /* Barre d'action — valeurs reprises telles quelles de .cta et .outboundNote de
