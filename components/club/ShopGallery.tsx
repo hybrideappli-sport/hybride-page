@@ -29,8 +29,9 @@ export function ShopGallery({ helloAssoUrl }: { helloAssoUrl: string }) {
           lib/club/partners.ts : c'est ce à quoi un adhérent a droit, pas une
           raison d'adhérer — l'argument de l'adhésion reste l'assurance. */}
       <p className={styles.price}>
-        <span className={styles.priceAmount}>30 €</span> les deux tee-shirts, pour les adhérents.
+        <span className={styles.priceAmount}>30 €</span> les deux tee-shirts, pour les adhérents.*
       </p>
+      <p className={styles.priceNote}>* Offre valable sur le tee-shirt coton + polyester uniquement.</p>
 
       <div className={styles.hero}>
         <Image

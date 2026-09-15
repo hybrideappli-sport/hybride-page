@@ -8,8 +8,8 @@ capacity: 15 personnes maximum
 meetingPoint: Piste du stade Léo Lagrange, Toulon
 mapsUrl: https://www.google.com/maps?q=43.1277111,5.9738709
 coach: Un coach du club, deux ans d'expérience en athlétisme avant de monter Hybride.
-photo: piste-hero.jpg
-photoAlt: Deux membres du club plaisantant sur la piste, collines en arrière-plan
+photo: stade-duo-face.jpg
+photoAlt: Deux membres du club sur la piste du stade, tee-shirt noir floqué Hybride Club Toulon et tee-shirt bleu au logo H
 ---
 
 ## Ce que c'est
@@ -30,14 +30,12 @@ Tous niveaux. Quelqu'un qui commence fait sa séance, quelqu'un qui prépare un 
 
 ## En images
 
-![Séance de renforcement abdominaux à deux, sur la piste](piste-1.jpg)
+![Deux membres du club debout sur la piste, tee-shirts bleu et noir au logo H, gradins en arrière-plan](stade-duo-debout.jpg)
 
-![Étirements après la séance, sur la pelouse du stade](piste-2.jpg)
+![Deux membres du club de dos sur la piste, floquage Hybride dans le dos, collines à l'horizon](stade-dos-collines.jpg)
 
-![Étirements en groupe après la séance, vue sur les collines](piste-3.jpg)
+![Deux membres du club en étirements sur la piste, tee-shirt noir et tee-shirt crème floqué Hot Girls Run](stade-etirements.jpg)
 
-![La piste d'athlétisme vide, vue sur les collines environnantes](piste-4.jpg)
+![Deux membres du club assises sur la piste, tee-shirt noir et tee-shirt crème floqué Hot Girls Run](stade-assises.jpg)
 
-![La piste d'athlétisme vue depuis le sol, ciel nuageux](piste-5.jpg)
-
-![Gainage en planche, tout le groupe](piste-6.jpg)
+![Un tee-shirt lavande du club posé à plat sur la piste d'athlétisme](stade-tee-lavande.jpg)

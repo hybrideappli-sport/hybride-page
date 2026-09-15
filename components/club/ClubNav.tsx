@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { SHOP_NAV_HIGHLIGHT_UNTIL } from "@/lib/config";
+import { deadlinePassed } from "@/lib/countdown";
 import styles from "./ClubNav.module.css";
 
 /**
@@ -32,6 +35,25 @@ export function ClubNav({ clubSlug }: { clubSlug: string }) {
   const joinHref = `/club/${clubSlug}/adherer`;
   const onJoinPage = usePathname() === joinHref;
 
+  /*
+   * Mise en avant du lien « Shop » jusqu'à SHOP_NAV_HIGHLIGHT_UNTIL.
+   *
+   * L'échéance est lue APRÈS LE MONTAGE, jamais au rendu : lire l'horloge en
+   * rendant ferait de cette barre — présente sur toutes les pages du club — un
+   * élément non idempotent, et une page mise en cache figerait le verdict à
+   * l'heure de sa génération. Partir de `false` garde par ailleurs le premier
+   * rendu client identique au HTML reçu.
+   *
+   * Effet de bord assumé, et plutôt heureux : le lien s'allume juste après
+   * l'hydratation plutôt que d'être déjà coloré, ce qui fait une apparition
+   * douce au lieu d'un état figé.
+   */
+  const [highlighted, setHighlighted] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setHighlighted(!deadlinePassed(SHOP_NAV_HIGHLIGHT_UNTIL)), 0);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <nav className={styles.nav}>
       <div className={styles.bar}>
@@ -46,8 +68,16 @@ export function ClubNav({ clubSlug }: { clubSlug: string }) {
           <Link className={styles.link} href={`/club/${clubSlug}/planning`}>
             Planning
           </Link>
-          <Link className={styles.link} href={`/club/${clubSlug}/shop`}>
-            Shop
+          <Link className={`${styles.link} ${highlighted ? styles.linkNew : ""}`} href={`/club/${clubSlug}/shop`}>
+            Shop{highlighted ? " " : null}
+            {/* L'espace ci-dessus n'est pas décoratif : sans lui le lien
+                s'annonce « ShopNouveau » d'un seul tenant. La marge CSS ne sépare
+                que pour l'œil.
+                Un vrai élément et non un `content` CSS : les pseudo-éléments ne
+                sont pas annoncés de façon fiable par tous les lecteurs d'écran,
+                or « nouveau » est une information, pas une décoration. Le lien
+                s'annonce alors « Shop Nouveau », ce qui est exactement le sens. */}
+            {highlighted ? <span className={styles.newBadge}>Nouveau</span> : null}
           </Link>
         </div>
 

@@ -25,6 +25,8 @@ C'est en deux étapes, parce que GitHub sépare les fichiers de texte des fichie
 2. Clique sur **"Add file" → "Upload files"**.
 3. Glisse ta photo dans la fenêtre (idéalement déjà compressée, quelques centaines de Ko à 1-2 Mo — pas un export brut d'appareil photo, ça ralentirait le site).
 4. Donne-lui un nom qui commence par le nom du rituel, pour que ça reste lisible dans un dossier commun à tout le site : `piste-hero.jpg`, `piste-1.jpg`, `piste-2.jpg`... ou `run-chill-hero.jpg`, `run-chill-1.jpg`, etc.
+
+   Une exception existe depuis le 2026-09-15 : les photos du shooting merch prises au stade s'appellent `stade-*.jpg`, parce qu'elles servent à la fois la page du rituel piste et la boutique. Les nommer `piste-*` aurait été trompeur là-bas. La règle vaut donc pour les photos propres à un rituel ; une photo partagée prend un nom qui décrit ce qu'elle montre.
 5. Commit.
 
 **Étape 2 — l'ajouter à la page :**

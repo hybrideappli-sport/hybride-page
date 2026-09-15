@@ -44,6 +44,59 @@
   color: var(--hy-violet);
 }
 
+/*
+ * Mise en avant temporaire du lien « Shop » — pilotée par
+ * SHOP_NAV_HIGHLIGHT_UNTIL (lib/config.ts), qui l'éteint tout seul à
+ * l'échéance. Le texte passe au violet d'accent, distinct du gris des autres
+ * entrées SANS empiéter sur le violet du survol : celui-ci reste le même, la
+ * différence se lit au badge.
+ */
+.linkNew {
+  color: var(--hy-violet);
+  font-weight: 600;
+}
+
+/*
+ * Le badge : gabarit des pastilles du site (rayon pill, fond violet sombre,
+ * bordure et texte violet, Geist Mono capitalisé), réduit à la taille d'une
+ * mention de barre de navigation.
+ *
+ * Il apparaît une seule fois, au montage, et ne bouge plus ensuite. Une
+ * pulsation permanente aurait été un troisième mouvement perpétuel sur le site
+ * après le carrousel de la boutique — sur un élément présent à toutes les pages
+ * et pendant six semaines, elle serait devenue du bruit bien avant l'échéance.
+ *
+ * Aucune règle `prefers-reduced-motion` ici : globals.css coupe déjà toutes les
+ * animations du site sous cette préférence. Le badge apparaît alors d'emblée,
+ * à sa place définitive — il ne manque que le geste.
+ */
+.newBadge {
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: var(--hy-radius-pill);
+  border: 1px solid var(--hy-violet);
+  background: var(--hy-violet-bg);
+  font-family: var(--hy-font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  white-space: nowrap;
+  animation: hy-nav-badge-in 460ms var(--hy-ease) both;
+}
+
+@keyframes hy-nav-badge-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .link:focus-visible {
   outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
   outline-offset: var(--hy-focus-ring-offset);

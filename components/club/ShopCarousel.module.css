@@ -12,7 +12,7 @@
 .track {
   display: flex;
   gap: var(--hy-space-2);
-  margin-top: var(--hy-space-2);
+  margin-top: var(--hy-space-1);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-padding-left: 0;

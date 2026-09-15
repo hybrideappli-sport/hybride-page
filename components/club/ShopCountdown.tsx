@@ -90,14 +90,17 @@ export function ShopCountdown({ targetIso, openingLabel, reminderHref, opened, i
     return (
       <section className={styles.panel}>
         {/* Bascule explicite : le décompte disparaît, il ne se fige pas sur
-            00:00:00. Pas de lien ni de catalogue ici — ni les produits ni
-            l'URL HelloAsso n'existaient au moment d'écrire ceci (2026-09-10),
-            et annoncer une boutique qui n'ouvre sur rien coûterait plus de
-            confiance que le décompte n'en aura gagné. */}
-        <p className={styles.openTitle} aria-live="polite">
+            00:00:00. Les deux phrases qui tenaient ici — « La boutique est
+            ouverte. » et « Le premier drop du club. » — ont été retirées le
+            2026-09-15 : l'étiquette et les photos disent la même chose, mieux.
+            Ne subsiste que l'ANNONCE, invisible à l'œil. Elle n'est pas
+            décorative : c'est elle qui signale la bascule à un lecteur d'écran,
+            sur une page qui change d'état sans rechargement. Sans elle,
+            quelqu'un qui a la page ouverte à 18h ne saurait jamais que la
+            boutique vient d'ouvrir. */}
+        <p className={styles.srOnly} aria-live="polite">
           La boutique est ouverte.
         </p>
-        <p className={styles.lead}>Le premier drop du club.</p>
         {opened}
       </section>
     );

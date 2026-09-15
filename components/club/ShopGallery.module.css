@@ -1,5 +1,7 @@
+/* Aucun padding haut : depuis le retrait des deux phrases (2026-09-15), la
+   galerie ouvre le panneau et c'est lui qui porte la respiration du dessus. */
 .wrap {
-  padding: var(--hy-space-3) 0 0;
+  padding: 0;
 }
 
 /* Photo d'ouverture : le grand format 4/5 du site, recadré depuis le 9/16 des
@@ -22,11 +24,29 @@
 
 /* Le tarif, posé au-dessus des photos : c'est la première chose qu'on lit en
    arrivant sur la galerie, avant même de regarder les tee-shirts. */
+/* text-wrap: balance — sans lui, le centrage laissait « adhérents.* » seul sur
+   une deuxième ligne à 375 et 390px, l'étiquette poussant le reste. Le
+   navigateur répartit les mots entre les lignes au lieu de remplir la première.
+   Ignoré par les navigateurs qui ne le connaissent pas : on retombe alors sur
+   le comportement d'avant, pas sur une mise en page cassée. */
 .price {
-  margin: 0 0 var(--hy-space-3);
+  margin: 0;
+  text-align: center;
+  text-wrap: balance;
   font-size: 16px;
   line-height: 1.6;
   color: var(--hy-text-2);
+}
+
+/* La réserve, sous le tarif et centrée comme lui. En text-3 et 13px : elle doit
+   pouvoir être lue sans discuter le prix qu'elle précise. */
+.priceNote {
+  margin: 4px 0 var(--hy-space-2);
+  text-align: center;
+  text-wrap: balance;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--hy-text-3);
 }
 
 /*
@@ -88,13 +108,13 @@
    barre clôt une longue page de texte, ici elle suit immédiatement une galerie.
    Le filet de séparation, lui, est conservé tel quel. */
 .cta {
-  padding: var(--hy-space-4) 0 var(--hy-space-5);
-  margin-top: var(--hy-space-3);
+  padding: var(--hy-space-3) 0 var(--hy-space-4);
+  margin-top: var(--hy-space-2);
   border-top: 1px solid var(--hy-line);
 }
 
 .outboundNote {
   font-size: 13px;
   color: var(--hy-text-3);
-  margin: var(--hy-space-3) 0 0;
+  margin: var(--hy-space-2) 0 0;
 }

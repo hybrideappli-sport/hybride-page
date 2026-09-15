@@ -111,6 +111,28 @@ export const PLANNING_NOTICE = "";
 export const SHOP_OPENING_TO = "2026-09-15T18:00:00+02:00";
 
 /**
+ * Jusqu'à quand le lien « Shop » de la navigation est signalé comme une
+ * nouveauté — texte violet et badge « NOUVEAU », sur toutes les pages où la
+ * barre apparaît (components/club/ClubNav.tsx).
+ *
+ * PASSÉ CETTE DATE, LE LIEN REDEVIENT ORDINAIRE TOUT SEUL. Il n'y a rien à
+ * retirer dans le code : c'est le seul endroit à regarder, et une chaîne vide
+ * éteint la mise en avant immédiatement.
+ *
+ * Six semaines après l'ouverture du 15 septembre (arbitrage du 2026-09-15) :
+ * de quoi couvrir le lancement et les premières sorties d'automne, sans que
+ * « nouveau » finisse par désigner quelque chose qui ne l'est plus.
+ *
+ * FORMAT : ISO 8601 avec DÉCALAGE EXPLICITE, comme SHOP_OPENING_TO. Attention,
+ * ce n'est PAS le même décalage : le changement d'heure tombe le dimanche
+ * 25 octobre 2026, donc le 31 octobre est en heure d'hiver — `+01:00`, et non
+ * le `+02:00` de l'ouverture. Se tromper ici décalerait la fin d'une heure,
+ * sans conséquence visible, mais la règle reste la même : jamais de `Z`, jamais
+ * de date nue.
+ */
+export const SHOP_NAV_HIGHLIGHT_UNTIL = "2026-10-31T23:59:59+01:00";
+
+/**
  * Boutique merch HelloAsso de l'association — renseignée le 2026-09-15, le jour
  * de l'ouverture. Elle a porté un placeholder `.example` (domaine réservé
  * RFC 2606, garanti de ne jamais résoudre) tant que l'adresse réelle n'était pas
