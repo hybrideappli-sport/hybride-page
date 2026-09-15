@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { ShopCarousel } from "@/components/club/ShopCarousel";
 import { galleryPhotos, heroPhoto } from "@/lib/club/shop-gallery";
+import { canSpread } from "@/lib/club/spread-series";
 import styles from "./ShopGallery.module.css";
 
 /**
@@ -22,6 +23,15 @@ import styles from "./ShopGallery.module.css";
 export function ShopGallery({ helloAssoUrl }: { helloAssoUrl: string }) {
   const hero = heroPhoto();
   const photos = galleryPhotos();
+
+  // Une série plus grosse que la moitié du carrousel ne peut pas être répartie :
+  // deux de ses photos se toucheront. Signalé à qui ajoute des photos, en
+  // développement seulement — en ligne, le carrousel s'affiche au mieux.
+  if (process.env.NODE_ENV !== "production" && !canSpread(photos, (p) => p.series)) {
+    console.warn(
+      "[shop] Une série dépasse la moitié du carrousel : deux de ses photos seront voisines. Voir ShopSeries dans lib/club/shop-gallery.ts.",
+    );
+  }
 
   return (
     <section className={styles.wrap}>

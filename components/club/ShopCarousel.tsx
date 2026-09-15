@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ShopPhoto } from "@/lib/club/shop-gallery";
+import { spreadBySeries } from "@/lib/club/spread-series";
 import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 import styles from "./ShopCarousel.module.css";
 
@@ -44,6 +45,8 @@ function shuffled<T>(items: T[]): T[] {
   return out;
 }
 
+const seriesOf = (photo: ShopPhoto) => photo.series;
+
 /**
  * Carrousel des photos du merch : défilement automatique lent, en boucle, dans
  * un ordre tiré à chaque visite — et qui rend la main au doigt à tout moment.
@@ -55,6 +58,13 @@ function shuffled<T>(items: T[]): T[] {
  * les deux fautes à la fois — un désaccord d'hydratation, et un « aléatoire »
  * figé par le cache, le même pour tous les visiteurs jusqu'à la prochaine
  * régénération de la page (même piège que Date.now()).
+ *
+ * JAMAIS DEUX PHOTOS D'UNE MÊME SÉRIE CÔTE À CÔTE, boucle comprise : le tirage
+ * est suivi d'une répartition par séries (lib/club/spread-series.ts), qui
+ * garde l'ordre tiré partout où il ne pose pas problème. Le premier rendu passe
+ * par la même répartition, appliquée à l'ordre du tableau : elle ne tire rien
+ * au sort, donc serveur et client produisent le même ordre — et un visiteur
+ * sans JavaScript ne voit pas non plus de doublon.
  *
  * Les `key` sont les `src` : au réordonnancement, React DÉPLACE les nœuds
  * existants au lieu de les recréer, donc aucune image n'est rechargée.
@@ -79,8 +89,9 @@ export function ShopCarousel({ photos }: { photos: ShopPhoto[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Ordre du tableau au premier rendu, mélangé seulement après le montage.
-  const [order, setOrder] = useState<ShopPhoto[]>(photos);
+  // Ordre du tableau réparti par séries au premier rendu, mélangé seulement
+  // après le montage.
+  const [order, setOrder] = useState<ShopPhoto[]>(() => spreadBySeries(photos, seriesOf));
   const [mounted, setMounted] = useState(false);
   const [interacting, setInteracting] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
@@ -89,7 +100,7 @@ export function ShopCarousel({ photos }: { photos: ShopPhoto[] }) {
     // setTimeout(…, 0) : la mise à jour ne vient pas d'un rendu en cascade
     // (react-hooks/set-state-in-effect), même contournement qu'ailleurs sur ce site.
     const t = setTimeout(() => {
-      setOrder(shuffled(photos));
+      setOrder(spreadBySeries(shuffled(photos), seriesOf));
       setMounted(true);
     }, 0);
     return () => clearTimeout(t);
