@@ -7,8 +7,29 @@ import type { ShopPhoto } from "@/lib/club/shop-gallery";
 import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 import styles from "./ShopCarousel.module.css";
 
-/** Pixels par image d'animation (~60 fps) : une vignette met une dizaine de secondes à défiler. */
-const SPEED_PX_PER_FRAME = 0.35;
+/**
+ * Vitesse de défilement, EN PIXELS PAR SECONDE et non par image d'animation.
+ *
+ * La première version comptait par image (0,35 px/frame), ce qui liait la
+ * vitesse au taux de rafraîchissement : deux fois plus rapide sur un écran
+ * 120 Hz, et ralentie par le navigateur dès que le carrousel sort du champ.
+ * Mesurée en ligne le 2026-09-15, elle donnait 30 px/s, soit une vignette
+ * toutes les cinq secondes — au-dessous du seuil où l'œil perçoit un
+ * mouvement. Le carrousel avait l'air immobile.
+ *
+ * 90 px/s = une vignette (152 px) toutes les 1,7 s : visible sans qu'on fixe
+ * l'écran, assez lent pour qu'on puisse regarder une photo au passage.
+ */
+const SPEED_PX_PER_SECOND = 90;
+
+/**
+ * Plafond de l'intervalle entre deux images, en secondes.
+ *
+ * Sans lui, un onglet laissé en arrière-plan accumulerait le temps écoulé et le
+ * carrousel bondirait de plusieurs centaines de pixels au retour. On avance au
+ * plus comme si vingt images par seconde s'étaient écoulées.
+ */
+const MAX_FRAME_SECONDS = 1 / 20;
 
 /** Délai d'inactivité avant que le mouvement ne reprenne, après un geste. */
 const RESUME_DELAY_MS = 2_500;
@@ -86,10 +107,15 @@ export function ShopCarousel({ photos }: { photos: ShopPhoto[] }) {
   useEffect(() => {
     if (!moving) return;
     let raf = 0;
-    const step = () => {
+    let previous = performance.now();
+    const step = (now: number) => {
       const el = trackRef.current;
+      // Temps réellement écoulé depuis l'image précédente : c'est ce qui rend
+      // la vitesse identique sur un écran 60 Hz et sur un 120 Hz.
+      const seconds = Math.min((now - previous) / 1000, MAX_FRAME_SECONDS);
+      previous = now;
       if (el) {
-        el.scrollLeft += SPEED_PX_PER_FRAME;
+        el.scrollLeft += SPEED_PX_PER_SECOND * seconds;
         // Recollage : une fois la première copie parcourue, on revient au même
         // point visuel de la copie précédente.
         const half = el.scrollWidth / 2;
