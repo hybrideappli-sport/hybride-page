@@ -1,0 +1,67 @@
+/*
+ * Carrousel : défilement natif, aucune librairie. Voir ShopCarousel.tsx pour le
+ * pourquoi de chaque choix.
+ *
+ * LE CALAGE EST PILOTÉ PAR `data-snap`, posé par le composant : retiré pendant
+ * le mouvement automatique (il le ferait saccader en le ramenant sans cesse
+ * vers un point d'arrêt), rendu dès que l'utilisateur prend la main.
+ *
+ * overscroll-behavior-x: contain — empêche le geste de remonter à la page (et,
+ * sur certains navigateurs, de déclencher un retour arrière) en fin de course.
+ */
+.track {
+  display: flex;
+  gap: var(--hy-space-2);
+  margin-top: var(--hy-space-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-left: 0;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--hy-space-1);
+}
+
+.track[data-snap="on"] {
+  scroll-snap-type: x mandatory;
+}
+
+/* Pendant le mouvement automatique : aucun calage, sinon le défilement lutte
+   contre lui à chaque image et saccade. */
+.track[data-snap="off"] {
+  scroll-snap-type: none;
+}
+
+/* Le conteneur est focusable : sans repère visible, on ne saurait pas que le
+   clavier a la main dessus. */
+.track:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+/*
+ * 42 % : deux vignettes tiennent dans la largeur, la troisième entame le bord et
+ * signale qu'il y a une suite. Une valeur qui tomberait juste (50 %, 33 %)
+ * donnerait un bord net et laisserait croire que la série s'arrête là.
+ */
+.item {
+  flex: 0 0 42%;
+  margin: 0;
+  scroll-snap-align: start;
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius);
+  overflow: hidden;
+  background: var(--hy-surface-1);
+}
+
+.itemImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+@media (min-width: 861px) {
+  .item {
+    flex-basis: 23%;
+  }
+}

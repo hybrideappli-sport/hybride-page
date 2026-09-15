@@ -7,6 +7,7 @@ import { BackToClub } from "@/components/club/BackToClub";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { ShopCountdown } from "@/components/club/ShopCountdown";
+import { ShopGallery } from "@/components/club/ShopGallery";
 import { CLUB, HELLOASSO_SHOP_URL, SHOP_OPENING_TO } from "@/lib/config";
 import { deadlinePassed } from "@/lib/countdown";
 import { formatOpeningLabel } from "@/lib/format";
@@ -128,6 +129,14 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
           targetIso={SHOP_OPENING_TO}
           openingLabel={formatOpeningLabel(SHOP_OPENING_TO)}
           reminderHref={`/club/${CLUB.slug}/shop/ouverture.ics`}
+          /*
+           * RENDU SANS CONDITION, et c'est tout l'enjeu : pas de
+           * `openingHasPassed ? <ShopGallery/> : null` ici. Le serveur envoie la
+           * galerie quelle que soit l'heure, et seul le client décide de la
+           * monter. Une réponse mise en cache à 17h30 contient donc déjà tout ce
+           * qu'il faut pour 18h00 — voir la prop `opened` de ShopCountdown.
+           */
+          opened={<ShopGallery helloAssoUrl={HELLOASSO_SHOP_URL} />}
           initiallyOpen={openingHasPassed}
         />
       )}

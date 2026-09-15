@@ -3,8 +3,12 @@
  * Le bloc est posé sur le noir de la page comme les autres données du site.
  * La seule marque de section est l'espace autour, comme partout ailleurs.
  */
+/* Le padding BAS tombe après la galerie (rendue à l'intérieur, via `opened`) et
+   s'ajoutait à celui de la barre d'action : 96 + 96 = 192px de vide avant le
+   pied de page, mesurés le 2026-09-15. Ramené à space-4, il ne reste que la
+   respiration de la barre d'action. */
 .panel {
-  padding: var(--hy-space-5) 0 var(--hy-space-7);
+  padding: var(--hy-space-4) 0 var(--hy-space-4);
   max-width: 62ch;
 }
 

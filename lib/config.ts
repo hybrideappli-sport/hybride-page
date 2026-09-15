@@ -111,9 +111,13 @@ export const PLANNING_NOTICE = "";
 export const SHOP_OPENING_TO = "2026-09-15T18:00:00+02:00";
 
 /**
- * URL de la boutique merch HelloAsso de l'association — PAS ENCORE CONNUE.
- * Ne jamais inventer une URL plausible : `.example` est le domaine réservé
- * (RFC 2606) pour ce genre de placeholder, garanti de ne jamais résoudre.
- * À renseigner avant l'ouverture de /club/toulon/shop en production.
+ * Boutique merch HelloAsso de l'association — renseignée le 2026-09-15, le jour
+ * de l'ouverture. Elle a porté un placeholder `.example` (domaine réservé
+ * RFC 2606, garanti de ne jamais résoudre) tant que l'adresse réelle n'était pas
+ * connue : ne jamais y remettre une URL plausible mais devinée.
+ *
+ * C'est la seule caisse : ce site n'encaisse rien et ne collecte aucune donnée
+ * d'acheteur (ADR-002 — le Stripe de l'entité commerciale n'a aucun rôle ici,
+ * l'association ne peut pas encaisser dessus).
  */
-export const HELLOASSO_SHOP_URL = "https://TODO-boutique-helloasso-a-renseigner.example";
+export const HELLOASSO_SHOP_URL = "https://www.helloasso.com/associations/hybride-club-toulon/boutiques/boutique-hybride";

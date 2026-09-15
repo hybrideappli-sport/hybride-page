@@ -1,0 +1,100 @@
+.wrap {
+  padding: var(--hy-space-3) 0 0;
+}
+
+/* Photo d'ouverture : le grand format 4/5 du site, recadré depuis le 9/16 des
+   photos de téléphone. Le cadrage remonte sur le buste — les logos se lisent,
+   ce qui est le sujet. Rayon et bordure repris de PhotoSlot en mode carte. */
+.hero {
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius-card);
+  overflow: hidden;
+  background: var(--hy-surface-1);
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* Le tarif, posé au-dessus des photos : c'est la première chose qu'on lit en
+   arrivant sur la galerie, avant même de regarder les tee-shirts. */
+.price {
+  margin: 0 0 var(--hy-space-3);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--hy-text-2);
+}
+
+/*
+ * L'étiquette : l'idée de l'étoile de soldes, relue dans la charte du club.
+ *
+ * Ce qu'on en garde : la forme irrégulière et l'aplat franc, qui font l'énergie
+ * du motif. Ce qu'on jette : le rouge, les pointes et le vocabulaire générique
+ * de la promotion. La couleur est le violet plein du site (celui des boutons),
+ * la typographie sa police de titres — aucune teinte, aucune fonte nouvelle.
+ *
+ * `clip-path` plutôt qu'une image : la forme reste nette à tout niveau de zoom,
+ * suit la couleur de fond et ne coûte aucune requête.
+ *
+ * L'inclinaison vit sur la classe ET à la fin de l'animation, à la même valeur.
+ * C'est ce qui fait que couper l'animation laisse l'étiquette penchée au lieu
+ * de la redresser — voir la note sur prefers-reduced-motion plus bas.
+ */
+.priceAmount {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 9px 16px;
+  font-family: var(--hy-font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--hy-on-violet);
+  background: var(--hy-violet-fill);
+  clip-path: polygon(6% 0, 94% 4%, 100% 50%, 95% 96%, 50% 100%, 8% 97%, 0 52%, 4% 6%);
+  transform: rotate(-6deg);
+  animation: hy-price-stamp 520ms var(--hy-ease) both;
+}
+
+/*
+ * Elle se pose UNE SEULE FOIS, au montage de la galerie — donc à l'ouverture,
+ * ou à l'arrivée sur la page une fois celle-ci passée. Pas de boucle : la page
+ * porte déjà un mouvement perpétuel avec le carrousel, un second ferait du
+ * bruit, et une animation qui ne joue qu'une fois ne pose aucune question de
+ * mise en pause.
+ *
+ * Aucune règle `prefers-reduced-motion` ici : globals.css coupe déjà toutes les
+ * animations et transitions du site sous cette préférence. L'étiquette garde
+ * alors le `transform` de sa classe et reste inclinée — elle apparaît posée,
+ * sans le geste.
+ */
+@keyframes hy-price-stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-15deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-6deg) scale(1);
+  }
+}
+
+/* Barre d'action — valeurs reprises telles quelles de .cta et .outboundNote de
+   la page Adhérer (app/club/[slug]/adherer/page.module.css). */
+/* Valeurs plus serrées que le .cta de /adherer dont elles viennent : là-bas la
+   barre clôt une longue page de texte, ici elle suit immédiatement une galerie.
+   Le filet de séparation, lui, est conservé tel quel. */
+.cta {
+  padding: var(--hy-space-4) 0 var(--hy-space-5);
+  margin-top: var(--hy-space-3);
+  border-top: 1px solid var(--hy-line);
+}
+
+.outboundNote {
+  font-size: 13px;
+  color: var(--hy-text-3);
+  margin: var(--hy-space-3) 0 0;
+}

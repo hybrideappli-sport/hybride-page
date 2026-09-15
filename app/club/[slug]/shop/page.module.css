@@ -7,8 +7,11 @@
 /* padding-top a 0 : le lien « Retour au club » juste au-dessus porte
    désormais la respiration entre la barre de navigation et le titre. Cumuler
    les deux ajouterait 40px de vide avant le contenu principal. */
+/* space-4 et non plus space-6 (2026-09-15) : ce bloc portait un chapô, il ne
+   porte plus que le titre depuis l'arrivée du décompte. 64px de vide sous un
+   titre seul, avec le panneau qui ajoute déjà le sien, faisaient un trou. */
 .hero {
-  padding: 0 0 var(--hy-space-6);
+  padding: 0 0 var(--hy-space-4);
   max-width: 62ch;
 }
 

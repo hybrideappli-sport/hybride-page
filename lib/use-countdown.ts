@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
+
 /**
  * Mécanique commune aux comptes à rebours du site — celui du planning
  * (PlanningCountdown) et celui de la boutique (ShopCountdown). Une seule
@@ -44,21 +46,8 @@ export interface CountdownState {
 export function useCountdown(targetIso: string, initiallyOpen = false): CountdownState {
   const [open, setOpen] = useState(initiallyOpen);
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  // Lue après le montage, jamais au rendu : `matchMedia` n'existe pas côté
-  // serveur, et partir de `false` garde le premier rendu client identique au
-  // HTML reçu. L'écouteur suit un changement de réglage sans rechargement.
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReducedMotion(media.matches);
-    const initial = setTimeout(sync, 0);
-    media.addEventListener("change", sync);
-    return () => {
-      clearTimeout(initial);
-      media.removeEventListener("change", sync);
-    };
-  }, []);
+  // Partagée avec le carrousel de la boutique depuis le 2026-09-15.
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const targetMs = new Date(targetIso).getTime();

@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 import { CalendarReminderLink } from "@/components/club/CalendarReminderLink";
 import { unitsRemaining } from "@/lib/countdown";
 import { useCountdown } from "@/lib/use-countdown";
@@ -25,6 +27,20 @@ interface ShopCountdownProps {
    * ici : ce composant est client, et le slug du club n'a pas à y remonter.
    */
   reminderHref: string;
+  /**
+   * Le contenu de la boutique, RENDU PAR LE SERVEUR DANS TOUS LES CAS et monté
+   * ici seulement une fois l'ouverture passée.
+   *
+   * C'est ce qui fait tenir la promesse de 18h00. Si la page décidait
+   * elle-même, côté serveur, d'inclure ou non ce contenu, une réponse mise en
+   * cache à 17h30 figerait ce choix : le visiteur de 18h01 verrait « ouvert »
+   * sans rien dessous, ou le décompte alors que l'heure est passée. En le
+   * recevant toujours, la page porte déjà la galerie quand le client bascule —
+   * il n'y a rien à re-fabriquer, rien à revalider, rien à purger.
+   *
+   * Même procédé que `calendar` dans PlanningCountdown.
+   */
+  opened: ReactNode;
   /**
    * Verdict de l'horloge SERVEUR, valeur de DÉPART uniquement — évite un
    * clignotement du décompte si l'échéance est déjà passée. Le montage
@@ -67,7 +83,7 @@ interface ShopCountdownProps {
  * - LA BASCULE, ELLE, EST ANNONCÉE. C'est un évènement unique et non une
  *   boucle : `aria-live="polite"` est justifié là, et seulement là.
  */
-export function ShopCountdown({ targetIso, openingLabel, reminderHref, initiallyOpen }: ShopCountdownProps) {
+export function ShopCountdown({ targetIso, openingLabel, reminderHref, opened, initiallyOpen }: ShopCountdownProps) {
   const { remaining, open, reducedMotion } = useCountdown(targetIso, initiallyOpen);
 
   if (open) {
@@ -82,6 +98,7 @@ export function ShopCountdown({ targetIso, openingLabel, reminderHref, initially
           La boutique est ouverte.
         </p>
         <p className={styles.lead}>Le premier drop du club.</p>
+        {opened}
       </section>
     );
   }
