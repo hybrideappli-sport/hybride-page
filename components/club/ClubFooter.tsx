@@ -26,7 +26,13 @@ export function ClubFooter({
   instagramUrl?: string;
 }) {
   return (
-    <footer className={styles.footer}>
+    /*
+     * `id` repère observé par PwaInstallBanner : la bannière d'installation
+     * s'escamote dès que ce pied de page entre dans le champ, pour ne jamais
+     * recouvrir les liens légaux. Le renommer casse cet escamotage sans rien
+     * casser d'autre — donc en silence.
+     */
+    <footer id="club-footer" className={styles.footer}>
       <p>
         <strong>{clubName}</strong> — association loi 1901, {legalCity}.
       </p>

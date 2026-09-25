@@ -1,0 +1,196 @@
+/*
+ * Une CARTE POSÉE, pas un bandeau pleine largeur : marges latérales de 16px,
+ * radius-card et bordure, comme les cartes du planning et des rituels. C'est ce
+ * qui la rattache au site plutôt qu'à la famille des bandeaux de consentement —
+ * elle a la forme d'un objet du site, à un endroit où le site sait déjà poser
+ * des choses (voir StickyJoinCta, même ancrage, mêmes précautions iOS).
+ */
+
+.banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Au-dessus des barres d'action fixes (z-index 40) par principe de dernier
+     arrivé, même si les deux ne coexistent jamais : PwaInstallBanner.tsx écarte
+     les pages qui en portent une. */
+  z-index: 45;
+  padding: 0 var(--hy-space-3);
+  /*
+   * Zone sûre iOS — même raisonnement que StickyJoinCta.module.css :
+   * `viewport-fit=cover` n'est pas activé sur ce site, donc `env()` vaut 0 et
+   * `bottom: 0` tombe déjà au-dessus de la barre d'accueil. Le `max()` ne coûte
+   * rien et couvre le jour où ce choix changerait.
+   */
+  padding-bottom: max(var(--hy-space-3), env(safe-area-inset-bottom));
+  /* La bande latérale de part et d'autre de la carte ne doit pas intercepter les
+     gestes destinés à la page : seule la carte est cliquable. */
+  pointer-events: none;
+  transition:
+    transform var(--hy-dur) var(--hy-ease),
+    opacity var(--hy-dur) var(--hy-ease),
+    visibility var(--hy-dur);
+}
+
+/*
+ * Escamotée dès que le pied de page entre dans le champ — sans quoi elle
+ * recouvrirait les liens de mentions légales, qui terminent chaque page.
+ * Translation plutôt que `display: none` : le retrait reste doux.
+ *
+ * `visibility: hidden` en plus de l'opacité, et ce n'est pas une ceinture avec
+ * des bretelles : une carte simplement transparente reste dans l'ordre de
+ * tabulation, et l'on tomberait au clavier sur un bouton « Installer » invisible
+ * entre deux liens du pied de page. La transition la fait basculer à la fin du
+ * mouvement, pas au début, donc le fondu reste visible.
+ */
+.retracted {
+  transform: translateY(130%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.card {
+  pointer-events: auto;
+  display: grid;
+  /* icône | texte | fermeture — le bouton d'installation passe sous le texte,
+     en seconde rangée, pour garder la même largeur de colonne de texte à 375px
+     qu'à 430px. */
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--hy-space-2);
+  align-items: start;
+  padding: var(--hy-space-2);
+  /*
+   * Fond : le violet profond du site (--hy-violet-bg) fondu vers la surface
+   * habituelle. Un aplat --hy-surface-1 aurait fait carte neutre ; ce dégradé
+   * fait reconnaître la marque avant même la lecture, sans employer le violet
+   * d'accent, qui reste réservé aux actions.
+   */
+  background: linear-gradient(135deg, var(--hy-violet-bg), var(--hy-surface-1) 70%);
+  border: 1px solid var(--hy-line-2);
+  border-radius: var(--hy-radius-card);
+  /* Sur fond noir une ombre ne se voit pas : c'est la bordure claire qui détache
+     la carte. L'ombre ne sert qu'aux quelques pixels de contenu qui passent
+     dessous en défilant. */
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.55);
+  /* Apparition : elle arrive après le premier écran défilé, jamais à l'ouverture.
+     Neutralisée par la règle `prefers-reduced-motion` de globals.css. */
+  animation: rise 240ms var(--hy-ease) both;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+
+.icon {
+  grid-row: 1;
+  display: block;
+  width: 44px;
+  height: 44px;
+  /* Le rayon des icônes d'application iOS/Android, appliqué ici pour que la
+     vignette ressemble au raccourci qu'elle promet. */
+  border-radius: var(--hy-radius);
+}
+
+.body {
+  grid-row: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--hy-font-display);
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--hy-text-1);
+  /* Césure autorisée : « d'accueil » ne doit pas déborder sur les écrans de
+     375px, où la colonne de texte ne fait que ~215px. */
+  overflow-wrap: break-word;
+}
+
+.line {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--hy-text-2);
+}
+
+/*
+ * Pictogrammes iOS dans le fil du texte.
+ *
+ * `display: inline-block` est INDISPENSABLE, pas cosmétique : le preflight de
+ * Tailwind passe tous les `svg` en `display: block`, ce qui renvoyait chaque
+ * icône à la ligne et découpait la phrase en cinq morceaux. Le décalage vertical
+ * les pose sur la ligne de base des mots, où elles se lisent comme des mots.
+ */
+.inlineIcon {
+  display: inline-block;
+  vertical-align: -3px;
+  color: var(--hy-text-1);
+}
+
+/* Garde « ⊞ "Sur l'écran d'accueil" » d'un seul tenant : l'icône séparée de
+   l'intitulé qu'elle désigne ne veut plus rien dire. */
+.nowrap {
+  white-space: nowrap;
+}
+
+.install {
+  /* Deuxième rangée, sous le texte et sous l'icône, pleine largeur — la même
+     forme que le bouton de StickyJoinCta, à un endroit où le pouce l'attend. */
+  grid-row: 2;
+  grid-column: 1 / -1;
+  justify-content: center;
+  margin-top: var(--hy-space-1);
+}
+
+/*
+ * Croix : 44px de zone tactile (minimum confortable au doigt, comme les liens
+ * de ClubNav), mais un dessin de 18px et une couleur discrète — refuser doit
+ * être facile, pas attirant.
+ */
+.close {
+  grid-row: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Marges négatives : la zone tactile déborde dans le padding de la carte sans
+     l'agrandir, et la croix reste optiquement dans son coin. */
+  margin: -6px -6px 0 0;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--hy-text-3);
+  cursor: pointer;
+  transition: color var(--hy-dur) var(--hy-ease);
+}
+
+.close:hover {
+  color: var(--hy-text-1);
+}
+
+.close:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: 0;
+  border-radius: var(--hy-radius);
+}
+
+/*
+ * Filet de sécurité : le composant n'est de toute façon pas monté hors mobile
+ * (test `(max-width: 860px) and (pointer: coarse)` en JS). Cette règle couvre le
+ * cas d'un redimensionnement de fenêtre après affichage — la bannière disparaît
+ * plutôt que de rester collée en bas d'un écran large.
+ */
+@media (min-width: 861px) {
+  .banner {
+    display: none;
+  }
+}
