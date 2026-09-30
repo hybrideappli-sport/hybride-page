@@ -44,7 +44,13 @@ export interface AgendaEvent {
   startsAtIso: string;
   duration: string;
   details: string | null;
-  location: string;
+  /**
+   * null quand la colonne « Lieu » est vide — la sortie est publiée quand même
+   * (2026-09-30). Jamais remplacé par un texte ici : chaque endroit qui l'affiche
+   * choisit son repli (LOCATION_PENDING sur la fiche, point de rendez-vous du
+   * rituel sinon), et l'adresse de la page ne doit pas en dépendre.
+   */
+  location: string | null;
   level: string | null;
   /**
    * null = aucune ouverture différée : la sortie est ouverte. Les colonnes
@@ -56,6 +62,9 @@ export interface AgendaEvent {
   opensAtIso: string | null;
   lumaUrl: string | null;
 }
+
+/** Texte affiché à la place d'un lieu pas encore saisi dans le tableur. */
+export const LOCATION_PENDING = "Lieu bientôt annoncé";
 
 /**
  * Colonne unique « Activité » à liste déroulante, depuis le 2026-08-28 — elle
@@ -272,11 +281,14 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
     return null;
   }
 
-  const location = row["Lieu"]?.trim();
-  if (!location) {
-    warn(`ligne ${rowNumber} : lieu manquant, ignorée`);
-    return null;
-  }
+  // Lieu vide : la sortie est publiée quand même (2026-09-30). La soirée du 31
+  // octobre, annoncée avant que son lieu soit fixé, a disparu du planning et sa
+  // page est tombée en 404 sur ce seul motif — le même mécanisme silencieux que
+  // la sortie vélo du 13 septembre (voir parseCsv). Un lieu à venir est un état
+  // normal d'une sortie annoncée tôt, pas une ligne mal remplie. L'avertissement
+  // reste, pour qu'on sache qu'une fiche affiche le repli.
+  const location = row["Lieu"]?.trim() || null;
+  if (!location) warn(`ligne ${rowNumber} : lieu manquant, sortie publiée avec « ${LOCATION_PENDING} »`);
 
   const duration = row["Durée"]?.trim();
   if (!duration) {
@@ -309,7 +321,7 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   return {
     // `row["Date"]` est déjà le jour en heure de Paris (c'est ce que parisWallClockToIso
     // interprète), donc pas de reconversion de fuseau à faire ici.
-    slug: `${row["Date"]?.trim()}-${slugify(title ?? location)}`,
+    slug: `${row["Date"]?.trim()}-${slugify(title ?? location ?? activityLabel[activity])}`,
     title,
     shortTitle: row["Nom court"]?.trim() || null,
     activity,

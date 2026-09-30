@@ -136,12 +136,20 @@ function Cell({ cell, isToday, clubSlug }: { cell: CalendarCell; isToday: boolea
   // jour compris, comme sur l'agenda Canva. Avec deux sorties d'activités
   // différentes, aucune couleur unique ne serait honnête : la case reste neutre
   // et chaque sortie devient une bande colorée.
+  //
+  // Ces bandes se partagent la hauteur de la RANGÉE, sans l'agrandir
+  // (2026-09-30, premier jour à deux sorties : le 31 octobre). Chacune n'a
+  // alors la place que d'une ligne, et c'est le nom qui la prend, pas l'heure :
+  // savoir QUOI se passe distingue les deux sorties sans reposer sur la seule
+  // couleur. L'heure reste dans aria-label et sur la page de la sortie.
   const single = cell.events.length === 1 ? cell.events[0] : null;
+  const multi = cell.events.length > 1;
 
   const classes = [
     styles.cell,
     cell.inMonth ? "" : styles.cellOut,
     isToday ? styles.cellToday : "",
+    multi ? styles.cellMulti : "",
     single ? `${styles.cellFilled} ${styles[ACTIVITY_CLASS[single.activity]]}` : "",
   ]
     .filter(Boolean)

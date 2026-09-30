@@ -7,7 +7,7 @@ import { RitualBody } from "@/components/club/RitualBody";
 import { StickyRegisterCta } from "@/components/club/StickyRegisterCta";
 import { RegistrationCta } from "@/components/ui/RegistrationCta";
 import { Tag } from "@/components/ui/Tag";
-import { getAgendaEvents } from "@/lib/agenda/source";
+import { getAgendaEvents, LOCATION_PENDING } from "@/lib/agenda/source";
 import { getMonthKey } from "@/lib/agenda/planning";
 import { CLUB } from "@/lib/config";
 import { formatEventDateLong, formatEventTime } from "@/lib/format";
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const title = event.title ?? event.activityLabelText;
   const parts = [
     `${formatEventDateLong(event.startsAtIso)}, ${formatEventTime(event.startsAtIso)}.`,
-    `${event.activityLabelText} à ${event.location}.`,
+    event.location ? `${event.activityLabelText} à ${event.location}.` : `${event.activityLabelText}.`,
     event.level ? `${event.level}.` : null,
   ];
 
@@ -103,7 +103,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           {/* Le point de rendez-vous du tableur l'emporte sur celui du rituel : il est
               saisi par sortie et souvent plus précis (« Parking du Yacht club, plage
               du Mourillon » contre « Le Mourillon »). */}
-          <RitualBody ritual={ritual} heading={heading} meetingPoint={event.location} photoFirstOnMobile={false} />
+          <RitualBody ritual={ritual} heading={heading} meetingPoint={event.location ?? undefined} photoFirstOnMobile={false} />
 
           {details}
           {registration}
@@ -124,7 +124,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           <dl className={styles.facts}>
             {[
               { label: "Durée", value: event.duration },
-              { label: "Lieu", value: event.location },
+              { label: "Lieu", value: event.location ?? LOCATION_PENDING },
               ...(event.format ? [{ label: "Format", value: event.format }] : []),
               ...(event.level ? [{ label: "Niveau", value: event.level }] : []),
             ].map((fact) => (
