@@ -1,36 +1,52 @@
-/* Une rangée qui passe à la ligne plutôt qu'un défilement horizontal : à
-   375px, trois logos de 48px de haut tiennent sur une ligne (≈ 31 + 96 + 104
-   + 2 × 16 ≈ 263px pour 327 utiles). Le quatrième partenaire passera dessous,
-   sans rien casser. */
-.logos {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Cadre bordé, sans fond : même traitement que les cartes de la page
+   partenaires et les autres blocs du site — une bordure, jamais une surface.
+   Largeur bornée : sur grand écran, une carte étirée sur 1120px diluerait
+   trois logos dans le vide. */
+.card {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: var(--hy-space-3);
-}
-
-.linkLine {
-  margin: var(--hy-space-3) 0 0;
-  font-size: 15px;
-}
-
-/* min-height 44px : zone tactile, comme les entrées de la nav. */
-.link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--hy-violet);
+  max-width: 560px;
+  padding: var(--hy-space-3);
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius-card);
+  color: inherit;
   text-decoration: none;
+  transition: border-color 160ms var(--hy-ease);
 }
 
-.link:hover {
-  text-decoration: underline;
+.card:hover {
+  border-color: var(--hy-violet);
 }
 
-.link:focus-visible {
+.card:focus-visible {
   outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
   outline-offset: var(--hy-focus-ring-offset);
+}
+
+/* Une seule ligne, sans retour : les logos rétrécissent ensemble plutôt que
+   de laisser le dernier seul sur une deuxième ligne (voir `.strip` dans
+   PartnerLogo.module.css). Au-delà de quatre ou cinq partenaires, ils
+   deviendraient trop petits à 375px — repasser alors à `flex-wrap: wrap`. */
+.logos {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-2);
+}
+
+.lead {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--hy-text-1);
+}
+
+/* Un appel et non un lien souligné : c'est toute la carte qui est le lien.
+   Le soulignement au survol suit la carte, pas le texte seul. */
+.cta {
+  font-size: 15px;
+  color: var(--hy-violet);
+}
+
+.card:hover .cta {
+  text-decoration: underline;
 }

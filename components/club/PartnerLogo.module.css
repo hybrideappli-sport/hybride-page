@@ -12,9 +12,15 @@
 }
 
 .strip {
-  height: 48px;
-  /* Rayon ramené à l'échelle : 10px sur 72px de haut ≈ 7px sur 48px. */
-  border-radius: 7px;
+  /* Pas de hauteur fixe ici, contrairement à `.card` : dans le bloc de
+     /club/[slug], les logos tiennent sur UNE ligne et rétrécissent ensemble
+     quand la place manque (flex-shrink proportionnel à leur largeur, donc à
+     échelle égale). Plafonnés à 64px de haut par l'image — voir
+     `.strip .logo` plus bas. À 375px, trois logos à 64px demanderaient
+     ~345px pour ~295 disponibles. */
+  flex: 0 1 auto;
+  min-width: 0;
+  border-radius: 8px;
 }
 
 /* Logos qui disparaîtraient sur le noir (voir `background` dans
@@ -32,7 +38,19 @@
   display: block;
 }
 
-/* À 48px de haut, 8px de marge mangeraient un tiers du logo. */
+/* Sur un logo réduit, 8px de marge mangeraient une part visible du logo. */
 .strip.light {
-  padding: 4px;
+  padding: 5px;
+}
+
+.strip .logo {
+  height: auto;
+  max-height: 64px;
+}
+
+/* Le fond clair ajoute 2 × 5px autour de l'image : on les retire du plafond
+   pour que la tuile entière — et non l'image seule — fasse la même hauteur
+   que les logos qui portent leur propre fond (La Lagune). */
+.strip.light .logo {
+  max-height: 54px;
 }
