@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 import type { Partner } from "@/lib/club/partners";
 import { PartnerLogo } from "./PartnerLogo";
 import styles from "./PartnerList.module.css";
@@ -30,18 +32,28 @@ export function PartnerList({ partners }: { partners: Partner[] }) {
             <h3 className={styles.name}>{partner.name}</h3>
             {partner.description ? <p className={styles.description}>{partner.description}</p> : null}
             <p className={styles.benefit}>{partner.benefit}</p>
-            {partner.url ? (
+            {partner.locations.length > 0 ? (
               <p className={styles.linkLine}>
                 {/*
                  * `noreferrer` n'est pas seulement l'habitude qui accompagne
                  * `noopener` : il empêche d'annoncer au site d'arrivée la page
                  * d'où vient le visiteur. Les fiches partenaires sont hébergées
-                 * chez des tiers (Google pour Little Bistrok) — ce site ne
-                 * collecte rien, il n'a pas à faire collecter à sa place.
+                 * chez des tiers (Google Maps) — ce site ne collecte rien, il
+                 * n'a pas à faire collecter à sa place.
+                 *
+                 * Une seule adresse : « Voir la fiche », comme avant. Plusieurs :
+                 * « Fiche Toulon », « Fiche La Garde » — et non « Toulon » seul,
+                 * qu'un lecteur d'écran parcourant la liste des liens de la page
+                 * annoncerait sans dire de quoi il s'agit.
                  */}
-                <a href={partner.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
-                  Voir la fiche ↗
-                </a>
+                {partner.locations.map((location, index) => (
+                  <Fragment key={location.url}>
+                    {index > 0 ? <span aria-hidden="true" className={styles.separator}>·</span> : null}
+                    <a href={location.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                      {partner.locations.length === 1 ? "Voir la fiche" : `Fiche ${location.label}`} ↗
+                    </a>
+                  </Fragment>
+                ))}
               </p>
             ) : null}
           </div>

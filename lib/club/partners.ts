@@ -69,12 +69,43 @@ export interface Partner {
     background: "none" | "light";
   };
   /**
-   * Page externe du partenaire (fiche Google, site). `null` tant qu'elle n'est
-   * pas connue : le lien n'est simplement pas rendu, comme pour les liens
-   * Strava et Instagram de la page. Ne JAMAIS y écrire une URL devinée — même
-   * règle que HELLOASSO_SHOP_URL dans lib/config.ts.
+   * Adresses du partenaire, chacune avec sa fiche externe. Un tableau et non
+   * une URL unique (2026-10-14) : Terre de Running a deux magasins, et un
+   * partenaire à plusieurs adresses reste UNE carte — un seul avantage, un
+   * seul logo. Deux entrées distinctes répéteraient l'un et l'autre, et le
+   * bloc compact de /club/[slug] afficherait deux fois le même logo.
+   *
+   * Tableau vide tant qu'aucune fiche n'est connue : aucun lien n'est rendu.
+   * Ne JAMAIS y écrire une URL devinée — même règle que HELLOASSO_SHOP_URL
+   * dans lib/config.ts.
+   *
+   * FORMAT DES URL : celui, documenté et stable, de Google Maps —
+   * `/maps/search/?api=1&query=<nom>&query_place_id=<Place ID>` (voir
+   * `mapsUrl`). Jamais un raccourci `share.google` tel que fourni : un
+   * raccourci peut cesser de fonctionner, et sa redirection aboutit à une
+   * recherche Google chargée de paramètres de suivi.
    */
-  url: string | null;
+  locations: PartnerLocation[];
+}
+
+export interface PartnerLocation {
+  /** Ville ou quartier, affiché dans le lien quand il y en a plusieurs (« Fiche La Garde ↗ »). */
+  label: string;
+  url: string;
+}
+
+/**
+ * URL Google Maps d'une fiche, au format documenté par Google (Maps URLs).
+ * `query` sert de repli si le Place ID venait à ne plus être reconnu : on y met
+ * le nom du lieu, pas une adresse, pour retomber sur la même fiche.
+ *
+ * Les Place ID ci-dessous ont été obtenus le 2026-10-14 depuis la fiche Maps
+ * de chaque lieu, atteinte par le raccourci fourni par le client (identifiant
+ * `/g/…` identique), puis vérifiés en ouvrant l'URL avec une requête vague
+ * (`query=Toulon`) : seul le Place ID pouvait alors désigner la bonne fiche.
+ */
+function mapsUrl(query: string, placeId: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}&query_place_id=${placeId}`;
 }
 
 export const PARTNERS: Partner[] = [
@@ -93,23 +124,15 @@ export const PARTNERS: Partner[] = [
       height: 1855,
       background: "none",
     },
-    /*
-     * Lien de partage Google fourni par le client le 2026-09-10, vérifié :
-     * il mène bien à la fiche « Little Bistrok Mourillon » (identifiant Google
-     * /g/11x6l7jsx4). C'est un raccourci opaque — il ne porte aucun paramètre
-     * en propre, mais la redirection qu'il déclenche aboutit à une URL Google
-     * chargée de paramètres de suivi (`rlz`, `sxsrf`, `utm_source`) créés au
-     * moment où le lien a été copié. Rien ne fuite depuis ce site — le lien
-     * part en `rel="noopener noreferrer"` — mais si un lien plus propre est
-     * souhaité un jour, c'est ici qu'il se remplace.
-     */
-    url: "https://share.google/59f39qXDEB7lAnN6F",
+    /* 84 rue Muiron, Toulon — /g/11x6l7jsx4. Remplace le raccourci
+       share.google/59f39qXDEB7lAnN6F fourni le 2026-09-10. */
+    locations: [{ label: "Mourillon", url: mapsUrl("Little Bistrok Mourillon", "ChIJAxcyQ_4byRIRbPO7syBywFo") }],
   },
   {
     slug: "la-lagune",
     name: "La Lagune",
     category: "restauration",
-    description: "Restaurant à Six-Fours.",
+    description: "Une pause ensoleillée, une ambiance détendue, un vrai goût de la Méditerranée.",
     /* Espaces INSÉCABLES entre « 10 » et « % » (U+00A0) : même règle que le
        « 6,50 € » de Little Bistrok. */
     benefit: "10 % de réduction sur l’addition pour les adhérents, sur présentation de la carte d’adhérent HelloAsso.",
@@ -126,14 +149,20 @@ export const PARTNERS: Partner[] = [
       height: 240,
       background: "none",
     },
-    url: null,
+    locations: [
+      /* Presqu'île du Gaou, Six-Fours-les-Plages — /g/11c44d5rn6
+         (share.google/A7ckcBCb0Bidcq5S7). Une seule adresse : le lien
+         s'affiche « Voir la fiche », le libellé ne sert qu'à partir de deux. */
+      { label: "Six-Fours", url: mapsUrl("La Lagune Restaurant - Bar", "ChIJl9DwKnUByRIRL1CDXnFhDC8") },
+    ],
   },
   {
     slug: "terre-de-running",
     name: "Terre de Running",
     category: "sport",
-    description: null,
-    benefit: "10 % de réduction pour les adhérents, sur présentation de la carte d’adhérent HelloAsso.",
+    /* Espace INSÉCABLE avant le deux-points (U+00A0), même règle que le « % ». */
+    description: "Toute la panoplie du coureur : chaussures, vêtements, accessoires.",
+    benefit: "10 % sur les achats en magasin pour les adhérents, sur présentation de la carte d’adhérent HelloAsso.",
     logo: {
       /*
        * Noir sur fond transparent : il disparaît sur le noir du site. Fond
@@ -145,6 +174,11 @@ export const PARTNERS: Partner[] = [
       height: 434,
       background: "light",
     },
-    url: null,
+    locations: [
+      /* 7 bis rue Berthelot, Toulon — /g/1v_qr4jp (share.google/M8ITm4NpKlr3K4iPT). */
+      { label: "Toulon", url: mapsUrl("Terre de Running Toulon", "ChIJGaX39A4byRIRmPugM830TFA") },
+      /* 375 avenue Saint-Just, La Garde — /g/11hf27m4fs (share.google/mF0PQf7DJtYUjJYvS). */
+      { label: "La Garde", url: mapsUrl("Terre de Running La Garde", "ChIJtUzm47cZyRIRYJVAxAPj1FI") },
+    ],
   },
 ];

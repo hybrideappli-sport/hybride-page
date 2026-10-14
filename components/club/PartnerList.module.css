@@ -58,14 +58,29 @@
   color: var(--hy-text-1);
 }
 
+/* Les liens se replient à la ligne quand les adresses ne tiennent pas sur une
+   seule. Marge haute réduite : les 44px de zone tactile apportent déjà l'air. */
 .linkLine {
-  margin: var(--hy-space-1) 0 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--hy-space-1);
   font-size: 14px;
 }
 
+/* min-height 44px : deux liens côte à côte à 14px feraient sinon des cibles
+   trop petites et trop proches pour un doigt. */
 .link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--hy-violet);
   text-decoration: none;
+}
+
+.separator {
+  color: var(--hy-text-3);
 }
 
 .link:hover {

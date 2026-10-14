@@ -62,7 +62,7 @@ export default async function ClubPartnersPage({ params }: { params: Promise<{ s
         </section>
       ))}
 
-      {PARTNERS.some((partner) => partner.url) ? (
+      {PARTNERS.some((partner) => partner.locations.length > 0) ? (
         <p className={styles.outboundNote}>↗ Les fiches partenaires ouvrent un autre site, dans un nouvel onglet.</p>
       ) : null}
 
