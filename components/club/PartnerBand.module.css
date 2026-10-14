@@ -1,51 +1,137 @@
 /* Filets haut et bas, sans fond ni cadre : une ligne de la page entre le hero
-   et les rendez-vous, pas un bloc qui réclame l'attention. */
+   et les rendez-vous, pas un bloc. */
 .band {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: var(--hy-space-4);
-  row-gap: var(--hy-space-2);
-  padding: var(--hy-space-3) 0;
+  padding: var(--hy-space-2) 0 var(--hy-space-3);
   border-top: 1px solid var(--hy-line);
   border-bottom: 1px solid var(--hy-line);
-  color: inherit;
-  text-decoration: none;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hy-space-3);
 }
 
 /* Même gabarit que les sur-titres de section (.eyebrow) — police, taille,
    capitales — mais en violet d'accent et non en gris (2026-10-14, demande du
    client : l'intitulé ne se voyait pas). Le violet est aussi la couleur des
    liens du site : il dit que la bande est cliquable. Contraste #b79cff sur
-   #000 ≈ 9:1. Au survol, le soulignement prend le relais du changement de
-   couleur, qui n'a plus lieu d'être. */
+   #000 ≈ 9:1. min-height 44px : c'est désormais un lien à part entière. */
 .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
   font-family: var(--hy-font-mono);
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--hy-violet);
-  white-space: nowrap;
+  text-decoration: none;
   text-underline-offset: 4px;
+  white-space: nowrap;
 }
 
-.band:hover .label {
+/* Le survol des logos souligne aussi l'intitulé : ils mènent au même endroit. */
+.label:hover,
+.band:has(.viewport:hover) .label {
   text-decoration: underline;
 }
 
-.band:focus-visible {
+.label:focus-visible,
+.toggle:focus-visible {
   outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
   outline-offset: var(--hy-focus-ring-offset);
 }
 
-/* Toute la ligne, sous l'intitulé : les logos s'y partagent la largeur et
-   rétrécissent ensemble (voir `.strip` dans PartnerLogo.module.css). Une
-   seule ligne tant qu'ils restent lisibles — au-delà de cinq partenaires à
-   375px, repasser à `flex-wrap: wrap`. */
-.logos {
-  flex: 1 1 100%;
-  min-width: 0;
+/* Discret mais atteignable : gris, zone tactile de 44px. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -14px; /* aligne l'icône sur le bord du contenu, pas la zone tactile */
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--hy-text-3);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.toggle:hover {
+  color: var(--hy-text-1);
+}
+
+/* Fenêtre du défilement. Les logos entrent et sortent par les bords, en
+   fondu sur 24px : une coupure nette au bord ferait un logo tranché. */
+.viewport {
+  display: block;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: hy-partner-marquee var(--marquee-duration, 11s) linear infinite;
+}
+
+/* Pause : bouton, survol des logos, focus CLAVIER sur l'intitulé.
+   Pas `.band:focus-within` : le bouton garde le focus après un clic, et
+   « Reprendre » serait resté sans effet tant qu'on ne touchait pas ailleurs. */
+.track[data-paused="true"],
+.viewport:hover .track,
+.band:has(.label:focus-visible) .track {
+  animation-play-state: paused;
+}
+
+/* Chaque série porte l'écart APRÈS son dernier logo (padding-right) : ainsi
+   toutes les séries ont exactement la même largeur, et un décalage de
+   -100% / 4 tombe pile sur le début de la suivante. */
+.series {
   display: flex;
   align-items: center;
-  gap: var(--hy-space-2);
+  gap: var(--hy-space-3);
+  padding-right: var(--hy-space-3);
+  flex: 0 0 auto;
+}
+
+/* -25% de la piste = une série, pour COPIES = 4 (PartnerBand.tsx). */
+@keyframes hy-partner-marquee {
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+/* Moins de mouvement : la bande statique d'avant le carrousel — une série,
+   logos réduits ensemble pour tenir sur une ligne (voir `.strip`), pas de
+   bouton. globals.css coupe déjà toutes les animations ; on retire en plus
+   les copies, qui sinon déborderaient, figées, hors du cadre. */
+@media (prefers-reduced-motion: reduce) {
+  .toggle {
+    display: none;
+  }
+
+  .viewport {
+    mask-image: none;
+  }
+
+  .track {
+    width: 100%;
+    animation: none;
+  }
+
+  .series {
+    flex: 1 1 100%;
+    min-width: 0;
+    gap: var(--hy-space-2);
+    padding-right: 0;
+  }
+
+  .series:not(:first-child) {
+    display: none;
+  }
 }

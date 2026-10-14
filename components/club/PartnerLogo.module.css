@@ -12,10 +12,12 @@
 }
 
 .strip {
-  /* Pas de hauteur fixe ici, contrairement à `.card` : dans la bande de
-     /club/[slug] (PartnerBand), les logos tiennent sur UNE ligne et rétrécissent ensemble
-     quand la place manque (flex-shrink proportionnel à leur largeur, donc à
-     échelle égale). Plafonnés à 64px de haut par l'image — voir
+  /* Pas de hauteur fixe ici, contrairement à `.card`. Dans la bande de
+     /club/[slug] (PartnerBand), les logos défilent à leur plafond de 64px ;
+     sous « moins de mouvement », la bande devient statique et ils tiennent
+     sur UNE ligne en rétrécissant ensemble quand la place manque
+     (flex-shrink proportionnel à leur largeur, donc à échelle égale).
+     Plafonnés à 64px de haut par l'image — voir
      `.strip .logo` plus bas. À 375px, les quatre logos tiennent à ~49px
      de haut (291px disponibles), ~52px à 390px, ~58px à 430px. */
   flex: 0 1 auto;

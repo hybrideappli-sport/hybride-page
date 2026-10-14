@@ -7,9 +7,12 @@ import styles from "./RevealOnce.module.css";
 type State = "static" | "armed" | "in";
 
 /**
- * Fondu d'entrée, UNE seule fois, quand le bloc entre dans l'écran — utilisé
- * par la bande des partenaires (PartnerBand), traitement « A » retenu le
- * 2026-10-14 : accrocher l'œil au moment où il passe, puis plus rien ne bouge.
+ * INUTILISÉ DEPUIS LE 2026-10-14, GARDÉ. Il a servi à la bande des partenaires
+ * (PartnerBand) jusqu'à ce qu'elle défile : les logos y entrent désormais en
+ * continu, un fondu s'y serait superposé.
+ *
+ * Fondu d'entrée, UNE seule fois, quand le bloc entre dans l'écran :
+ * accrocher l'œil au moment où il passe, puis plus rien ne bouge.
  *
  * Les enfants directs apparaissent l'un après l'autre (décalage de 80ms, voir
  * le CSS), en fondu et en remontant de quelques pixels, moins d'une seconde
