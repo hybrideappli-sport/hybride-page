@@ -26,6 +26,10 @@ function leadFor(count: number): string {
 }
 
 /**
+ * INUTILISÉ DEPUIS LE 2026-10-14, GARDÉ À LA DEMANDE DU CLIENT. Remplacé sur
+ * /club/[slug] par PartnerBand, sous le hero ; la section du bas de page qui
+ * l'affichait a été retirée pour ne pas montrer les partenaires deux fois.
+ *
  * Bloc des partenaires sur /club/[slug] : un cadre entièrement cliquable vers
  * /club/[slug]/partenaires, où vivent les avantages en détail.
  *

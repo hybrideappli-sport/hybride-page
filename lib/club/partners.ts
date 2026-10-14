@@ -25,8 +25,9 @@ export type PartnerCategory = "restauration" | "sport";
  * d'avoir signé avec qui que ce soit.
  */
 export const PARTNER_CATEGORIES = [
-  { id: "restauration", label: "Restauration" },
+  /* Sport en premier (2026-10-14) : c'est un club de sport. */
   { id: "sport", label: "Sport" },
+  { id: "restauration", label: "Restauration" },
 ] as const satisfies readonly { id: PartnerCategory; label: string }[];
 
 /* Garde d'exhaustivité : échoue à la compilation si une valeur de

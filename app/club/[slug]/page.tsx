@@ -6,7 +6,7 @@ import { activityLabel, Tag, type Activity } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
-import { PartnerStrip } from "@/components/club/PartnerStrip";
+import { PartnerBand } from "@/components/club/PartnerBand";
 import { RitualRow } from "@/components/club/RitualRow";
 import { PARTNERS } from "@/lib/club/partners";
 import { CLUB } from "@/lib/config";
@@ -63,6 +63,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
         />
       </div>
 
+      {/* Bande des partenaires — voir PartnerBand pour ce qui la garde d'être
+          lue comme un argument d'adhésion. Seule mention des partenaires sur
+          cette page depuis le 2026-10-14 : la section du bas de page (PartnerStrip)
+          a été retirée pour ne pas les montrer deux fois. */}
+      <PartnerBand partners={PARTNERS} href={`/club/${CLUB.slug}/partenaires`} />
+
       <section id="le-club" className={styles.section}>
         <div className={styles.sectionHead}>
           <p className={styles.eyebrow}>Nos rendez-vous</p>
@@ -97,28 +103,6 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           ctaHref={`/club/${CLUB.slug}/planning`}
         />
       </section>
-
-      {/*
-       * Dernière section avant le pied de page, et c'est délibéré : ces
-       * avantages s'adressent aux adhérents déjà là, pas aux visiteurs qui
-       * découvrent le club. Placée plus haut — au-dessus du bandeau crème, par
-       * exemple — elle se lirait comme un argument de l'adhésion, alors que
-       * l'argument de l'adhésion est l'assurance, et lui seul.
-       *
-       * Bloc compact depuis le 2026-10-14 (trois partenaires, des catégories) :
-       * les logos et un lien. Le détail vit sur /club/[slug]/partenaires, seul
-       * endroit du site où les avantages sont énoncés — voir PartnerStrip pour
-       * ce qui n'a pas sa place ici.
-       */}
-      {PARTNERS.length > 0 ? (
-        <section className={styles.partners}>
-          <div className={styles.sectionHead}>
-            <p className={styles.eyebrow}>Nos partenaires</p>
-            <h2>Des lieux qui font un geste</h2>
-          </div>
-          <PartnerStrip partners={PARTNERS} href={`/club/${CLUB.slug}/partenaires`} />
-        </section>
-      ) : null}
 
       <ClubFooter
         clubSlug={CLUB.slug}

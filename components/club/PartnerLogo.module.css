@@ -23,6 +23,19 @@
   border-radius: 8px;
 }
 
+/* Bande sous le hero de /club/[slug] (PartnerBand) : hauteur FIXE de la
+   tuile, marge du fond clair comprise — les tuiles sont donc égales par
+   construction. Plus petite que le bloc du bas : en haut d'une page de
+   recrutement, les logos doivent se voir sans faire bandeau publicitaire. */
+.band {
+  height: 40px;
+  border-radius: 6px;
+}
+
+.band.light {
+  padding: 4px;
+}
+
 /* Logos qui disparaîtraient sur le noir (voir `background` dans
    lib/club/partners.ts) — aujourd'hui Terre de Running, noir sur transparent. */
 .light {

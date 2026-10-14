@@ -1,0 +1,41 @@
+/* Filets haut et bas, sans fond ni cadre : une ligne de la page entre le hero
+   et les rendez-vous, pas un bloc qui réclame l'attention. */
+.band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--hy-space-4);
+  row-gap: var(--hy-space-2);
+  padding: var(--hy-space-3) 0;
+  border-top: 1px solid var(--hy-line);
+  border-bottom: 1px solid var(--hy-line);
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Même gabarit que les sur-titres de section (.eyebrow) : la bande se lit
+   comme une rubrique de la page, à son rang. */
+.label {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  white-space: nowrap;
+  transition: color 160ms var(--hy-ease);
+}
+
+.band:hover .label {
+  color: var(--hy-violet);
+}
+
+.band:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-2);
+}
