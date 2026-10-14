@@ -107,7 +107,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           {/* Le point de rendez-vous du tableur l'emporte sur celui du rituel : il est
               saisi par sortie et souvent plus précis (« Parking du Yacht club, plage
               du Mourillon » contre « Le Mourillon »). */}
-          <RitualBody ritual={ritual} heading={heading} meetingPoint={event.location ?? undefined} photoFirstOnMobile={false} />
+          <RitualBody ritual={ritual} heading={<div className={styles.ritualHeading}>{heading}</div>} meetingPoint={event.location ?? undefined} photoFirstOnMobile={false} />
 
           {registration}
 

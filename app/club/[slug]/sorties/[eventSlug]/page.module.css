@@ -50,6 +50,14 @@
   margin: var(--hy-space-2) 0 0;
 }
 
+/* En-tête d'une sortie rattachée à un rituel, posé par RitualBody au-dessus de
+   sa liste de faits. Marge basse fixe, que Détails soit rempli ou non : la même
+   que sous le titre de la page du rituel (--hy-space-4), qui est cette même
+   liste de faits vue depuis l'autre page. */
+.ritualHeading {
+  margin-bottom: var(--hy-space-4);
+}
+
 /* Date et heure : les seules informations propres à l'occurrence quand le reste
    de la page est le rituel. Traitées comme une ligne de fait, pas comme du corps
    de texte. */
@@ -95,9 +103,13 @@
   overflow-wrap: break-word;
 }
 
+/* Aucune marge basse : l'espace sous l'en-tête appartient au conteneur
+   (.ritualHeading ou .hero), jamais aux Détails. Porté par eux, il
+   disparaissait quand la colonne était vide — la liste « Niveau » se collait
+   alors sous la date — et s'ajoutait au padding de .hero sans rituel. */
 .details {
   max-width: 62ch;
-  margin: 0 0 var(--hy-space-5);
+  margin: var(--hy-space-2) 0 0;
   font-size: 17px;
   line-height: 1.6;
   color: var(--hy-text-2);
