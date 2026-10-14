@@ -20,7 +20,8 @@ import styles from "./PartnerBand.module.css";
  *   sérieux, c'est-à-dire des arguments.
  * - SOBRE. Logos agrandis le 2026-10-14 (40px fixes, puis toute la largeur
  *   disponible, plafond 64px) mais toujours sans phrase ni bouton :
- *   intitulé en petite capitale grise, aucune couleur d'accent au repos.
+ *   intitulé en petites capitales, en violet d'accent depuis le 2026-10-14
+ *   (la couleur des liens du site, pas une couleur d'offre).
  *   Elle se remarque comme un fait de la page, pas comme une offre.
  * - PAS DE DÉFILEMENT. Les logos tiennent sur une ligne dès 375px : les
  *   faire défiler obligerait à les dupliquer en boucle, et un bandeau de
