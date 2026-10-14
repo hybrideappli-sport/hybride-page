@@ -34,7 +34,13 @@
   outline-offset: var(--hy-focus-ring-offset);
 }
 
+/* Toute la ligne, sous l'intitulé : les logos s'y partagent la largeur et
+   rétrécissent ensemble (voir `.strip` dans PartnerLogo.module.css). Une
+   seule ligne tant qu'ils restent lisibles — au-delà de cinq partenaires à
+   375px, repasser à `flex-wrap: wrap`. */
 .logos {
+  flex: 1 1 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--hy-space-2);

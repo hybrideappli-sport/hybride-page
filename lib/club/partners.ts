@@ -49,8 +49,12 @@ export interface Partner {
    * de ce qu'on croit savoir du partenaire.
    */
   description: string | null;
-  /** L'avantage adhérent, énoncé comme un fait. Voir l'avertissement ci-dessus. */
-  benefit: string;
+  /**
+   * L'avantage adhérent, énoncé comme un fait. Voir l'avertissement ci-dessus.
+   * `null` tant que l'avantage n'est pas confirmé par le client : la ligne
+   * n'est alors pas rendue. Ne JAMAIS le rédiger à sa place.
+   */
+  benefit: string | null;
   logo: {
     src: string;
     /** Dimensions réelles du fichier — next/image en a besoin pour réserver la place. */
@@ -180,6 +184,33 @@ export const PARTNERS: Partner[] = [
       { label: "Toulon", url: mapsUrl("Terre de Running Toulon", "ChIJGaX39A4byRIRmPugM830TFA") },
       /* 375 avenue Saint-Just, La Garde — /g/11hf27m4fs (share.google/mF0PQf7DJtYUjJYvS). */
       { label: "La Garde", url: mapsUrl("Terre de Running La Garde", "ChIJtUzm47cZyRIRYJVAxAPj1FI") },
+    ],
+  },
+  {
+    slug: "g-apero",
+    /* « G.APERO », graphie de leur communication (confirmée le 2026-10-14). */
+    name: "G.APERO",
+    category: "restauration",
+    description: "Planches gourmandes, produits frais et régionaux. Un lieu pour se retrouver autour d’un verre après la sortie.",
+    /* Conditions confirmées le 2026-10-14 : les mêmes que La Lagune.
+       Espace INSÉCABLE entre « 10 » et « % » (U+00A0). */
+    benefit: "10 % de réduction sur l’addition pour les adhérents, sur présentation de la carte d’adhérent HelloAsso.",
+    logo: {
+      /*
+       * Blanc sur un carré noir pur (#000000, identique au fond du site) : le
+       * carré se fond dans la page, seuls le G et « APERO » ressortent —
+       * `none`. Réduit de 1440 à 400px de large le 2026-10-14 ; l'original
+       * n'est pas publié. Si le fond du site change un jour, ce carré
+       * réapparaîtra.
+       */
+      src: "/partenaires/g-apero.jpg",
+      width: 400,
+      height: 398,
+      background: "none",
+    },
+    locations: [
+      /* 279 Littoral Frédéric Mistral, Toulon — /g/11z309v2kq (share.google/TkfO5DHK17210XO9l). */
+      { label: "Toulon", url: mapsUrl("G.APERO Toulon", "ChIJOa0TIewbyRIRrIWURwto__I") },
     ],
   },
 ];

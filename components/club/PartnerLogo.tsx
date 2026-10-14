@@ -13,7 +13,7 @@ import styles from "./PartnerLogo.module.css";
  * Running paysage 2,4). Caler la hauteur les fait tous peser pareil — une
  * largeur commune ferait paraître un logo large deux fois plus gros.
  */
-export function PartnerLogo({ logo, size, alt = "" }: { logo: Partner["logo"]; size: "card" | "strip" | "band"; alt?: string }) {
+export function PartnerLogo({ logo, size, alt = "" }: { logo: Partner["logo"]; size: "card" | "strip"; alt?: string }) {
   return (
     <div className={`${styles.wrap} ${styles[size]} ${logo.background === "light" ? styles.light : ""}`}>
       {/*

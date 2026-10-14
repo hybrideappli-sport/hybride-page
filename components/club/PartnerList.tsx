@@ -31,7 +31,7 @@ export function PartnerList({ partners }: { partners: Partner[] }) {
           <div className={styles.body}>
             <h3 className={styles.name}>{partner.name}</h3>
             {partner.description ? <p className={styles.description}>{partner.description}</p> : null}
-            <p className={styles.benefit}>{partner.benefit}</p>
+            {partner.benefit ? <p className={styles.benefit}>{partner.benefit}</p> : null}
             {partner.locations.length > 0 ? (
               <p className={styles.linkLine}>
                 {/*

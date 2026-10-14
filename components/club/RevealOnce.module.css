@@ -1,0 +1,33 @@
+/* États posés par RevealOnce.tsx via `data-reveal`. `static` (défaut, rendu
+   serveur, sans JavaScript, mouvement réduit) : aucune règle, tout est visible. */
+
+.reveal[data-reveal="armed"] > * {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.reveal[data-reveal="in"] > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 420ms var(--hy-ease),
+    transform 420ms var(--hy-ease);
+}
+
+/* Un logo après l'autre : 4 × 80ms + 420ms ≈ 0,7s pour le dernier. Au-delà
+   du sixième, plus de décalage supplémentaire — l'entrée ne doit pas traîner. */
+.reveal[data-reveal="in"] > :nth-child(2) { transition-delay: 80ms; }
+.reveal[data-reveal="in"] > :nth-child(3) { transition-delay: 160ms; }
+.reveal[data-reveal="in"] > :nth-child(4) { transition-delay: 240ms; }
+.reveal[data-reveal="in"] > :nth-child(5) { transition-delay: 320ms; }
+.reveal[data-reveal="in"] > :nth-child(n + 6) { transition-delay: 400ms; }
+
+/* Ceinture et bretelles : le composant ne masque déjà rien sous cette
+   préférence, et globals.css coupe toutes les transitions. Si l'état `armed`
+   était posé malgré tout, les logos ne resteraient pas invisibles. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-reveal="armed"] > * {
+    opacity: 1;
+    transform: none;
+  }
+}

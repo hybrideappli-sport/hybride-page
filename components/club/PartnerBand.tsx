@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import type { Partner } from "@/lib/club/partners";
 import { PartnerLogo } from "./PartnerLogo";
+import { RevealOnce } from "./RevealOnce";
 import styles from "./PartnerBand.module.css";
 
 /**
@@ -17,12 +18,17 @@ import styles from "./PartnerBand.module.css";
  * - PAS DE FORMULE DE CAUTION. « Partenaires du club », un fait. Jamais « Ils
  *   nous font confiance » ni « Ils nous soutiennent » : ce sont des gages de
  *   sérieux, c'est-à-dire des arguments.
- * - DISCRÈTE. Logos à 40px, plus petits que dans le bloc du bas de page ;
- *   intitulé en petite capitale grise ; aucun bouton, aucune couleur d'accent
- *   au repos. Elle se remarque comme un fait de la page, pas comme une offre.
- * - STATIQUE. Trois logos tiennent sur une ligne dès 375px : les faire défiler
- *   obligerait à les dupliquer en boucle, et un bandeau de logos qui défile
- *   est la forme même du bandeau de sponsors.
+ * - SOBRE. Logos agrandis le 2026-10-14 (40px fixes, puis toute la largeur
+ *   disponible, plafond 64px) mais toujours sans phrase ni bouton :
+ *   intitulé en petite capitale grise, aucune couleur d'accent au repos.
+ *   Elle se remarque comme un fait de la page, pas comme une offre.
+ * - PAS DE DÉFILEMENT. Les logos tiennent sur une ligne dès 375px : les
+ *   faire défiler obligerait à les dupliquer en boucle, et un bandeau de
+ *   logos qui défile est la forme même du bandeau de sponsors.
+ * - UN SEUL MOUVEMENT, À L'ENTRÉE. Les logos apparaissent en fondu, l'un
+ *   après l'autre, quand la bande entre dans l'écran, puis ne bougent plus
+ *   (RevealOnce). Rien en boucle : un mouvement qui revient est celui d'une
+ *   publicité. Rien du tout sous « moins de mouvement ».
  * - AUCUN LIEN VERS /adherer, ni ici ni sur la page d'arrivée.
  *
  * Toute la bande est UN lien vers /club/[slug]/partenaires. Logos en `alt`
@@ -37,11 +43,11 @@ export function PartnerBand({ partners, href }: { partners: Partner[]; href: str
       <span className={styles.label}>
         Partenaires du club <span aria-hidden="true">→</span>
       </span>
-      <div className={styles.logos}>
+      <RevealOnce className={styles.logos}>
         {partners.map((partner) => (
-          <PartnerLogo key={partner.slug} logo={partner.logo} size="band" />
+          <PartnerLogo key={partner.slug} logo={partner.logo} size="strip" />
         ))}
-      </div>
+      </RevealOnce>
     </Link>
   );
 }

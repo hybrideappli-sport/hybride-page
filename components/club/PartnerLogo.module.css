@@ -12,28 +12,15 @@
 }
 
 .strip {
-  /* Pas de hauteur fixe ici, contrairement à `.card` : dans le bloc de
-     /club/[slug], les logos tiennent sur UNE ligne et rétrécissent ensemble
+  /* Pas de hauteur fixe ici, contrairement à `.card` : dans la bande de
+     /club/[slug] (PartnerBand), les logos tiennent sur UNE ligne et rétrécissent ensemble
      quand la place manque (flex-shrink proportionnel à leur largeur, donc à
      échelle égale). Plafonnés à 64px de haut par l'image — voir
-     `.strip .logo` plus bas. À 375px, trois logos à 64px demanderaient
-     ~345px pour ~295 disponibles. */
+     `.strip .logo` plus bas. À 375px, les quatre logos tiennent à ~49px
+     de haut (291px disponibles), ~52px à 390px, ~58px à 430px. */
   flex: 0 1 auto;
   min-width: 0;
   border-radius: 8px;
-}
-
-/* Bande sous le hero de /club/[slug] (PartnerBand) : hauteur FIXE de la
-   tuile, marge du fond clair comprise — les tuiles sont donc égales par
-   construction. Plus petite que le bloc du bas : en haut d'une page de
-   recrutement, les logos doivent se voir sans faire bandeau publicitaire. */
-.band {
-  height: 40px;
-  border-radius: 6px;
-}
-
-.band.light {
-  padding: 4px;
 }
 
 /* Logos qui disparaîtraient sur le noir (voir `background` dans
