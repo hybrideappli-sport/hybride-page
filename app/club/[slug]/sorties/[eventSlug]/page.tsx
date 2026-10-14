@@ -70,6 +70,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   const ritual = findRitualForEvent(event);
   const monthKey = getMonthKey(event.startsAtIso);
 
+  /* Rendu `null` quand la colonne « Détails » du tableur est vide : source.ts ramène
+     déjà une cellule vide (ou remplie d'espaces) à `null`, et rien n'est émis ici —
+     ni libellé, ni bloc, ni texte de remplacement. */
+  const details = event.details ? <p className={styles.details}>{event.details}</p> : null;
+
   const heading = (
     <>
       <Tag variant={event.activity}>{event.activityLabelText}</Tag>
@@ -77,6 +82,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
       <p className={styles.when}>
         {formatEventDateLong(event.startsAtIso)} · {formatEventTime(event.startsAtIso)}
       </p>
+      {details}
     </>
   );
 
@@ -85,8 +91,6 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
       <RegistrationCta opensAtIso={event.opensAtIso} lumaUrl={event.lumaUrl} startsAtIso={event.startsAtIso} />
     </div>
   );
-
-  const details = event.details ? <p className={styles.details}>{event.details}</p> : null;
 
   return (
     <div className={styles.wrap}>
@@ -105,7 +109,6 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               du Mourillon » contre « Le Mourillon »). */}
           <RitualBody ritual={ritual} heading={heading} meetingPoint={event.location ?? undefined} photoFirstOnMobile={false} />
 
-          {details}
           {registration}
 
           {/* Le lien reste, en complément et non plus comme moyen d'accès : il mène à
@@ -135,7 +138,6 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             ))}
           </dl>
 
-          {details}
           {registration}
         </>
       )}
