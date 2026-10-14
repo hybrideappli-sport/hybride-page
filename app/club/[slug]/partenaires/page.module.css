@@ -1,0 +1,55 @@
+/* Mêmes gabarits que la page « Le club » (wrap, hero, eyebrow) : deux pages
+   secondaires du club, atteintes de la même façon, doivent se ressembler. */
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--hy-space-4);
+}
+
+/* padding-top à 0 : le lien « Retour au club » porte la respiration sous la
+   barre de navigation — même raison que sur « Le club ». */
+.hero {
+  padding: 0 0 var(--hy-space-4);
+  max-width: 62ch;
+}
+
+.eyebrow {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-2);
+}
+
+.title {
+  margin: 0;
+}
+
+.lead {
+  margin: var(--hy-space-2) 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--hy-text-2);
+}
+
+.category {
+  padding: var(--hy-space-4) 0;
+}
+
+/* Intitulé de rubrique, pas un titre de section éditorial : la page n'a qu'un
+   titre, les catégories servent à s'y retrouver. Taille sobre, au-dessus du
+   titre de carte (17px) sans le concurrencer. */
+.categoryTitle {
+  margin: 0 0 var(--hy-space-3);
+  font-size: 20px;
+}
+
+/* Mêmes valeurs que .outboundNote de la page « Le club » : la note dit la même
+   chose, elle doit peser pareil. */
+.outboundNote {
+  font-size: 13px;
+  color: var(--hy-text-3);
+  margin: 0 0 var(--hy-space-5);
+}

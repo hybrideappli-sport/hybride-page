@@ -28,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     `${club}/planning`,
     `${club}/adherer`,
     `${club}/shop`,
+    `${club}/partenaires`,
     `${club}/mentions-legales`,
     `${club}/politique-de-confidentialite`,
 

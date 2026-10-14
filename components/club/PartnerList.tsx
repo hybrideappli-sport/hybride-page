@@ -1,15 +1,19 @@
-import Image from "next/image";
-
 import type { Partner } from "@/lib/club/partners";
+import { PartnerLogo } from "./PartnerLogo";
 import styles from "./PartnerList.module.css";
 
 /**
- * Liste des partenaires du club. Itère sur la donnée (lib/club/partners.ts) —
- * ajouter un partenaire ne demande rien d'autre qu'une entrée dans le tableau.
+ * Liste des partenaires d'une catégorie, sur /club/[slug]/partenaires. Itère
+ * sur la donnée (lib/club/partners.ts) — ajouter un partenaire ne demande rien
+ * d'autre qu'une entrée dans le tableau.
+ *
+ * Logo AU-DESSUS du texte, et non à côté (2026-10-14) : à côté tenait tant que
+ * le seul logo était le portrait de Little Bistrok. Ceux de La Lagune et de
+ * Terre de Running sont deux fois plus larges que hauts ; à 375px, posés à
+ * côté, ils laisseraient une centaine de pixels au texte.
  *
  * Aucune icône illustrative : le seul signe est la flèche ↗ des liens sortants,
- * qui existe déjà partout ailleurs sur la page et signale une sortie du site,
- * pas une décoration.
+ * qui existe déjà partout ailleurs sur le site et signale une sortie du site.
  *
  * Composant serveur : rien ici n'a besoin d'état ni d'événement.
  */
@@ -20,34 +24,11 @@ export function PartnerList({ partners }: { partners: Partner[] }) {
     <ul className={styles.list}>
       {partners.map((partner) => (
         <li key={partner.slug} className={styles.item}>
-          <div className={`${styles.logoWrap} ${partner.logo.background === "light" ? styles.logoLight : ""}`}>
-            {/*
-             * `unoptimized`, comme pour le logo de Door.tsx : la conversion
-             * WebP/AVIF de next/image (pipeline `sharp`) supprime le canal alpha
-             * des PNG dans ce projet — constaté le 2026-08-20, seule la variante
-             * WebP négociée par Chrome est touchée. Ce logo-ci est transparent
-             * autour de sa pastille et posé à même le fond noir : perdre l'alpha
-             * lui collerait un rectangle opaque. Un petit PNG statique, servi
-             * tel quel, coûte moins cher qu'une pipeline qui casse ce dont on
-             * dépend.
-             *
-             * `alt` vide, et c'est délibéré : le nom du partenaire est écrit
-             * juste à côté dans le titre. Le décrire ici le ferait annoncer deux
-             * fois par un lecteur d'écran.
-             */}
-            <Image
-              src={partner.logo.src}
-              alt=""
-              width={partner.logo.width}
-              height={partner.logo.height}
-              unoptimized
-              className={styles.logo}
-            />
-          </div>
+          <PartnerLogo logo={partner.logo} size="card" />
 
           <div className={styles.body}>
             <h3 className={styles.name}>{partner.name}</h3>
-            <p className={styles.description}>{partner.description}</p>
+            {partner.description ? <p className={styles.description}>{partner.description}</p> : null}
             <p className={styles.benefit}>{partner.benefit}</p>
             {partner.url ? (
               <p className={styles.linkLine}>

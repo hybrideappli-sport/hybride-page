@@ -1,0 +1,36 @@
+/* Une rangée qui passe à la ligne plutôt qu'un défilement horizontal : à
+   375px, trois logos de 48px de haut tiennent sur une ligne (≈ 31 + 96 + 104
+   + 2 × 16 ≈ 263px pour 327 utiles). Le quatrième partenaire passera dessous,
+   sans rien casser. */
+.logos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hy-space-3);
+}
+
+.linkLine {
+  margin: var(--hy-space-3) 0 0;
+  font-size: 15px;
+}
+
+/* min-height 44px : zone tactile, comme les entrées de la nav. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--hy-violet);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}

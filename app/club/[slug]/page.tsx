@@ -6,7 +6,7 @@ import { activityLabel, Tag, type Activity } from "@/components/ui/Tag";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
-import { PartnerList } from "@/components/club/PartnerList";
+import { PartnerStrip } from "@/components/club/PartnerStrip";
 import { RitualRow } from "@/components/club/RitualRow";
 import { PARTNERS } from "@/lib/club/partners";
 import { CLUB } from "@/lib/config";
@@ -103,13 +103,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
        * avantages s'adressent aux adhérents déjà là, pas aux visiteurs qui
        * découvrent le club. Placée plus haut — au-dessus du bandeau crème, par
        * exemple — elle se lirait comme un argument de l'adhésion, alors que
-       * l'argument de l'adhésion est l'assurance, et lui seul. Pour la même
-       * raison, aucun lien vers /adherer ici.
+       * l'argument de l'adhésion est l'assurance, et lui seul.
        *
-       * Seul endroit du site où les partenaires sont listés (arbitrage du
-       * 2026-09-10 : la section avait d'abord été posée sur /le-club, elle en a
-       * été retirée pour ne pas afficher deux fois le même bloc). Ajouter un
-       * partenaire = une entrée dans lib/club/partners.ts, rien d'autre.
+       * Bloc compact depuis le 2026-10-14 (trois partenaires, des catégories) :
+       * les logos et un lien. Le détail vit sur /club/[slug]/partenaires, seul
+       * endroit du site où les avantages sont énoncés — voir PartnerStrip pour
+       * ce qui n'a pas sa place ici.
        */}
       {PARTNERS.length > 0 ? (
         <section className={styles.partners}>
@@ -117,10 +116,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
             <p className={styles.eyebrow}>Nos partenaires</p>
             <h2>Des lieux qui font un geste</h2>
           </div>
-          <PartnerList partners={PARTNERS} />
-          {PARTNERS.some((partner) => partner.url) ? (
-            <p className={styles.outboundNote}>↗ Les fiches partenaires ouvrent un autre site, dans un nouvel onglet.</p>
-          ) : null}
+          <PartnerStrip partners={PARTNERS} href={`/club/${CLUB.slug}/partenaires`} />
         </section>
       ) : null}
 

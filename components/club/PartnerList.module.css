@@ -1,51 +1,32 @@
+/* Carte bordée, sans fond : même traitement que les autres blocs du site —
+   on ajoute une bordure, jamais une surface, pour ne pas fabriquer des niveaux
+   de profondeur que la direction visuelle n'a pas.
+
+   Grille à partir de 640px : deux ou trois cartes côte à côte. En dessous, une
+   colonne — le logo au-dessus du texte (voir PartnerList.tsx). */
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--hy-space-3);
 }
 
-/* Carte bordée, sans fond : même traitement que les autres blocs de la page —
-   on ajoute une bordure, jamais une surface, pour ne pas fabriquer des niveaux
-   de profondeur que la direction visuelle n'a pas. */
+@media (min-width: 640px) {
+  .list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
 .item {
   display: flex;
-  gap: var(--hy-space-3);
+  flex-direction: column;
   align-items: flex-start;
+  gap: var(--hy-space-3);
   padding: var(--hy-space-3);
   border: 1px solid var(--hy-line);
   border-radius: var(--hy-radius-card);
-}
-
-/* Hauteur fixe, largeur libre : les logos des partenaires n'auront pas tous le
-   même format (celui de Little Bistrok est un portrait 0,64). Caler la HAUTEUR
-   les fait tous peser pareil dans la page, ce qu'une largeur commune ne ferait
-   pas — un logo large paraîtrait deux fois plus gros qu'un logo carré. */
-.logoWrap {
-  flex: 0 0 auto;
-  height: 84px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-}
-
-/* Réservé aux logos qui disparaîtraient sur le noir (voir `background` dans
-   lib/club/partners.ts). Non utilisé aujourd'hui : le logo de Little Bistrok
-   porte son propre fond gris et se pose directement sur le noir. */
-.logoLight {
-  background: var(--hy-cream);
-  padding: var(--hy-space-1);
-}
-
-.logo {
-  height: 100%;
-  width: auto;
-  max-width: 84px;
-  object-fit: contain;
-  display: block;
 }
 
 .body {
@@ -69,7 +50,7 @@
 /* L'avantage passe en texte primaire, la description reste en secondaire :
    c'est l'information qu'un adhérent vient chercher. Aucun encadré, aucune
    couleur d'accent — le mettre en valeur davantage le ferait basculer du fait
-   énoncé vers l'argument de vente, ce que cette section s'interdit. */
+   énoncé vers l'argument de vente, ce que cette page s'interdit. */
 .benefit {
   margin: var(--hy-space-1) 0 0;
   font-size: 14px;

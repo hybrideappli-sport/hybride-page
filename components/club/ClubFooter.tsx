@@ -52,7 +52,13 @@ export function ClubFooter({
         </p>
       ) : null}
 
+      {/*
+       * Lien vers les partenaires ici plutôt que dans la nav (2026-10-14) :
+       * voir app/club/[slug]/partenaires/page.tsx. En tête de la ligne des
+       * liens du site, avant les pages légales.
+       */}
       <p>
+        <Link href={`/club/${clubSlug}/partenaires`}>Nos partenaires</Link> ·{" "}
         <Link href={`/club/${clubSlug}/mentions-legales`}>Mentions légales</Link> ·{" "}
         {/* Aucune mention du JOAFE : le récépissé préfectoral précise que l'insertion
             au Journal officiel est facultative et que c'est lui qui fait foi (2026-08-28). */}
