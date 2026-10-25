@@ -144,12 +144,17 @@ function Cell({ cell, isToday, clubSlug }: { cell: CalendarCell; isToday: boolea
   // couleur. L'heure reste dans aria-label et sur la page de la sortie.
   const single = cell.events.length === 1 ? cell.events[0] : null;
   const multi = cell.events.length > 1;
+  // Les soirées ressortent dans la grille (2026-10-25, demande du client) :
+  // elles n'ont lieu qu'une fois par mois, et pesaient autant qu'une séance de
+  // piste — moins encore en partageant leur case (le 31/10, avec un trail).
+  const hasSoiree = cell.events.some((event) => event.activity === "soirees");
 
   const classes = [
     styles.cell,
     cell.inMonth ? "" : styles.cellOut,
     isToday ? styles.cellToday : "",
     multi ? styles.cellMulti : "",
+    hasSoiree ? styles.cellSoiree : "",
     single ? `${styles.cellFilled} ${styles[ACTIVITY_CLASS[single.activity]]}` : "",
   ]
     .filter(Boolean)
@@ -165,7 +170,7 @@ function Cell({ cell, isToday, clubSlug }: { cell: CalendarCell; isToday: boolea
             <Link
               key={event.slug}
               href={`/club/${clubSlug}/sorties/${event.slug}`}
-              className={`${styles.event} ${single ? "" : `${styles.eventBand} ${styles[ACTIVITY_CLASS[event.activity]]}`}`}
+              className={`${styles.event} ${single ? "" : `${styles.eventBand} ${styles[ACTIVITY_CLASS[event.activity]]} ${event.activity === "soirees" ? styles.eventBandSoiree : ""}`}`}
               /* Le nom affiché est volontairement court et peut être tronqué dans une
                  case de ~48px : l'intitulé complet et la date passent par aria-label,
                  pour qu'un lecteur d'écran annonce le lien en entier. */

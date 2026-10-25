@@ -501,3 +501,44 @@
 .empty a {
   color: var(--hy-violet);
 }
+
+/*
+ * Soirées Hybride (2026-10-25) : une fois par mois, elles doivent se voir dans
+ * la grille, y compris quand elles partagent leur case avec une autre sortie.
+ * Le rose est celui de l'activité (--hy-soirees), le même que l'étiquette et
+ * que la carte « Prochaine soirée » en haut du planning.
+ *
+ * - Anneau intérieur rose de 2px et halo doux autour de la case : comme
+ *   `.cellToday`, un box-shadow et non une bordure, pour ne rien déplacer.
+ * - Soirée seule : teinte de fond renforcée (32 % au lieu de 18 %).
+ * - Soirée qui partage sa case : sa bande prend un fond plus soutenu, un
+ *   contour complet et un nom en gras — elle se distingue de sa voisine
+ *   autrement que par la seule teinte.
+ */
+.cellSoiree {
+  box-shadow:
+    inset 0 0 0 2px var(--hy-soirees),
+    0 0 14px color-mix(in srgb, var(--hy-soirees) 35%, transparent);
+}
+
+/* Soirée le jour même : les deux anneaux, violet « aujourd'hui » à l'extérieur. */
+.cellToday.cellSoiree {
+  box-shadow:
+    inset 0 0 0 2px var(--hy-violet),
+    inset 0 0 0 4px var(--hy-soirees),
+    0 0 14px color-mix(in srgb, var(--hy-soirees) 35%, transparent);
+}
+
+.cellFilled.cellSoiree {
+  background: color-mix(in srgb, var(--hy-soirees) 32%, var(--hy-surface-1));
+}
+
+.eventBandSoiree {
+  background: color-mix(in srgb, var(--hy-soirees) 42%, var(--hy-surface-1));
+  box-shadow: inset 0 0 0 1px var(--hy-soirees);
+}
+
+.eventBandSoiree .eventName {
+  font-weight: 700;
+  color: var(--hy-text-1);
+}
