@@ -7,8 +7,8 @@ level: Aucun — il n'y a pas de sport
 meetingPoint: Variable, selon la soirée
 mapsUrl:
 coach:
-photo: mercredi-5.jpg
-photoAlt: Le groupe du club posant autour d'une table de bar en soirée, en tenue de sport
+photo: soirees-hero.jpg
+photoAlt: Visuel des Hybride Nights — une boule à facettes devant le mot « Hybride » en grandes lettres violettes, avec « Club » et « Toulon » de part et d'autre
 metaDescription: Une soirée par mois, le dernier week-end : karaoké, minigolf, soirée déguisée. Pas de sport, pas de niveau — le troisième rituel du club, à Toulon.
 ---
 
