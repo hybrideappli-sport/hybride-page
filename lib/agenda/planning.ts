@@ -167,3 +167,24 @@ export function buildMonthGrid(monthKey: string, events: AgendaEvent[]): Calenda
 
   return weeks;
 }
+
+/**
+ * Prochaine sortie d'une activité donnée, si elle commence dans les
+ * `withinDays` jours — sert à la carte « Prochaine soirée Hybride » en haut du
+ * planning (NextSoireeCard). `null` sinon : la carte n'est alors pas rendue.
+ *
+ * Lit l'horloge, comme `deadlineHasPassed` : la page planning est rendue à la
+ * requête. Une sortie déjà commencée n'est plus « prochaine » — la carte
+ * disparaît d'elle-même à l'heure de début, au plus tard à la revalidation
+ * suivante du tableur (5 min).
+ */
+export function getNextEventOfActivity(events: AgendaEvent[], activity: AgendaEvent["activity"], withinDays: number): AgendaEvent | null {
+  const now = new Date().getTime();
+  const limit = now + withinDays * 24 * 60 * 60 * 1000;
+  const upcoming = events
+    .filter((e) => e.activity === activity)
+    .map((e) => ({ e, t: new Date(e.startsAtIso).getTime() }))
+    .filter(({ t }) => t >= now && t <= limit)
+    .sort((a, b) => a.t - b.t);
+  return upcoming[0]?.e ?? null;
+}

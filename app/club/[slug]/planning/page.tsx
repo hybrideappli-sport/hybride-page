@@ -5,11 +5,12 @@ import { BackToClub } from "@/components/club/BackToClub";
 import { CalendarReminderLink } from "@/components/club/CalendarReminderLink";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
+import { NextSoireeCard } from "@/components/club/NextSoireeCard";
 import { PlanningCalendar } from "@/components/club/PlanningCalendar";
 import { PlanningCountdown } from "@/components/club/PlanningCountdown";
-import { deadlineHasPassed, eventsInMonth, getCurrentMonthKey, getDefaultMonthKey, getMonthLabel, shiftMonthKey } from "@/lib/agenda/planning";
+import { deadlineHasPassed, eventsInMonth, getCurrentMonthKey, getDefaultMonthKey, getMonthLabel, getNextEventOfActivity, shiftMonthKey } from "@/lib/agenda/planning";
 import { getAgendaEvents } from "@/lib/agenda/source";
-import { getAllRituals } from "@/lib/rituals/content";
+import { findRitualForEvent, getAllRituals } from "@/lib/rituals/content";
 import { CLUB, PLANNING_COUNTDOWN_TEXT, PLANNING_COUNTDOWN_TO, PLANNING_NOTICE } from "@/lib/config";
 import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
@@ -50,6 +51,11 @@ export default async function PlanningPage({
   const showRituals = Boolean(notice) || Boolean(countdownTo);
   const rituals = showRituals ? getAllRituals() : [];
 
+  // Prochaine soirée dans les 45 jours, quel que soit le mois affiché : la
+  // carte annonce ce qui vient, pas ce qu'on regarde. Voir NextSoireeCard.
+  const nextSoiree = getNextEventOfActivity(allEvents, "soirees", 45);
+  const soireeRitual = nextSoiree ? findRitualForEvent(nextSoiree) : null;
+
   const prevMonthKey = shiftMonthKey(monthKey, -1);
   const nextMonthKey = shiftMonthKey(monthKey, 1);
 
@@ -70,6 +76,13 @@ export default async function PlanningPage({
 
   const calendar = (
     <>
+      {nextSoiree ? (
+        <NextSoireeCard
+          event={nextSoiree}
+          href={`/club/${CLUB.slug}/sorties/${nextSoiree.slug}`}
+          photoSrc={soireeRitual?.frontmatter.photo ? `/photos/${soireeRitual.frontmatter.photo}` : null}
+        />
+      ) : null}
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Planning</p>
         <div className={styles.monthNav}>
