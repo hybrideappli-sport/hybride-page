@@ -7,8 +7,23 @@ import { activityLabel, type Activity } from "@/components/ui/Tag";
  * (schéma `club` dormant). Publié par Fichier → Partager → Publier sur le web
  * → CSV — pas l'API Sheets (aucune clé, aucun quota).
  */
-const SHEET_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSS9gpqBxIPQmW9QG7R9S6EKctNvuTB-1KXqTJ25g4q2XEbmSDPiGeBM-jQvyqM82Wxtz5zN_oh5G10/pub?output=csv";
+const SHEET_PUBLISHED_BASE =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSS9gpqBxIPQmW9QG7R9S6EKctNvuTB-1KXqTJ25g4q2XEbmSDPiGeBM-jQvyqM82Wxtz5zN_oh5G10";
+
+/**
+ * TOUS LES ONGLETS, PAS SEULEMENT LE PREMIER (2026-11-03). Le client tient un
+ * onglet par mois (« Octobre », « Novembre »…). L'export `pub?output=csv` ne
+ * renvoie que le PREMIER onglet : tout ce qui n'était saisi que dans
+ * « Novembre » — séances piste des 9, 16, 23 et 30, trail du 14, danse fit du
+ * 12, soirée du 28 — manquait au planning, sans erreur nulle part.
+ *
+ * La liste des onglets est lue sur la page publiée (`pubhtml`), qui les nomme
+ * avec leur `gid` : ajouter un onglet « Décembre » ne demande donc rien ici.
+ * Si cette page devient illisible, on retombe sur le premier onglet seul — le
+ * comportement d'avant, pas une page vide.
+ */
+const SHEET_PUBHTML_URL = `${SHEET_PUBLISHED_BASE}/pubhtml`;
+const sheetCsvUrl = (gid: string) => `${SHEET_PUBLISHED_BASE}/pub?gid=${gid}&single=true&output=csv`;
 
 /** Revalidation Next.js — pas de cron, aucune dépendance à un plan Vercel payant (ADR-010). */
 const REVALIDATE_SECONDS = 300;
@@ -337,7 +352,8 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   };
 }
 
-function parseSheet(csvText: string): AgendaEvent[] {
+/** Un onglet → ses sorties, sans le suffixe de doublon (posé par `finalizeEvents`). */
+function parseSheet(csvText: string, tab: string): AgendaEvent[] {
   const rows = parseCsv(csvText);
   if (rows.length === 0) return [];
   const [header, ...dataRows] = rows;
@@ -348,9 +364,28 @@ function parseSheet(csvText: string): AgendaEvent[] {
     header.forEach((col, colIndex) => {
       row[col] = cells[colIndex] ?? "";
     });
-    const parsed = parseRow(row, i + 2, (msg) => console.warn(`[agenda] ${msg}`)); // +2 : ligne 1 = en-tête, index 0-based
+    const parsed = parseRow(row, i + 2, (msg) => console.warn(`[agenda] onglet ${tab}, ${msg}`)); // +2 : ligne 1 = en-tête, index 0-based
     if (parsed) events.push(parsed);
   });
+  return events;
+}
+
+/**
+ * Fusion des onglets, puis adresses et ordre.
+ *
+ * UNE SORTIE RECOPIÉE DANS DEUX ONGLETS N'APPARAÎT QU'UNE FOIS. Cas réel du
+ * 2026-11-03 : les social runs de novembre figurent dans « Octobre » ET dans
+ * « Novembre ». Sans fusion, le suffixe de doublon ci-dessous les aurait
+ * affichées deux fois, la seconde à une adresse « -2 ». Même jour, même heure,
+ * même titre, même activité = la même sortie ; c'est l'onglet le plus à droite
+ * — en pratique le plus récent — qui l'emporte si les détails diffèrent.
+ */
+function finalizeEvents(events: AgendaEvent[]): AgendaEvent[] {
+  const byIdentity = new Map<string, AgendaEvent>();
+  for (const event of events) {
+    byIdentity.set(`${event.startsAtIso}|${event.activity}|${event.slug}`, event);
+  }
+  events = [...byIdentity.values()];
 
   // Deux sorties du même jour au même titre donneraient la même adresse et la
   // seconde serait inatteignable. Suffixe « -2 », « -3 » dans l'ordre du tableur.
@@ -379,11 +414,39 @@ function parseSheet(csvText: string): AgendaEvent[] {
  */
 let lastKnownGood: AgendaEvent[] = [];
 
+/**
+ * Onglets publiés, dans l'ordre du tableur : `{name: "Novembre", pageUrl:
+ * "…gid=911212406"}` dans le script de la page `pubhtml`. Repli sur le premier
+ * onglet (gid 0) si la page ne se lit pas ou n'en nomme aucun.
+ */
+async function getPublishedTabs(): Promise<{ name: string; gid: string }[]> {
+  const fallback = [{ name: "premier onglet", gid: "0" }];
+  try {
+    const response = await fetch(SHEET_PUBHTML_URL, { next: { revalidate: REVALIDATE_SECONDS } });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const html = await response.text();
+    const tabs: { name: string; gid: string }[] = [];
+    for (const m of html.matchAll(/name:\s*"((?:[^"\\]|\\.)*)",\s*pageUrl:\s*"[^"]*?gid=(\d+)/g)) {
+      if (!tabs.some((t) => t.gid === m[2])) tabs.push({ name: m[1], gid: m[2] });
+    }
+    return tabs.length > 0 ? tabs : fallback;
+  } catch (err) {
+    console.warn("[agenda] liste des onglets illisible, lecture du premier onglet seul", err);
+    return fallback;
+  }
+}
+
 export async function getAgendaEvents(): Promise<AgendaEvent[]> {
   try {
-    const response = await fetch(SHEET_CSV_URL, { next: { revalidate: REVALIDATE_SECONDS } });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const events = parseSheet(await response.text());
+    const tabs = await getPublishedTabs();
+    const perTab = await Promise.all(
+      tabs.map(async (tab) => {
+        const response = await fetch(sheetCsvUrl(tab.gid), { next: { revalidate: REVALIDATE_SECONDS } });
+        if (!response.ok) throw new Error(`onglet ${tab.name} : HTTP ${response.status}`);
+        return parseSheet(await response.text(), tab.name);
+      }),
+    );
+    const events = finalizeEvents(perTab.flat());
     if (events.length > 0) lastKnownGood = events;
     return events;
   } catch (err) {
