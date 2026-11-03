@@ -18,7 +18,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Hybride",
-  description: "Le club de sport Hybride à Toulon, et l'application d'entraînement.",
+  description: "Le club de sport Hybride à Toulon : sorties chaque semaine, toutes les allures.",
   /*
    * Installation sur l'écran d'accueil iOS (app/manifest.ts fait le reste ailleurs).
    * Safari ne lit `display: standalone` du manifeste que depuis iOS 15.4 ; ce bloc

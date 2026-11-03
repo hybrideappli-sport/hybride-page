@@ -57,7 +57,9 @@ export function ClubNav({ clubSlug }: { clubSlug: string }) {
   return (
     <nav className={styles.nav}>
       <div className={styles.bar}>
-        <Link href="/" className={styles.brand}>
+        {/* Vers le club, plus vers « / » : l'accueil y redirige de toute façon
+            depuis le retrait de l'application (2026-11-03, next.config.ts). */}
+        <Link href={`/club/${clubSlug}`} className={styles.brand}>
           Hybride
         </Link>
 

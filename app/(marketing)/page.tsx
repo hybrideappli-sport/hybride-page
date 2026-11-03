@@ -14,6 +14,10 @@ export const metadata = rootMetadata({
 });
 
 /**
+ * INATTEIGNABLE DEPUIS LE 2026-11-03 : « / » redirige vers /club/toulon
+ * (next.config.ts). L'application est retirée du site, elle changera
+ * sûrement de nom ; cette page est gardée pour le jour où elle reviendrait.
+ *
  * US-01 — carrefour à deux portes à égalité stricte (docs/design/direction-
  * visuelle-accueil.html, à lire pour le VISUEL uniquement — jamais pour le
  * contenu : horaires, lieux et noms de séances y sont du remplissage inventé,

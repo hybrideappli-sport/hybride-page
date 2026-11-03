@@ -22,7 +22,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const club = `${SITE_URL}/club/${CLUB.slug}`;
 
   const paths = [
-    SITE_URL,
+    // Plus de SITE_URL seul : l'accueil redirige vers le club depuis le
+    // 2026-11-03 (next.config.ts). Une URL qui redirige n'a rien à faire dans
+    // un sitemap.
     club,
     `${club}/le-club`,
     `${club}/planning`,

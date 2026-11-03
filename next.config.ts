@@ -36,6 +36,23 @@ const nextConfig: NextConfig = {
    */
   async redirects() {
     return [
+      /*
+       * L'accueil mène droit au club (2026-11-03, demande du client) :
+       * l'application est retirée du site, elle changera sûrement de nom. La
+       * page « deux portes » (app/(marketing)/page.tsx) reste dans le code,
+       * inatteignable, pour le jour où elle reviendrait.
+       *
+       * TEMPORAIRE (307), pas permanente : un 308 serait mémorisé par les
+       * navigateurs et les moteurs de recherche, et rétablir une page
+       * d'accueil plus tard deviendrait laborieux. Pour la rétablir : retirer
+       * cette entrée, remettre SITE_URL dans app/sitemap.ts et le lien du
+       * logo de ClubNav vers « / ».
+       */
+      {
+        source: "/",
+        destination: "/club/toulon",
+        permanent: false,
+      },
       {
         source: "/:path*",
         has: [{ type: "host", value: "hybride-page\\.vercel\\.app" }],
