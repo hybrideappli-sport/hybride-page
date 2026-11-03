@@ -1,0 +1,230 @@
+/* Couleurs : --accent / --accent-bg, posés par SpecialEventBody.tsx depuis
+   l'activité de la sortie (--hy-social-run pour un social run…). */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-5);
+  max-width: 640px;
+  padding-bottom: var(--hy-space-5);
+}
+
+/* En-tête : une lueur de la couleur de l'activité dans l'angle, sur le fond
+   sombre de cette même activité. Une seule entrée animée au chargement,
+   coupée sous « moins de mouvement » par globals.css. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--hy-space-4) var(--hy-space-3);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: var(--hy-radius-card);
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 62%),
+    radial-gradient(90% 70% at 100% 100%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+    var(--accent-bg);
+  animation: hy-special-in 620ms var(--hy-ease) both;
+}
+
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 56px;
+  margin-bottom: var(--hy-space-3);
+}
+
+.hybrideMark {
+  height: 56px;
+  width: auto;
+  display: block;
+}
+
+.times {
+  font-size: 22px;
+  color: var(--hy-text-2);
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: var(--hy-space-1) 0 0;
+  font-family: var(--hy-font-display);
+  font-size: clamp(30px, 8.5vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.when {
+  margin: var(--hy-space-2) 0 0;
+  font-family: var(--hy-font-mono);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--hy-text-2);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.lead {
+  margin: var(--hy-space-3) 0 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--hy-text-1);
+}
+
+.badges {
+  list-style: none;
+  margin: var(--hy-space-3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  border-radius: var(--hy-radius-pill);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hy-text-1);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  margin: 0 0 var(--hy-space-3);
+  font-size: 20px;
+}
+
+/* Déroulé : une ligne verticale de la couleur de l'activité, un point par
+   étape. */
+.program {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 22px;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-4);
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.step::before {
+  content: "";
+  position: absolute;
+  left: -30px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--hy-bg);
+}
+
+.stepTime {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.stepTitle {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stepText {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--hy-text-2);
+}
+
+/* L'encadré qui compte : le crème du bandeau de la page du club (CtaBand),
+   même encre (#12232b) et même gris secondaire (#4a5c64), littéraux comme
+   là-bas. Le seul aplat clair de la page : c'est lui qu'on retient. */
+.highlight {
+  padding: var(--hy-space-4) var(--hy-space-3);
+  border-radius: var(--hy-radius-card);
+  background: var(--hy-cream);
+  color: #12232b;
+}
+
+.figure {
+  margin: 0;
+  font-family: var(--hy-font-display);
+  font-size: clamp(56px, 18vw, 84px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.highlightTitle {
+  margin: var(--hy-space-2) 0 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.highlightText {
+  margin: var(--hy-space-1) 0 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #4a5c64;
+}
+
+.place {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.mapLine {
+  margin: var(--hy-space-1) 0 0;
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--hy-violet);
+  text-decoration: none;
+}
+
+.mapLink:hover {
+  text-decoration: underline;
+}
+
+.mapLink:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+@keyframes hy-special-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

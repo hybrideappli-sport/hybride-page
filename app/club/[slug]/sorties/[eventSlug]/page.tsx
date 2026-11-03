@@ -4,11 +4,14 @@ import { notFound } from "next/navigation";
 import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { RitualBody } from "@/components/club/RitualBody";
+import { SpecialEventBody } from "@/components/club/SpecialEventBody";
 import { StickyRegisterCta } from "@/components/club/StickyRegisterCta";
 import { RegistrationCta } from "@/components/ui/RegistrationCta";
 import { Tag } from "@/components/ui/Tag";
 import { getAgendaEvents, LOCATION_PENDING } from "@/lib/agenda/source";
 import { getMonthKey } from "@/lib/agenda/planning";
+import { findSpecialEvent } from "@/lib/agenda/special-events";
+import { PARTNERS } from "@/lib/club/partners";
 import { CLUB } from "@/lib/config";
 import { formatEventDateLong, formatEventTime } from "@/lib/format";
 import { findRitualForEvent } from "@/lib/rituals/content";
@@ -45,7 +48,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const event = (await getAgendaEvents()).find((e) => e.slug === eventSlug);
   if (!event) return {};
 
-  const title = event.title ?? event.activityLabelText;
+  const special = findSpecialEvent(event.slug);
+  const title = special?.title ?? event.title ?? event.activityLabelText;
   const parts = [
     `${formatEventDateLong(event.startsAtIso)}, ${formatEventTime(event.startsAtIso)}.`,
     event.location ? `${event.activityLabelText} à ${event.location}.` : `${event.activityLabelText}.`,
@@ -54,7 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return clubMetadata({
     title: `${title} — ${CLUB.name}`,
-    description: event.details ?? parts.filter(Boolean).join(" "),
+    description: special?.lead ?? event.details ?? parts.filter(Boolean).join(" "),
     path: `/club/${CLUB.slug}/sorties/${eventSlug}`,
   });
 }
@@ -67,7 +71,13 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   if (!event) notFound();
 
   const title = event.title ?? event.activityLabelText;
-  const ritual = findRitualForEvent(event);
+  const special = findSpecialEvent(event.slug);
+  const ritual = special ? null : findRitualForEvent(event);
+  const partner = special?.partnerSlug ? (PARTNERS.find((p) => p.slug === special.partnerSlug) ?? null) : null;
+  // Fiche Maps du lieu : l'adresse du partenaire dont la ville figure dans le
+  // lieu du tableur (« …, 83130 La garde » → magasin de La Garde). Rien sinon.
+  const place = event.location?.toLowerCase() ?? "";
+  const mapsUrl = partner?.locations.find((l) => place.includes(l.label.toLowerCase()))?.url ?? null;
   const monthKey = getMonthKey(event.startsAtIso);
 
   /* Rendu `null` quand la colonne « Détails » du tableur est vide : source.ts ramène
@@ -102,7 +112,11 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         ← Retour au planning
       </Link>
 
-      {ritual ? (
+      {special ? (
+        // Fiche spéciale (lib/agenda/special-events.ts) : remplace, pour cette
+        // sortie seulement, la fiche habituelle de son activité.
+        <SpecialEventBody event={event} special={special} partner={partner} mapsUrl={mapsUrl} registration={registration} />
+      ) : ritual ? (
         <>
           {/* Le point de rendez-vous du tableur l'emporte sur celui du rituel : il est
               saisi par sortie et souvent plus précis (« Parking du Yacht club, plage

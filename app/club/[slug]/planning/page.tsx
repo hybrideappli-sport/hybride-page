@@ -9,10 +9,11 @@ import { FeaturedEventCard } from "@/components/club/FeaturedEventCard";
 import { PlanningCalendar } from "@/components/club/PlanningCalendar";
 import { PlanningCountdown } from "@/components/club/PlanningCountdown";
 import { deadlineHasPassed, eventsInMonth, getCurrentMonthKey, getDefaultMonthKey, getMonthLabel, getNextEventOfActivity, shiftMonthKey } from "@/lib/agenda/planning";
+import { findSpecialEvent } from "@/lib/agenda/special-events";
 import { getAgendaEvents } from "@/lib/agenda/source";
 import { PARTNERS } from "@/lib/club/partners";
 import { findRitualForEvent, getAllRituals } from "@/lib/rituals/content";
-import { CLUB, PLANNING_COUNTDOWN_TEXT, PLANNING_COUNTDOWN_TO, PLANNING_FEATURED_EVENT, PLANNING_NOTICE } from "@/lib/config";
+import { CLUB, PLANNING_COUNTDOWN_TEXT, PLANNING_COUNTDOWN_TO, PLANNING_NOTICE } from "@/lib/config";
 import { clubMetadata } from "@/lib/seo";
 import styles from "./page.module.css";
 
@@ -52,19 +53,21 @@ export default async function PlanningPage({
   const showRituals = Boolean(notice) || Boolean(countdownTo);
   const rituals = showRituals ? getAllRituals() : [];
 
-  // Carte du haut. L'événement de PLANNING_FEATURED_EVENT (lib/config.ts) s'il
-  // est à venir ; sinon la prochaine soirée dans les 45 jours, quel que soit le
-  // mois affiché — la carte annonce ce qui vient, pas ce qu'on regarde.
+  // Carte du haut. Une sortie à fiche spéciale marquée `featured`
+  // (lib/agenda/special-events.ts), la plus proche, si elle est à venir ;
+  // sinon la prochaine soirée dans les 45 jours, quel que soit le mois
+  // affiché — la carte annonce ce qui vient, pas ce qu'on regarde.
   const now = new Date().getTime();
-  const featuredConfig = PLANNING_FEATURED_EVENT;
-  const configured = featuredConfig
-    ? allEvents.find((e) => e.slug === featuredConfig.slug && new Date(e.startsAtIso).getTime() >= now)
-    : undefined;
+  const configured = allEvents.find(
+    (e) => findSpecialEvent(e.slug)?.featured && new Date(e.startsAtIso).getTime() >= now,
+  );
+  const featuredSpecial = configured ? findSpecialEvent(configured.slug) : null;
   const nextSoiree = configured ? null : getNextEventOfActivity(allEvents, "soirees", 45);
   const featured = configured ?? nextSoiree;
   const featuredRitual = featured ? findRitualForEvent(featured) : null;
-  const featuredPartner =
-    configured && featuredConfig?.partnerSlug ? (PARTNERS.find((p) => p.slug === featuredConfig.partnerSlug) ?? null) : null;
+  const featuredPartner = featuredSpecial?.partnerSlug
+    ? (PARTNERS.find((p) => p.slug === featuredSpecial.partnerSlug) ?? null)
+    : null;
 
   const prevMonthKey = shiftMonthKey(monthKey, -1);
   const nextMonthKey = shiftMonthKey(monthKey, 1);
@@ -91,9 +94,10 @@ export default async function PlanningPage({
           event={featured}
           href={`/club/${CLUB.slug}/sorties/${featured.slug}`}
           photoSrc={featuredRitual?.frontmatter.photo ? `/photos/${featuredRitual.frontmatter.photo}` : null}
-          eyebrow={configured && featuredConfig ? featuredConfig.eyebrow : "Prochaine soirée Hybride"}
+          eyebrow={featuredSpecial ? featuredSpecial.eyebrow : "Prochaine soirée Hybride"}
           ctaLabel={configured ? "Voir la sortie" : "Voir la soirée"}
           partner={featuredPartner}
+          title={featuredSpecial?.title}
         />
       ) : null}
       <div className={styles.hero}>

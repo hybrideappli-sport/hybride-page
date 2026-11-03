@@ -13,7 +13,8 @@ import styles from "./FeaturedEventCard.module.css";
  * pour « Prochaine soirée Hybride » (demande du client : dans la grille, une
  * soirée pesait autant qu'une sortie ordinaire, et partageant sa case elle se
  * réduisait à une demi-bande tronquée). Généralisée le 2026-11-03 pour mettre
- * en avant un autre événement à sa place (PLANNING_FEATURED_EVENT, lib/config.ts).
+ * en avant un autre événement à sa place (fiches spéciales `featured`,
+ * lib/agenda/special-events.ts).
  *
  * La couleur suit l'ACTIVITÉ de l'événement (`--hy-<activité>`), celle de son
  * étiquette et de sa case dans la grille : rose pour une soirée, violet clair
@@ -36,6 +37,7 @@ export function FeaturedEventCard({
   eyebrow,
   ctaLabel,
   partner,
+  title,
 }: {
   event: AgendaEvent;
   href: string;
@@ -49,6 +51,8 @@ export function FeaturedEventCard({
    * de Running y ferait 30px de haut.
    */
   partner?: Partner | null;
+  /** Titre à la place de celui du tableur (fiche spéciale). */
+  title?: string;
 }) {
   const accent = {
     "--accent": `var(--hy-${event.activity})`,
@@ -75,7 +79,7 @@ export function FeaturedEventCard({
       ) : null}
       <span className={styles.body}>
         <span className={styles.eyebrow}>{eyebrow}</span>
-        <span className={styles.title}>{event.title ?? event.activityLabelText}</span>
+        <span className={styles.title}>{title ?? event.title ?? event.activityLabelText}</span>
         <span className={styles.when}>
           {formatEventDateLong(event.startsAtIso)}{" "}
           {/* Insécable : à 375px l'heure passait seule à la ligne. */}

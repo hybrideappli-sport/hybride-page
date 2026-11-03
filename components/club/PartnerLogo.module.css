@@ -36,6 +36,16 @@
   padding: 4px;
 }
 
+/* Même rôle, en grand : en-tête d'une fiche spéciale (SpecialEventBody). */
+.hero {
+  height: 56px;
+  border-radius: 8px;
+}
+
+.hero.light {
+  padding: 6px;
+}
+
 /* Logos qui disparaîtraient sur le noir (voir `background` dans
    lib/club/partners.ts) — aujourd'hui Terre de Running, noir sur transparent. */
 .light {

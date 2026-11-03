@@ -90,31 +90,6 @@ export const PLANNING_COUNTDOWN_TEXT = "Le programme de septembre arrive.";
 export const PLANNING_NOTICE = "";
 
 /**
- * Événement mis en avant en haut du planning, À LA PLACE de la carte
- * « Prochaine soirée Hybride » (choix du client, 2026-11-03).
- *
- * `slug` = l'adresse de la sortie, telle qu'elle apparaît dans
- * /club/toulon/sorties/… : la date puis le titre du tableur. ATTENTION : si
- * le titre change dans le tableur, l'adresse change, la carte ne trouve plus
- * l'événement et revient d'elle-même à la prochaine soirée — rien ne casse,
- * mais la mise en avant disparaît.
- *
- * Une fois l'événement commencé, il n'est plus mis en avant : la carte
- * revient à la prochaine soirée sans qu'on touche à rien. `null` = pas
- * d'événement mis en avant, carte soirée seule.
- */
-export const PLANNING_FEATURED_EVENT: {
-  slug: string;
-  eyebrow: string;
-  /** Partenaire co-organisateur (slug de lib/club/partners.ts) : son logo s'affiche avec le H d'Hybride. */
-  partnerSlug?: string;
-} | null = {
-  slug: "2026-12-02-social-run-x-terre-de-running",
-  eyebrow: "Sortie avec Terre de Running",
-  partnerSlug: "terre-de-running",
-};
-
-/**
  * Ouverture de la boutique — compte à rebours affiché sur /club/[slug]/shop.
  *
  * MÊME FORMAT QUE PLANNING_COUNTDOWN_TO, et pour les mêmes raisons : ISO 8601
