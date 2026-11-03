@@ -1,22 +1,51 @@
-/* Aux couleurs de l'activité « soirées » (rose, --hy-soirees), celles de son
-   étiquette et de sa case dans la grille : on la reconnaît d'un coup d'œil
-   comme LA soirée du calendrier en dessous. */
+/* Aux couleurs de l'activité de l'événement (--accent / --accent-bg, posés
+   par FeaturedEventCard.tsx depuis `--hy-<activité>`), celles de son
+   étiquette et de sa case dans la grille : on le reconnaît d'un coup d'œil
+   dans le calendrier en dessous. */
 .card {
   display: flex;
   gap: var(--hy-space-3);
   align-items: center;
   margin: 0 0 var(--hy-space-4);
   padding: var(--hy-space-2);
-  border: 1px solid color-mix(in srgb, var(--hy-soirees) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
   border-radius: var(--hy-radius-card);
-  background: var(--hy-soirees-bg);
+  background: var(--accent-bg);
   color: inherit;
   text-decoration: none;
-  animation: hy-soiree-in 520ms var(--hy-ease) both;
+  animation: hy-featured-in 520ms var(--hy-ease) both;
+}
+
+/* Avec un partenaire : logos en bandeau au-dessus du texte. */
+.cardLockup {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hy-space-2);
+  padding: var(--hy-space-3);
+}
+
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+}
+
+/* H blanc sur transparent, recadré au plus près (logo-hybride-mark.png) : à
+   même hauteur que la tuile du partenaire, il pèse autant que lui. */
+.hybrideMark {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.times {
+  font-size: 18px;
+  color: var(--hy-text-2);
 }
 
 .card:hover {
-  border-color: var(--hy-soirees);
+  border-color: var(--accent);
 }
 
 .card:hover .cta {
@@ -60,7 +89,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--hy-soirees);
+  color: var(--accent);
 }
 
 .title {
@@ -79,25 +108,25 @@
 .cta {
   margin-top: 2px;
   font-size: 14px;
-  color: var(--hy-soirees);
+  color: var(--accent);
 }
 
-/* Entrée unique : légère montée et fondu, avec un halo rose qui s'éteint.
+/* Entrée unique : légère montée et fondu, avec un halo de la couleur de l'activité qui s'éteint.
    Assez pour attirer l'œil à l'arrivée, rien ne bouge ensuite. */
-@keyframes hy-soiree-in {
+@keyframes hy-featured-in {
   from {
     opacity: 0;
     transform: translateY(8px) scale(0.98);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--hy-soirees) 0%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
   }
   60% {
     opacity: 1;
     transform: none;
-    box-shadow: 0 0 28px 2px color-mix(in srgb, var(--hy-soirees) 45%, transparent);
+    box-shadow: 0 0 28px 2px color-mix(in srgb, var(--accent) 45%, transparent);
   }
   to {
     opacity: 1;
     transform: none;
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--hy-soirees) 0%, transparent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
   }
 }

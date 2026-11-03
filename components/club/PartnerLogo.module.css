@@ -25,6 +25,17 @@
   border-radius: 8px;
 }
 
+/* Logo partenaire accolé au H d'Hybride dans la carte d'un événement mis en
+   avant (FeaturedEventCard) : hauteur fixe de la tuile, marge comprise. */
+.lockup {
+  height: 40px;
+  border-radius: 6px;
+}
+
+.lockup.light {
+  padding: 4px;
+}
+
 /* Logos qui disparaîtraient sur le noir (voir `background` dans
    lib/club/partners.ts) — aujourd'hui Terre de Running, noir sur transparent. */
 .light {
