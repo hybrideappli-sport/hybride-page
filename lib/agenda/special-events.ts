@@ -85,7 +85,8 @@ export const SPECIAL_EVENTS: SpecialEvent[] = [
     ],
     highlight: {
       figure: "−20 %",
-      title: "Sur toute la boutique, pendant l’after",
+      /* Confirmé par le client le 2026-11-03 : toute la soirée après le run. */
+      title: "Sur toute la boutique, toute la soirée après le run",
       text: "Chaussures, vêtements, accessoires : le moment parfait pour tes achats de Noël — pour toi, ou pour gâter un coureur.",
     },
   },
