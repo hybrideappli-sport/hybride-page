@@ -281,7 +281,9 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   // Statut sur liste blanche ("publiée" seul) — pas de liste noire : une valeur vide (lignes non
   // remplies du gabarit Sheets), "brouillon" ou une faute de frappe dessus sont exclues pareil,
   // sans avertissement (état normal, pas une erreur de saisie).
-  if (row["Statut"]?.trim() !== "publiée") return null;
+  // Casse et forme Unicode ignorées (2026-11-22) : « Publiée » saisi avec une majuscule a fait
+  // disparaître la sortie du 2 décembre et mis sa fiche en 404. Une majuscule n'est pas un brouillon.
+  if (row["Statut"]?.trim().normalize("NFC").toLowerCase() !== "publiée") return null;
 
   const rawActivity = row["Activité"]?.trim() ?? "";
   const activity = ACTIVITY_BY_SHEET_VALUE[normalizeActivity(rawActivity)];
@@ -352,23 +354,53 @@ function parseRow(row: Record<string, string>, rowNumber: number, warn: (msg: st
   };
 }
 
+/**
+ * Une sortie et la ligne du tableur d'où elle vient. L'origine ne sert qu'aux
+ * avertissements de `finalizeEvents` : elle reste côté serveur, hors de
+ * `AgendaEvent`, qui part tel quel dans la page.
+ */
+interface SourcedEvent {
+  event: AgendaEvent;
+  tab: string;
+  rowNumber: number;
+}
+
 /** Un onglet → ses sorties, sans le suffixe de doublon (posé par `finalizeEvents`). */
-function parseSheet(csvText: string, tab: string): AgendaEvent[] {
+function parseSheet(csvText: string, tab: string): SourcedEvent[] {
   const rows = parseCsv(csvText);
   if (rows.length === 0) return [];
   const [header, ...dataRows] = rows;
 
-  const events: AgendaEvent[] = [];
+  const events: SourcedEvent[] = [];
   dataRows.forEach((cells, i) => {
     const row: Record<string, string> = {};
     header.forEach((col, colIndex) => {
       row[col] = cells[colIndex] ?? "";
     });
-    const parsed = parseRow(row, i + 2, (msg) => console.warn(`[agenda] onglet ${tab}, ${msg}`)); // +2 : ligne 1 = en-tête, index 0-based
-    if (parsed) events.push(parsed);
+    const rowNumber = i + 2; // +2 : ligne 1 = en-tête, index 0-based
+    const parsed = parseRow(row, rowNumber, (msg) => console.warn(`[agenda] onglet ${tab}, ${msg}`));
+    if (parsed) events.push({ event: parsed, tab, rowNumber });
   });
   return events;
 }
+
+/** Colonne du tableur de chaque champ comparé entre deux exemplaires d'une même sortie. */
+const COLUMN_BY_FIELD: [keyof AgendaEvent, string][] = [
+  ["title", "Titre"],
+  ["shortTitle", "Nom court"],
+  ["format", "Format"],
+  ["duration", "Durée"],
+  ["details", "Détails"],
+  ["location", "Lieu"],
+  ["level", "Niveau"],
+  ["opensAtIso", "Ouverture"],
+  ["lumaUrl", "URL Luma"],
+];
+
+const where = ({ tab, rowNumber }: SourcedEvent) => `${tab} ligne ${rowNumber}`;
+
+const parisDateTime = (iso: string) =>
+  new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short", timeStyle: "short" }).format(new Date(iso));
 
 /**
  * Fusion des onglets, puis adresses et ordre.
@@ -379,26 +411,65 @@ function parseSheet(csvText: string, tab: string): AgendaEvent[] {
  * affichées deux fois, la seconde à une adresse « -2 ». Même jour, même heure,
  * même titre, même activité = la même sortie ; c'est l'onglet le plus à droite
  * — en pratique le plus récent — qui l'emporte si les détails diffèrent.
+ *
+ * MAIS JAMAIS EN SILENCE (2026-11-22). Le social run du 25 novembre était
+ * publié dans « Octobre », « Novembre » et « Décembre », avec deux liens Luma
+ * différents : le site a servi celui de « Décembre », recopié par erreur depuis
+ * le run du 18, sans rien signaler — la même panne muette que les lignes
+ * écartées faute de lieu en septembre (voir parseRow). Chaque fusion en conflit
+ * est donc annoncée dans les logs : lignes concernées, ligne retenue, et
+ * colonnes qui divergent. Les copies identiques — une vingtaine, recopiées
+ * d'onglet en onglet — se taisent : à chaque relecture du tableur, elles
+ * noyaient les vrais conflits.
  */
-function finalizeEvents(events: AgendaEvent[]): AgendaEvent[] {
-  const byIdentity = new Map<string, AgendaEvent>();
-  for (const event of events) {
-    byIdentity.set(`${event.startsAtIso}|${event.activity}|${event.slug}`, event);
+function finalizeEvents(sourced: SourcedEvent[]): AgendaEvent[] {
+  const byIdentity = new Map<string, SourcedEvent[]>();
+  for (const s of sourced) {
+    const key = `${s.event.startsAtIso}|${s.event.activity}|${s.event.slug}`;
+    const group = byIdentity.get(key);
+    if (group) group.push(s);
+    else byIdentity.set(key, [s]);
   }
-  events = [...byIdentity.values()];
+
+  const kept: SourcedEvent[] = [];
+  for (const group of byIdentity.values()) {
+    const winner = group[group.length - 1];
+    kept.push(winner);
+    const diverging = COLUMN_BY_FIELD.filter(([field]) => group.some((s) => s.event[field] !== winner.event[field])).map(
+      ([, column]) => column,
+    );
+    if (diverging.length === 0) continue;
+    console.warn(
+      `[agenda] sortie « ${winner.event.slug} » du ${parisDateTime(winner.event.startsAtIso)} publiée ${group.length} fois ` +
+        `(${group.map(where).join(", ")}) : retenue ${where(winner)}, colonnes qui diffèrent : ${diverging.join(", ")}`,
+    );
+  }
 
   // Deux sorties du même jour au même titre donneraient la même adresse et la
   // seconde serait inatteignable. Suffixe « -2 », « -3 » dans l'ordre du tableur.
   // Cas rare et volontairement traité sans horaire dans l'adresse : l'heure d'une
   // sortie bouge (le run chill est passé de 19h à 19h30 en cours de mois), le
-  // lien partagé, lui, ne doit pas bouger.
+  // lien partagé, lui, ne doit pas bouger. Signalé aussi : les deux sont gardées,
+  // mais la seconde n'est pas à l'adresse qu'on attendrait.
+  const firstBySlug = new Map<string, SourcedEvent>();
   const seen = new Map<string, number>();
-  for (const event of events) {
-    const count = (seen.get(event.slug) ?? 0) + 1;
-    seen.set(event.slug, count);
-    if (count > 1) event.slug = `${event.slug}-${count}`;
+  for (const s of kept) {
+    const baseSlug = s.event.slug;
+    const count = (seen.get(baseSlug) ?? 0) + 1;
+    seen.set(baseSlug, count);
+    if (count === 1) {
+      firstBySlug.set(baseSlug, s);
+      continue;
+    }
+    s.event.slug = `${baseSlug}-${count}`;
+    const first = firstBySlug.get(baseSlug)!;
+    console.warn(
+      `[agenda] adresse « ${baseSlug} » produite par deux sorties différentes du ${parisDateTime(first.event.startsAtIso).slice(0, 10)} ` +
+        `(${where(first)}, ${where(s)}) : les deux sont gardées, ${where(s)} servie à « ${s.event.slug} »`,
+    );
   }
 
+  const events = kept.map((s) => s.event);
   events.sort((a, b) => a.startsAtIso.localeCompare(b.startsAtIso));
   return events;
 }
