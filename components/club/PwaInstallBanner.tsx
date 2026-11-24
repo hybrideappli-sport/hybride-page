@@ -58,7 +58,12 @@ import styles from "./PwaInstallBanner.module.css";
  * deux pages-là sont justement celles où l'on est en train de faire quelque
  * chose. Un raccourci vers l'écran d'accueil peut attendre la fin.
  */
-const PATHS_WITH_STICKY_BAR = [/^\/club\/[^/]+\/adherer$/, /^\/club\/[^/]+\/sorties\//];
+const PATHS_WITH_STICKY_BAR = [
+  /^\/club\/[^/]+\/adherer$/,
+  /^\/club\/[^/]+\/sorties\//,
+  // Fiche du sweat (2026-11-24), barre « Je précommande » pendant la précommande.
+  /^\/club\/[^/]+\/shop\/sweat-edition-limitee$/,
+];
 
 /** Clé du refus. Changer cette chaîne re-proposerait la bannière à tout le monde. */
 const DISMISSED_KEY = "hybride:pwa-invite-refusee";

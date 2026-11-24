@@ -143,3 +143,11 @@ export const SHOP_NAV_HIGHLIGHT_UNTIL = "2026-10-31T23:59:59+01:00";
  * l'association ne peut pas encaisser dessus).
  */
 export const HELLOASSO_SHOP_URL = "https://www.helloasso.com/associations/hybride-club-toulon/boutiques/boutique-hybride";
+
+/**
+ * Boutique HelloAsso dédiée à la précommande du sweat édition limitée — fournie
+ * par le client le 2026-11-24. Distincte de HELLOASSO_SHOP_URL : c'est là que se
+ * choisissent coupe et taille. Prix et échéances : lib/club/sweat-preorder.ts.
+ */
+export const HELLOASSO_SWEAT_URL =
+  "https://www.helloasso.com/associations/hybride-club-toulon/boutiques/sweat-a-capuche-hybride-edition-limitee";

@@ -33,6 +33,11 @@
   color: var(--hy-text-2);
 }
 
+/* Carte du sweat, en tête de la boutique (2026-11-24). */
+.sweatPromo {
+  padding-bottom: var(--hy-space-5);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

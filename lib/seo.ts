@@ -42,7 +42,22 @@ const OG_IMAGE = {
  * commerciale. Même séparation que dans ClubFooter.tsx (deux responsables de
  * traitement distincts, décision du brief).
  */
-export function clubMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {
+export function clubMetadata({
+  title,
+  description,
+  path,
+  image = OG_IMAGE,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  /**
+   * Aperçu propre à la page, 1200×630 lui aussi. Ajouté le 2026-11-24 pour la
+   * fiche du sweat, dont le lien circule en stories et sur WhatsApp : l'aperçu
+   * doit montrer le sweat, pas le groupe du mercredi.
+   */
+  image?: typeof OG_IMAGE;
+}): Metadata {
   return {
     title,
     description,
@@ -54,7 +69,7 @@ export function clubMetadata({ title, description, path }: { title: string; desc
       url: path,
       title,
       description,
-      images: [OG_IMAGE],
+      images: [image],
     },
   };
 }

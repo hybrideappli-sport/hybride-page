@@ -1,0 +1,109 @@
+.gallery {
+  position: relative;
+}
+
+.track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border: 1px solid var(--hy-line);
+  border-radius: var(--hy-radius-card);
+  background: var(--hy-surface-1);
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+/* Le grand format 4/5 du site, comme la photo d'ouverture de la boutique. */
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--hy-line-2);
+  border-radius: var(--hy-radius-pill);
+  background: rgb(0 0 0 / 0.6);
+  color: var(--hy-text-1);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.arrow:focus-visible,
+.dot:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: 2px;
+}
+
+.prev {
+  left: var(--hy-space-2);
+}
+
+.next {
+  right: var(--hy-space-2);
+}
+
+@media (min-width: 861px) {
+  .arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: var(--hy-space-1);
+}
+
+/* Zone tactile de 24px, point visible de 8px. */
+.dot {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: var(--hy-line-2);
+  transition: background var(--hy-dur) var(--hy-ease);
+}
+
+.dotActive::after {
+  background: var(--hy-violet);
+}

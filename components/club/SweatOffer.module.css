@@ -1,0 +1,80 @@
+.offer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hy-space-2);
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--hy-space-3);
+}
+
+/*
+ * Même étiquette inclinée que le tarif des tee-shirts (ShopGallery.module.css) :
+ * le prix du merch a une seule forme sur tout le site.
+ */
+.stamp {
+  display: inline-block;
+  padding: 9px 16px;
+  font-family: var(--hy-font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--hy-on-violet);
+  background: var(--hy-violet-fill);
+  clip-path: polygon(6% 0, 94% 4%, 100% 50%, 95% 96%, 50% 100%, 8% 97%, 0 52%, 4% 6%);
+  transform: rotate(-4deg);
+}
+
+.large .stamp {
+  font-size: 30px;
+  padding: 10px 20px;
+}
+
+/* Fermée : plus de violet, le prix ne se vend plus. */
+.stampClosed {
+  font-size: 16px;
+  color: var(--hy-text-1);
+  background: var(--hy-surface-2);
+  transform: none;
+}
+
+.offerLabel {
+  font-family: var(--hy-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hy-violet);
+}
+
+.detail {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--hy-text-2);
+}
+
+.countdown {
+  margin: 0;
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  color: var(--hy-text-2);
+}
+
+.countdownValue {
+  color: var(--hy-text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.cta {
+  margin-top: var(--hy-space-1);
+}
+
+@media (max-width: 860px) {
+  .cta :global(a) {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -8,7 +8,10 @@ import { ClubNav } from "@/components/club/ClubNav";
 import { CtaBand } from "@/components/club/CtaBand";
 import { PartnerBand } from "@/components/club/PartnerBand";
 import { RitualRow } from "@/components/club/RitualRow";
+import { SweatPreorderOnly } from "@/components/club/SweatPreorderOnly";
+import { SweatPromo } from "@/components/club/SweatPromo";
 import { PARTNERS } from "@/lib/club/partners";
+import { getSweatPreorderPhase } from "@/lib/club/sweat-preorder";
 import { CLUB } from "@/lib/config";
 import { getAllRituals } from "@/lib/rituals/content";
 import { clubMetadata } from "@/lib/seo";
@@ -27,6 +30,7 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
   if (slug !== CLUB.slug) notFound();
 
   const rituals = getAllRituals();
+  const sweatPhase = getSweatPreorderPhase();
 
   return (
     <div className={styles.wrap}>
@@ -62,6 +66,12 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
           alt="Le groupe du club Hybride Toulon au départ d'une sortie"
         />
       </div>
+
+      {/* Précommande du sweat (2026-11-24), juste sous le hero. Disparaît seule
+          à la clôture, sur l'horloge du visiteur. */}
+      <SweatPreorderOnly initialPhase={sweatPhase}>
+        <SweatPromo clubSlug={CLUB.slug} initialPhase={sweatPhase} variant="section" />
+      </SweatPreorderOnly>
 
       {/* Bande des partenaires — voir PartnerBand pour ce qui la garde d'être
           lue comme un argument d'adhésion. Seule mention des partenaires sur

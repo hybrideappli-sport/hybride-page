@@ -1,11 +1,15 @@
 import type { ReactNode } from "react";
 
 import { PwaInstallBanner } from "@/components/club/PwaInstallBanner";
+import { SweatPreorderBanner } from "@/components/club/SweatPreorderBanner";
+import { getSweatPreorderPhase, SWEAT_BANNER_EARLY_HIDE_SCRIPT } from "@/lib/club/sweat-preorder";
+import { CLUB } from "@/lib/config";
 
 /**
  * Premier layout du site (2026-09-25), créé pour une seule raison : monter la
  * bannière d'installation une fois pour les dix pages du club, au lieu de
- * l'importer dans chacune. Aucune balise supplémentaire n'est introduite — les
+ * l'importer dans chacune. Depuis le 2026-11-24 il monte aussi, en tête, le
+ * bandeau de précommande du sweat. Aucune balise supplémentaire n'est introduite — les
  * pages continuent de poser elles-mêmes leur `ClubNav`, leur conteneur et leur
  * `ClubFooter`, et rien de leur mise en page ne change.
  *
@@ -43,6 +47,10 @@ const INSTALL_PROMPT_CATCHER = `window.addEventListener("beforeinstallprompt",fu
 export default function ClubLayout({ children }: { children: ReactNode }) {
   return (
     <>
+      {/* Précommande du sweat (2026-11-24) : le script AVANT le bandeau, pour
+          que la règle qui le masque existe déjà quand il est parcouru. */}
+      <script dangerouslySetInnerHTML={{ __html: SWEAT_BANNER_EARLY_HIDE_SCRIPT }} />
+      <SweatPreorderBanner clubSlug={CLUB.slug} initialPhase={getSweatPreorderPhase()} />
       {children}
       <script dangerouslySetInnerHTML={{ __html: INSTALL_PROMPT_CATCHER }} />
       <PwaInstallBanner />

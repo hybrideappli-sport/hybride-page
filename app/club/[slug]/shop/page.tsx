@@ -8,6 +8,8 @@ import { ClubFooter } from "@/components/club/ClubFooter";
 import { ClubNav } from "@/components/club/ClubNav";
 import { ShopCountdown } from "@/components/club/ShopCountdown";
 import { ShopGallery } from "@/components/club/ShopGallery";
+import { SweatPromo } from "@/components/club/SweatPromo";
+import { getSweatPreorderPhase } from "@/lib/club/sweat-preorder";
 import { CLUB, HELLOASSO_SHOP_URL, SHOP_OPENING_TO } from "@/lib/config";
 import { deadlinePassed } from "@/lib/countdown";
 import { formatOpeningLabel } from "@/lib/format";
@@ -47,7 +49,10 @@ export const metadata = clubMetadata({
   // Mise à jour le 2026-09-10 avec l'arrivée d'une date ferme : la description
   // précédente (« les premières pièces sont en préparation ») serait devenue
   // fausse dans les résultats de recherche le soir de l'ouverture.
-  description: "La boutique du club ouvre le 15 septembre 2026 à 18h. Commande et paiement sur la boutique HelloAsso de l'association.",
+  // Puis le 2026-11-24, pour le sweat : la date d'ouverture était passée depuis
+  // deux mois. Sans prix ni date de clôture, pour ne pas devenir faux à son tour.
+  description:
+    "Le merch du club Hybride Toulon : sweat à capuche édition limitée et tee-shirts. Commande et paiement sur la boutique HelloAsso de l'association.",
   path: "/club/toulon/shop",
 });
 
@@ -84,6 +89,13 @@ export default async function ClubShopPage({ params }: { params: Promise<{ slug:
             boutique HelloAsso de l’association — rien n’est collecté ni encaissé sur ce site.
           </p>
         ) : null}
+      </div>
+
+      {/* Le sweat en tête, au-dessus du reste du merch (2026-11-24). Pas
+          enveloppé dans SweatPreorderOnly : après le 15 décembre la carte
+          reste, en « Précommande terminée ». */}
+      <div className={styles.sweatPromo}>
+        <SweatPromo clubSlug={CLUB.slug} initialPhase={getSweatPreorderPhase()} variant="card" badges />
       </div>
 
       {hasProducts ? (

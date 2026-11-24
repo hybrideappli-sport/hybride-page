@@ -8,6 +8,9 @@ import { ClubNav } from "@/components/club/ClubNav";
 import { FeaturedEventCard } from "@/components/club/FeaturedEventCard";
 import { PlanningCalendar } from "@/components/club/PlanningCalendar";
 import { PlanningCountdown } from "@/components/club/PlanningCountdown";
+import { SweatPreorderOnly } from "@/components/club/SweatPreorderOnly";
+import { SweatPromo } from "@/components/club/SweatPromo";
+import { getSweatPreorderPhase } from "@/lib/club/sweat-preorder";
 import { deadlineHasPassed, eventsInMonth, getCurrentMonthKey, getDefaultMonthKey, getMonthLabel, getNextEventOfActivity, shiftMonthKey } from "@/lib/agenda/planning";
 import { findSpecialEvent } from "@/lib/agenda/special-events";
 import { getAgendaEvents } from "@/lib/agenda/source";
@@ -69,6 +72,8 @@ export default async function PlanningPage({
     ? (PARTNERS.find((p) => p.slug === featuredSpecial.partnerSlug) ?? null)
     : null;
 
+  const sweatPhase = getSweatPreorderPhase();
+
   const prevMonthKey = shiftMonthKey(monthKey, -1);
   const nextMonthKey = shiftMonthKey(monthKey, 1);
 
@@ -113,6 +118,14 @@ export default async function PlanningPage({
         </div>
       </div>
       <PlanningCalendar events={events} monthKey={monthKey} clubSlug={CLUB.slug} />
+      {/* Précommande du sweat (2026-11-24) : APRÈS la grille, pour que le
+          planning reste en haut de l'écran — le bandeau du layout annonce déjà
+          la précommande en tête de page. */}
+      <SweatPreorderOnly initialPhase={sweatPhase}>
+        <div className={styles.sweatPromo}>
+          <SweatPromo clubSlug={CLUB.slug} initialPhase={sweatPhase} variant="card" />
+        </div>
+      </SweatPreorderOnly>
       {/* SOUS la grille depuis le 2026-09-09, et plus dans l'en-tête. L'arbitrage
           s'est inversé : cette phrase est bien la question qui revient le plus en
           message privé, mais la faire lire en arrivant coûtait 178px avant la

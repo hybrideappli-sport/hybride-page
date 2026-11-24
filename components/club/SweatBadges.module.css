@@ -1,0 +1,28 @@
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hy-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.badges li {
+  padding: 5px 10px;
+  border-radius: var(--hy-radius-pill);
+  font-family: var(--hy-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.limited {
+  color: var(--hy-violet);
+  background: var(--hy-violet-bg);
+  border: 1px solid var(--hy-violet);
+}
+
+.preorder {
+  color: #000;
+  background: var(--hy-cream);
+}

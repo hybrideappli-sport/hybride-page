@@ -30,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     `${club}/planning`,
     `${club}/adherer`,
     `${club}/shop`,
+    `${club}/shop/sweat-edition-limitee`,
     `${club}/partenaires`,
     `${club}/mentions-legales`,
     `${club}/politique-de-confidentialite`,

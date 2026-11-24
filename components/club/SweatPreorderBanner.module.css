@@ -1,0 +1,133 @@
+/*
+ * Fond violet plein : seul aplat de couleur en tête de page sur tout le site,
+ * c'est ce qui le rend visible sans clignoter ni bouger. Blanc sur
+ * --hy-violet-fill : 7,1:1. Le bouton passe en crème (le « bandeau inversé »
+ * de la charte) — un bouton violet sur fond violet disparaîtrait.
+ */
+.banner {
+  background: var(--hy-violet-fill);
+  color: var(--hy-on-violet);
+}
+
+.inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--hy-space-2) var(--hy-space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--hy-space-3);
+}
+
+.text {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--hy-space-3);
+  row-gap: 2px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.title {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.title:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.title:focus-visible,
+.cta:focus-visible,
+.close:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-cream);
+  outline-offset: 2px;
+}
+
+.meta {
+  font-family: var(--hy-font-mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.price {
+  font-family: var(--hy-font-display);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 var(--hy-space-3);
+  border-radius: var(--hy-radius-pill);
+  background: var(--hy-cream);
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--hy-dur) var(--hy-ease);
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+}
+
+.close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: calc(-1 * var(--hy-space-2));
+  border: none;
+  border-radius: var(--hy-radius-pill);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+/*
+ * Téléphone : texte sur toute la largeur, puis bouton et croix sur la ligne du
+ * dessous. Une seule ligne ne tient pas à 375px sans couper le titre.
+ */
+@media (max-width: 860px) {
+  .inner {
+    flex-wrap: wrap;
+    padding: var(--hy-space-2) var(--hy-space-3) var(--hy-space-2) var(--hy-space-4);
+    row-gap: var(--hy-space-1);
+  }
+
+  .text {
+    flex-basis: calc(100% - 48px);
+    order: 1;
+  }
+
+  .close {
+    order: 2;
+    align-self: flex-start;
+  }
+
+  .cta {
+    order: 3;
+    flex: 1;
+    justify-content: center;
+  }
+}

@@ -72,6 +72,11 @@
   padding: var(--hy-space-5) 0 var(--hy-space-6);
 }
 
+/* Encart du sweat, entre la grille et le bloc inscriptions (2026-11-24). */
+.sweatPromo {
+  padding-top: var(--hy-space-5);
+}
+
 /* Information de service, pas encadrée : ni fond, ni bordure, ni couleur
    d'accent — le même gris de texte secondaire que les autres mentions pratiques
    du site.
