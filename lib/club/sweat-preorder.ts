@@ -26,7 +26,7 @@ export const SWEAT_EARLY_UNTIL = "2026-12-09T00:00:00+01:00";
 export const SWEAT_PREORDER_UNTIL = "2026-12-16T00:00:00+01:00";
 
 const EARLY_PRICE = 36;
-const STANDARD_PRICE = 39;
+const STANDARD_PRICE = 38; // 39 € initialement, ramené à 38 € par le client le 2026-11-24.
 
 export interface SweatPreorderOffer {
   phase: SweatPreorderPhase;
@@ -41,7 +41,7 @@ export interface SweatPreorderOffer {
    *
    * UN SEUL PRIX COURANT PAR PAGE (2026-11-24) : la pastille porte le prix du
    * moment, cette phrase ne le répète jamais. Au palier de lancement elle
-   * annonce le suivant (« puis 39 € à partir du 9 décembre ») — c'est la seule
+   * annonce le suivant (« puis 38 € à partir du 9 décembre ») — c'est la seule
    * autre somme affichée, et elle dit autre chose : la hausse.
    */
   offerDetail: string;
