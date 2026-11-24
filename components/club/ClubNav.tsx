@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { SWEAT_PREORDER_UNTIL } from "@/lib/club/sweat-preorder";
 import { SHOP_NAV_HIGHLIGHT_UNTIL } from "@/lib/config";
 import { deadlinePassed } from "@/lib/countdown";
 import styles from "./ClubNav.module.css";
@@ -54,6 +55,31 @@ export function ClubNav({ clubSlug }: { clubSlug: string }) {
     return () => clearTimeout(t);
   }, []);
 
+  /*
+   * « Shop » en bouton pendant la précommande du sweat (2026-11-24), jusqu'à
+   * SWEAT_PREORDER_UNTIL — la même échéance que la bannière et les encarts.
+   *
+   * Part de `true`, à l'inverse de `highlighted` : c'est l'état de toute la
+   * période où le bouton existe, et le HTML servi le montre donc d'emblée, sans
+   * passer de lien à bouton sous les yeux du visiteur — la barre de navigation
+   * ne doit pas bouger à l'hydratation. Après la clôture, le montage corrige.
+   *
+   * Une minuterie posée jusqu'à l'échéance bascule une page restée ouverte à
+   * minuit le 16. Plafonnée : au-delà de ~24,8 jours, setTimeout se déclenche
+   * immédiatement (délai stocké sur 32 bits).
+   */
+  const [preorderOpen, setPreorderOpen] = useState(true);
+  useEffect(() => {
+    const check = () => setPreorderOpen(!deadlinePassed(SWEAT_PREORDER_UNTIL));
+    const first = setTimeout(check, 0);
+    const msLeft = new Date(SWEAT_PREORDER_UNTIL).getTime() - Date.now();
+    const atClose = msLeft > 0 && msLeft < 2 ** 31 - 1 ? setTimeout(check, msLeft + 1_000) : undefined;
+    return () => {
+      clearTimeout(first);
+      if (atClose) clearTimeout(atClose);
+    };
+  }, []);
+
   return (
     <nav className={styles.nav}>
       <div className={styles.bar}>
@@ -70,21 +96,38 @@ export function ClubNav({ clubSlug }: { clubSlug: string }) {
           <Link className={styles.link} href={`/club/${clubSlug}/planning`}>
             Planning
           </Link>
-          <Link className={`${styles.link} ${highlighted ? styles.linkNew : ""}`} href={`/club/${clubSlug}/shop`}>
-            Shop{highlighted ? " " : null}
-            {/* L'espace ci-dessus n'est pas décoratif : sans lui le lien
-                s'annonce « ShopNouveau » d'un seul tenant. La marge CSS ne sépare
-                que pour l'œil.
-                Un vrai élément et non un `content` CSS : les pseudo-éléments ne
-                sont pas annoncés de façon fiable par tous les lecteurs d'écran,
-                or « nouveau » est une information, pas une décoration. Le lien
-                s'annonce alors « Shop Nouveau », ce qui est exactement le sens. */}
-            {highlighted ? <span className={styles.newBadge}>Nouveau</span> : null}
-          </Link>
+          {preorderOpen ? (
+            <Link className={styles.shopButton} href={`/club/${clubSlug}/shop`}>
+              Shop{" "}
+              {/* Vrai texte, comme « Nouveau » plus bas : le lien s'annonce
+                  « Shop Précommande », l'espace avant n'est pas décoratif. */}
+              <span className={styles.preorderBadge}>Précommande</span>
+            </Link>
+          ) : (
+            <Link className={`${styles.link} ${highlighted ? styles.linkNew : ""}`} href={`/club/${clubSlug}/shop`}>
+              Shop{highlighted ? " " : null}
+              {/* L'espace ci-dessus n'est pas décoratif : sans lui le lien
+                  s'annonce « ShopNouveau » d'un seul tenant. La marge CSS ne sépare
+                  que pour l'œil.
+                  Un vrai élément et non un `content` CSS : les pseudo-éléments ne
+                  sont pas annoncés de façon fiable par tous les lecteurs d'écran,
+                  or « nouveau » est une information, pas une décoration. Le lien
+                  s'annonce alors « Shop Nouveau », ce qui est exactement le sens. */}
+              {highlighted ? <span className={styles.newBadge}>Nouveau</span> : null}
+            </Link>
+          )}
         </div>
 
         {onJoinPage ? null : (
-          <Button href={joinHref} size="mini" className={styles.joinCta}>
+          // Contour pendant la précommande (2026-11-24) : « Shop » garde seul le
+          // remplissage violet, la précommande est la priorité du moment. Plein
+          // de nouveau à la clôture, en même temps que « Shop » redevient un lien.
+          <Button
+            href={joinHref}
+            size="mini"
+            variant={preorderOpen ? "line" : "fill"}
+            className={`${styles.joinCta} ${preorderOpen ? styles.joinCtaOutline : ""}`}
+          >
             Adhérer
           </Button>
         )}

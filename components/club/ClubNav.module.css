@@ -97,6 +97,54 @@
   }
 }
 
+/*
+ * « Shop » en bouton pendant la précommande du sweat (2026-11-24) — fond
+ * --hy-violet-fill, texte blanc (7,1:1), coins arrondis. Plus petit que le
+ * bouton « Adhérer » et suivi d'un badge, pour ne pas se lire comme une
+ * deuxième action d'adhésion. Hauteur tactile 44px tenue par la marge
+ * verticale, le bouton visible fait 34px.
+ */
+.shopButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  margin: 5px 0;
+  padding: 0 12px;
+  border-radius: var(--hy-radius-pill);
+  background: var(--hy-violet-fill);
+  color: var(--hy-on-violet);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--hy-dur) var(--hy-ease);
+}
+
+.shopButton:hover {
+  /* Même survol que Button.module.css. */
+  background: #7c3aed;
+}
+
+.shopButton:focus-visible {
+  outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
+  outline-offset: var(--hy-focus-ring-offset);
+}
+
+/* Badge blanc dans le bouton violet : texte violet foncé sur blanc, 7,1:1. */
+.preorderBadge {
+  padding: 2px 6px;
+  border-radius: var(--hy-radius-pill);
+  background: #fff;
+  color: var(--hy-violet-fill);
+  font-family: var(--hy-font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
 .link:focus-visible {
   outline: var(--hy-focus-ring-width) solid var(--hy-focus-ring-color);
   outline-offset: var(--hy-focus-ring-offset);
@@ -107,6 +155,22 @@
 .joinCta {
   flex: 0 0 auto;
   margin-left: auto;
+}
+
+/*
+ * Contour violet pendant la précommande du sweat : bordure et texte
+ * --hy-violet (9,2:1 sur le noir), fond transparent. Double classe pour
+ * l'emporter sur `.line` de Button.module.css, dont l'ordre de chargement
+ * n'est pas garanti.
+ */
+.joinCta.joinCtaOutline {
+  border-color: var(--hy-violet);
+  color: var(--hy-violet);
+  background: transparent;
+}
+
+.joinCta.joinCtaOutline:hover {
+  background: var(--hy-violet-bg);
 }
 
 /*
