@@ -36,13 +36,28 @@ export interface SweatPreorderOffer {
   priceLabel: string | null;
   /** Nom court de l'offre du moment : « Prix de lancement », « Dernière semaine »… */
   offerLabel: string;
-  /** Ce que le palier annonce, en une phrase — dates en toutes lettres, sans décompte. */
+  /**
+   * Ce que le palier annonce, en une phrase, affichée SOUS la pastille de prix.
+   *
+   * UN SEUL PRIX COURANT PAR PAGE (2026-11-24) : la pastille porte le prix du
+   * moment, cette phrase ne le répète jamais. Au palier de lancement elle
+   * annonce le suivant (« puis 39 € à partir du 9 décembre ») — c'est la seule
+   * autre somme affichée, et elle dit autre chose : la hausse.
+   */
   offerDetail: string;
   /** Fin du palier courant (ISO), cible du compte à rebours. `null` une fois fermée. */
   endsAtIso: string | null;
-  /** Ce qui arrive à cette échéance, devant le décompte : « 39 € dans », « Fin dans ». */
+  /** Devant le décompte du palier — sans montant, la pastille et `offerDetail` les portent déjà. */
   countdownLead: string | null;
 }
+
+/**
+ * Le décompte de la BANNIÈRE vise la fin de la précommande, pas la fin du
+ * palier (demande du client, 2026-11-24) : il ne change pas de cible le
+ * 9 décembre, il continue de descendre. Cible = SWEAT_PREORDER_UNTIL, minuit
+ * le 16 — soit la fin de la minute 23h59 du 15, l'instant exact de la clôture.
+ */
+export const SWEAT_BANNER_COUNTDOWN_LEAD = "Fin des précommandes dans";
 
 const euros = (n: number) => `${n} €`;
 
@@ -62,9 +77,9 @@ export function offerForPhase(phase: SweatPreorderPhase): SweatPreorderOffer {
         price: EARLY_PRICE,
         priceLabel: euros(EARLY_PRICE),
         offerLabel: "Prix de lancement",
-        offerDetail: `${euros(EARLY_PRICE)} jusqu’au 8 décembre, ${euros(STANDARD_PRICE)} ensuite.`,
+        offerDetail: `puis ${euros(STANDARD_PRICE)} à partir du 9 décembre`,
         endsAtIso: SWEAT_EARLY_UNTIL,
-        countdownLead: `${euros(STANDARD_PRICE)} dans`,
+        countdownLead: "Fin du prix de lancement dans",
       };
     case "standard":
       return {
@@ -74,7 +89,7 @@ export function offerForPhase(phase: SweatPreorderPhase): SweatPreorderOffer {
         offerLabel: "Dernière semaine",
         offerDetail: "Précommande ouverte jusqu’au 15 décembre inclus.",
         endsAtIso: SWEAT_PREORDER_UNTIL,
-        countdownLead: "Fin dans",
+        countdownLead: "Fin des précommandes dans",
       };
     case "closed":
       return {

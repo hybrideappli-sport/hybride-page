@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 
 import { unitsRemaining } from "@/lib/countdown";
 import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
-import { getSweatPreorderOffer, offerForPhase, type SweatPreorderOffer, type SweatPreorderPhase } from "@/lib/club/sweat-preorder";
+import {
+  getSweatPreorderOffer,
+  offerForPhase,
+  SWEAT_PREORDER_UNTIL,
+  type SweatPreorderOffer,
+  type SweatPreorderPhase,
+} from "@/lib/club/sweat-preorder";
 
 export interface SweatOfferState {
   offer: SweatPreorderOffer;
@@ -14,6 +20,11 @@ export interface SweatOfferState {
    * fois la précommande fermée.
    */
   remainingText: string | null;
+  /**
+   * Décompte jusqu'à la CLÔTURE (SWEAT_PREORDER_UNTIL), quel que soit le
+   * palier — celui de la bannière. Mêmes règles que `remainingText`.
+   */
+  closingRemainingText: string | null;
 }
 
 /**
@@ -45,13 +56,16 @@ export function useSweatOffer(initialPhase: SweatPreorderPhase): SweatOfferState
 
   const offer = nowMs === null ? offerForPhase(initialPhase) : getSweatPreorderOffer(new Date(nowMs));
 
-  let remainingText: string | null = null;
-  if (nowMs !== null && offer.endsAtIso) {
-    const left = new Date(offer.endsAtIso).getTime() - nowMs;
-    remainingText = unitsRemaining(left, { withSeconds: !reducedMotion })
-      .map((u) => `${u.value} ${u.short.toLowerCase()}`)
-      .join(" ");
-  }
+  const format = (targetIso: string | null) =>
+    nowMs === null || !targetIso
+      ? null
+      : unitsRemaining(new Date(targetIso).getTime() - nowMs, { withSeconds: !reducedMotion })
+          .map((u) => `${u.value} ${u.short.toLowerCase()}`)
+          .join(" ");
 
-  return { offer, remainingText };
+  return {
+    offer,
+    remainingText: format(offer.endsAtIso),
+    closingRemainingText: offer.phase === "closed" ? null : format(SWEAT_PREORDER_UNTIL),
+  };
 }

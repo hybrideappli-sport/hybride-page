@@ -1,12 +1,33 @@
 /*
- * Fond violet plein : seul aplat de couleur en tête de page sur tout le site,
- * c'est ce qui le rend visible sans clignoter ni bouger. Blanc sur
- * --hy-violet-fill : 7,1:1. Le bouton passe en crème (le « bandeau inversé »
- * de la charte) — un bouton violet sur fond violet disparaîtrait.
+ * Fond photo (2026-11-24) : la photo principale du sweat, en noir et blanc
+ * sous un voile noir à 55 %. Le gris passe tout ce qui est coloré au même
+ * régime ; le voile plafonne le pixel le plus clair possible (reflets du soleil
+ * sur l'eau) à 255 × 0,45 ≈ 115. Contraste minimum du texte blanc : 4,7:1,
+ * au-dessus du seuil AA de 4,5:1, où que le recadrage tombe — calculé sur le
+ * pire cas, pas mesuré sur un cadrage particulier. Le noir de secours
+ * (`background`) tient la lisibilité tant que la photo n'est pas chargée.
  */
 .banner {
-  background: var(--hy-violet-fill);
-  color: var(--hy-on-violet);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+}
+
+.bg {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%);
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(0 0 0 / 0.55);
 }
 
 .inner {
@@ -45,24 +66,23 @@
 .title:focus-visible,
 .cta:focus-visible,
 .close:focus-visible {
-  outline: var(--hy-focus-ring-width) solid var(--hy-cream);
+  outline: var(--hy-focus-ring-width) solid #fff;
   outline-offset: 2px;
 }
 
+/*
+ * Le libellé peut passer à la ligne, le décompte jamais : avec « Fin des
+ * précommandes dans », la ligne entière ne tient pas à 390px et débordait à
+ * droite, coupant les minutes (constaté à l'écran le 2026-11-24).
+ */
 .meta {
   font-family: var(--hy-font-mono);
   font-size: 13px;
-  white-space: nowrap;
-}
-
-.price {
-  font-family: var(--hy-font-display);
-  font-size: 16px;
-  font-weight: 800;
 }
 
 .timer {
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .cta {
@@ -72,7 +92,8 @@
   min-height: 40px;
   padding: 0 var(--hy-space-3);
   border-radius: var(--hy-radius-pill);
-  background: var(--hy-cream);
+  /* Bouton blanc sur la photo voilée, texte noir dedans : 21:1. */
+  background: #fff;
   color: #000;
   font-size: 14px;
   font-weight: 700;
